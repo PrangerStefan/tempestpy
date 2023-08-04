@@ -22,12 +22,12 @@ PYBIND11_MODULE(shields, m) {
 
     define_pet(m);
     define_add(m);
-    define_abstract_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
-    define_abstract_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m);
-    define_pre_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
-    define_pre_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m);
-    define_post_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
-    define_post_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m);
-    define_optimal_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
-    define_optimal_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m);
+    define_abstract_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");
+    define_abstract_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
+    define_pre_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");
+    define_pre_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
+    define_post_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");
+    define_post_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
+    define_optimal_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");
+    define_optimal_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
 }

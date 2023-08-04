@@ -11,12 +11,16 @@
 
 
 template <typename ValueType, typename IndexType>
-void define_pre_shield(py::module& m) {
+void define_pre_shield(py::module& m, std::string vt_suffix) {
     using PreShield = tempest::shields::PreShield<ValueType, IndexType>;
     using AbstractShield = tempest::shields::AbstractShield<ValueType, IndexType>;
-    py::class_<PreShield, AbstractShield>(m, "PreShield")
+
+    std::string shieldClassName = std::string("PreShield") + vt_suffix;
+
+
+    py::class_<PreShield, AbstractShield>(m, shieldClassName.c_str())
     ;
 }
 
-template void define_pre_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(py::module& m);
-template void define_pre_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(py::module& m);
+template void define_pre_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(py::module& m, std::string vt_suffix);
+template void define_pre_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(py::module& m, std::string vt_suffix);
