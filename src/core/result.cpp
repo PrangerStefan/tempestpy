@@ -40,6 +40,7 @@ void define_result(py::module& m) {
         .def_property_readonly("_pareto_curve", &storm::modelchecker::CheckResult::isParetoCurveCheckResult, "Flag if result is a pareto curve")
         .def_property_readonly("result_for_all_states", &storm::modelchecker::CheckResult::isResultForAllStates, "Flag if result is for all states")
         .def_property_readonly("has_scheduler", &storm::modelchecker::CheckResult::hasScheduler, "Flag if a scheduler is present")
+        .def_property_readonly("has_schield", &storm::modelchecker::CheckResult::hasShield, "Flag if a schield is present")
 
         .def("as_explicit_qualitative", [](storm::modelchecker::CheckResult const& result) {
                 return result.asExplicitQualitativeCheckResult();
@@ -85,6 +86,7 @@ void define_result(py::module& m) {
         }, py::arg("state"), "Get result for given state")
         .def("get_values", [](storm::modelchecker::ExplicitQuantitativeCheckResult<double> const& res) {return res.getValueVector();}, "Get model checking result values for all states")
         .def_property_readonly("scheduler", [](storm::modelchecker::ExplicitQuantitativeCheckResult<double> const& res) {return res.getScheduler();}, "get scheduler")
+        .def_property_readonly("shield", [](storm::modelchecker::ExplicitQuantitativeCheckResult<double> const& res) {return res.getShield();}, "get shield")
     ;
     py::class_<storm::modelchecker::SymbolicQuantitativeCheckResult<storm::dd::DdType::Sylvan, double>, std::shared_ptr<storm::modelchecker::SymbolicQuantitativeCheckResult<storm::dd::DdType::Sylvan, double>>>(m, "SymbolicQuantitativeCheckResult", "Symbolic quantitative model checking result", quantitativeCheckResult)
             .def("clone", [](storm::modelchecker::SymbolicQuantitativeCheckResult<storm::dd::DdType::Sylvan, double> const& dd)  {return dd.clone()->asSymbolicQuantitativeCheckResult<storm::dd::DdType::Sylvan, double>(); })

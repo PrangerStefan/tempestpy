@@ -17,3 +17,4 @@ void define_abstract_shield(py::module& m) {
 }
 
 template void define_abstract_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(py::module& m);
+template void define_abstract_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(py::module& m);

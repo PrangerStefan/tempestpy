@@ -19,3 +19,4 @@ void define_pre_shield(py::module& m) {
 }
 
 template void define_pre_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(py::module& m);
+template void define_pre_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(py::module& m);
