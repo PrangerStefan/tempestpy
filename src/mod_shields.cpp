@@ -1,0 +1,30 @@
+#include "common.h"
+#include "shields/abstract_shield.h"
+#include "shields/optimal_shield.h"
+#include "shields/post_shield.h"
+#include "shields/pre_shield.h"
+#include "shields/shield_handling.h"
+#include "shields/debug.h"
+
+
+#include "storm/storage/Scheduler.h"
+#include "storm/storage/SchedulerChoice.h"
+#include "storm/storage/BitVector.h"
+#include "storm/storage/Distribution.h"
+
+PYBIND11_MODULE(shields, m) {
+    m.doc() = "shields";
+
+#ifdef STORMPY_DISABLE_SIGNATURE_DOC
+    py::options options;
+    options.disable_function_signatures();
+#endif
+
+    define_pet(m);
+    define_add(m);
+    define_abstract_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
+    define_pre_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
+    // define_optimal_shield(m);
+    // define_post_shield(m);
+    define_shield_handling<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
+}
