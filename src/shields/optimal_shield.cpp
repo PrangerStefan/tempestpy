@@ -10,7 +10,7 @@ void define_optimal_shield(py::module& m, std::string vt_suffix) {
 
     std::string shieldClassName = std::string("OptimalShield") + vt_suffix;
 
-    py::class_<OptimalShield, AbstractShield>(m, shieldClassName.c_str())
+    py::class_<OptimalShield, AbstractShield, std::shared_ptr<OptimalShield>>(m, shieldClassName.c_str())
     ;
 }
 

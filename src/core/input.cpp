@@ -9,6 +9,8 @@ void define_property(py::module& m) {
         .def(py::init<storm::jani::Property>())
         .def_property_readonly("name", &storm::jani::Property::getName, "Obtain the name of the property")
         .def_property_readonly("raw_formula", &storm::jani::Property::getRawFormula, "Obtain the formula directly")
+        .def_property_readonly("shielding_expression", &storm::jani::Property::getShieldingExpression, "Obtain the shielding expression")
+        .def("is_shielding_property", &storm::jani::Property::isShieldingProperty, "Is the property a shielding property?")
         .def("__str__", &streamToString<storm::jani::Property>)
     ;
 }

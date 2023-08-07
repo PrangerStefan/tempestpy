@@ -2,7 +2,7 @@
 #include "storm/logic/Formulas.h"
 #include "storm/logic/CloneVisitor.h"
 #include "storm/logic/LabelSubstitutionVisitor.h"
-
+#include "storm/logic/ShieldExpression.h"
 
 
 void define_formulae(py::module& m) {
@@ -100,4 +100,5 @@ void define_formulae(py::module& m) {
             .def_property_readonly("reward_name", &storm::logic::RewardOperatorFormula::getRewardModelName);
     py::class_<storm::logic::BinaryStateFormula, std::shared_ptr<storm::logic::BinaryStateFormula>> binaryStateFormula(m, "BinaryStateFormula", "State formula with two operands", stateFormula);
     py::class_<storm::logic::BinaryBooleanStateFormula, std::shared_ptr<storm::logic::BinaryBooleanStateFormula>>(m, "BooleanBinaryStateFormula", "Boolean binary state formula", binaryStateFormula);
+    py::class_<storm::logic::ShieldExpression, std::shared_ptr<storm::logic::ShieldExpression>>(m, "ShieldExpression");
 }

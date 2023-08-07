@@ -18,7 +18,8 @@ void define_pre_shield(py::module& m, std::string vt_suffix) {
     std::string shieldClassName = std::string("PreShield") + vt_suffix;
 
 
-    py::class_<PreShield, AbstractShield>(m, shieldClassName.c_str())
+    py::class_<PreShield, AbstractShield, std::shared_ptr<PreShield>>(m, shieldClassName.c_str())
+    .def("construct", &PreShield::construct, "Construct the shield")
     ;
 }
 
