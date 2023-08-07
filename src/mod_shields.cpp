@@ -4,7 +4,6 @@
 #include "shields/post_shield.h"
 #include "shields/pre_shield.h"
 #include "shields/shield_handling.h"
-#include "shields/debug.h"
 
 
 #include "storm/storage/Scheduler.h"
@@ -19,9 +18,6 @@ PYBIND11_MODULE(shields, m) {
     py::options options;
     options.disable_function_signatures();
 #endif
-
-    define_pet(m);
-    define_add(m);
     define_abstract_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");
     define_abstract_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
     define_pre_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");

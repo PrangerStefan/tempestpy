@@ -11,6 +11,7 @@ void define_post_shield(py::module& m, std::string vt_suffix) {
     std::string shieldClassName = std::string("PostShield") + vt_suffix;
     
     py::class_<PostShield, AbstractShield, std::shared_ptr<PostShield>>(m, shieldClassName.c_str())
+        .def("construct", &PostShield::construct, "Construct the shield")
     ;
 }
 

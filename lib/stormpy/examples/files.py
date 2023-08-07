@@ -49,3 +49,8 @@ gspn_pnpro_simple = _path("gspn", "gspn_simple.pnpro")
 """GSPN example (PNPRO format)"""
 gspn_pnml_simple = _path("gspn", "gspn_simple.pnml")
 """GSPN example (PNML format)"""
+
+"""Shield Example 1"""
+prism_mdp_lava_simple = _path("mdp", "simple.prism")
+"""Shield Example 2"""
+prism_mdp_cliff_zig_zag = _path("mdp", "CliffZigZag.prism")

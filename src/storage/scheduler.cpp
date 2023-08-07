@@ -10,8 +10,9 @@ void define_scheduler(py::module& m, std::string vt_suffix) {
     using Scheduler = storm::storage::Scheduler<ValueType>;
     using SchedulerChoice = storm::storage::SchedulerChoice<ValueType>;
     using PreScheduler = storm::storage::PreScheduler<ValueType>;
+    using PreSchedulerChoice = storm::storage::PreSchedulerChoice<ValueType>;
     using PostScheduler = storm::storage::PostScheduler<ValueType>;
-
+    using PostSchedulerChoice = storm::storage::PostSchedulerChoice<ValueType>;
 
     std::string schedulerClassName = std::string("Scheduler") + vt_suffix;
     py::class_<Scheduler, std::shared_ptr<storm::storage::Scheduler<ValueType>>> scheduler(m, schedulerClassName.c_str(), "A Finite Memory Scheduler");
@@ -43,14 +44,28 @@ void define_scheduler(py::module& m, std::string vt_suffix) {
         preScheduler
             .def_property_readonly("memoryless", &PreScheduler::isMemorylessScheduler, "is the pre scheduler memoryless?")
             .def_property_readonly("memory_size", &PreScheduler::getNumberOfMemoryStates, "How much memory does the scheduler take?")
+            .def("get_choice", &PreScheduler::getChoice, py::arg("state_index"), py::arg("memory_index") = 0)       
+    ;
 
+    std::string  preSchedulerChoiceClassName = std::string("PreSchedulerChoice") + vt_suffix;
+    py::class_<PreSchedulerChoice> preSchedulerChoice(m, preSchedulerChoiceClassName.c_str(), "A choice of a finite memory pre scheduler");
+    preSchedulerChoice
+        .def_property_readonly("choice_map", &PreSchedulerChoice::getChoiceMap, "Get the choice map")
     ;
 
     std::string postSchedulerClassName = std::string("PostScheduler") + vt_suffix;
     py::class_<PostScheduler> postScheduler(m, postSchedulerClassName.c_str(), "A post scheduler");
         postScheduler
             .def_property_readonly("memoryless", &PostScheduler::isMemorylessScheduler, "is the pre scheduler memoryless?")
-          
+            .def_property_readonly("deterministic", &PostScheduler::isDeterministicScheduler, "Is the scheduler deterministic?")
+            .def("get_choice", &PostScheduler::getChoice, py::arg("state_index"), py::arg("memory_index") = 0)
+            
+    ;
+
+    std::string postSchedulerChoiceClassName = std::string("PostSchedulerChoice") + vt_suffix;
+    py::class_<PostSchedulerChoice> postSchedulerChoice(m, postSchedulerChoiceClassName.c_str(), "A choice of a finite memory post scheduler");
+    postSchedulerChoice
+                .def_property_readonly("choice_map", &PostSchedulerChoice::getChoiceMap, "Get the choice map")
     ;
 
 }
