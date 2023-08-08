@@ -40,7 +40,7 @@ void define_result(py::module& m) {
         .def_property_readonly("_pareto_curve", &storm::modelchecker::CheckResult::isParetoCurveCheckResult, "Flag if result is a pareto curve")
         .def_property_readonly("result_for_all_states", &storm::modelchecker::CheckResult::isResultForAllStates, "Flag if result is for all states")
         .def_property_readonly("has_scheduler", &storm::modelchecker::CheckResult::hasScheduler, "Flag if a scheduler is present")
-        .def_property_readonly("has_schield", &storm::modelchecker::CheckResult::hasShield, "Flag if a schield is present")
+        .def_property_readonly("has_shield", &storm::modelchecker::CheckResult::hasShield, "Flag if a schield is present")
 
         .def("as_explicit_qualitative", [](storm::modelchecker::CheckResult const& result) {
                 return result.asExplicitQualitativeCheckResult();
