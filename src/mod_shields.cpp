@@ -26,5 +26,6 @@ PYBIND11_MODULE(shields, m) {
     define_post_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
     define_optimal_shield<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");
     define_optimal_shield<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
-    define_shield_handling<double, typename storm::storage::SparseMatrix<double>::index_type>(m);
+    define_shield_handling<double, typename storm::storage::SparseMatrix<double>::index_type>(m, "Double");
+    define_shield_handling<storm::RationalNumber, typename storm::storage::SparseMatrix<storm::RationalNumber>::index_type>(m, "Exact");
 }

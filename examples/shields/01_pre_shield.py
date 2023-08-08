@@ -14,8 +14,6 @@ def pre_schield_01():
     path = stormpy.examples.files.prism_mdp_lava_simple
     formula_str = "<ShieldFileName, PreSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
-
-    #--buildstateval --buildchoicelab
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
 
@@ -38,7 +36,6 @@ def pre_schield_01():
     
     print(query)
     print(lookup[query])
-    print(lookup)
 
 
 if __name__ == '__main__':
