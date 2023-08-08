@@ -7,12 +7,18 @@ import stormpy.shields
 
 import stormpy.examples
 import stormpy.examples.files
-import random
 
+"""
 
-def post_shield_02():
+Example for the extraction of a Pre Safety Shield 
+from a model checking result and querying the shield 
+for allowed choices in a state.
+
+"""
+
+def pre_shield_extraction():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<ShieldFileName, PostSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "<ShieldFileName, PreSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -27,17 +33,14 @@ def post_shield_02():
     assert initial_state == 0
     result = stormpy.model_checking(model, formulas[0], extract_scheduler=True)
     assert result.has_scheduler
-    assert result.has_schield
+    assert result.has_shield
     
     shield = result.shield
-
-    lookup = stormpy.shields.create_shield_action_lookup(model, shield)
-    query = list(lookup.keys())[0]
     
-    print(query)
-    print(lookup[query])
-
+    for state_id in model.states:
+        choices = shield.construct().get_choice(state_id)
+        print(F"Allowed choices in state {state_id}, are {choices.choice_map} ")
 
 
 if __name__ == '__main__':
-    post_shield_02()
+    pre_shield_extraction()

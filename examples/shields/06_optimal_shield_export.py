@@ -7,10 +7,14 @@ import stormpy.shields
 
 import stormpy.examples
 import stormpy.examples.files
-import random
 
 
-def optimal_shield_03():
+"""
+Example of exporting a Optimal Shield
+to a file
+"""
+
+def optimal_shield_export():
     path = stormpy.examples.files.prism_smg_lights
     formula_str = "<tlsShield, Optimal> <<shield>> R{\"differenceWithInterferenceCost\"}min=? [ LRA ]"
 
@@ -25,34 +29,12 @@ def optimal_shield_03():
    
     result = stormpy.model_checking(model, formulas[0], extract_scheduler=True)
     assert result.has_scheduler
-    print(F"Check Scheduler: {result.has_scheduler}")
-    print(F"Check Shield: {result.has_schield}")
+    assert result.has_shield
 
-    print(type(result))
-   
     shield = result.shield
-    scheduler = result.scheduler
-    
-    print(type(shield))
-
-    assert scheduler.memoryless
-    assert scheduler.deterministic
-
-    constructed_shield = shield.construct()
-
-    print(type(constructed_shield))
     
     stormpy.shields.export_shieldDouble(model, shield)
-    
-    # for state in model.states:
-    #     choice = scheduler.get_choice(state)
-    #     action = choice.get_deterministic_choice()
-    #     print("In state {} choose action {}".format(state, action))
-
-    # dtmc = model.apply_scheduler(scheduler)
-    # print(dtmc)
-
 
 
 if __name__ == '__main__':
-    optimal_shield_03()
+    optimal_shield_export()
