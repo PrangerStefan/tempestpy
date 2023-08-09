@@ -18,7 +18,7 @@ for allowed choices in a state.
 
 def pre_shield_extraction():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<ShieldFileName, PreSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -31,7 +31,8 @@ def pre_shield_extraction():
 
     initial_state = model.initial_states[0]
     assert initial_state == 0
-    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True)
+    #shield_specification = ShieldingExpression(type="PreSafety", gamma=0.8) TODO Parameter for shield expression would be nice to have
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True) #, shielding_expression=shield_specification)
     assert result.has_scheduler
     assert result.has_shield
     

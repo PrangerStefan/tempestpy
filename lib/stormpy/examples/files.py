@@ -52,6 +52,7 @@ gspn_pnml_simple = _path("gspn", "gspn_simple.pnml")
 
 """Shield Example 1"""
 prism_mdp_lava_simple = _path("mdp", "simple.prism")
+prism_mdp_cliff_walking = _path("mdp", "CliffZigZag.prism")
 
 """Optimal Shield Example 1"""
 prism_smg_lights = _path("smg", "lights.prism")

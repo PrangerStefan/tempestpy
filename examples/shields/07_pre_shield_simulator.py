@@ -14,8 +14,8 @@ Simulating a model with the usage of a pre shield
 """
 
 def example_pre_shield_simulator():
-    path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<ShieldFileName, PreSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    path = stormpy.examples.files.prism_mdp_cliff_walking
+    formula_str = "<ShieldFileName, PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -47,7 +47,7 @@ def example_pre_shield_simulator():
         
         if not choices:
             break
-        
+
         index = random.randint(0, len(choices) - 1)
         selected_action = choices[index]
         choice_label = model.choice_labeling.get_labels_of_choice(model.get_choice_index(current_state, selected_action[1]))
