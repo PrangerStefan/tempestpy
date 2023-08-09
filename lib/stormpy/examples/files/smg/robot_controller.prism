@@ -9,7 +9,7 @@ player adverseryRobot
 endplayer
 
 // (w+1)x16 - grid
-const int w;
+const int w = 2;
 const int width = w;
 const int height = 15;
 

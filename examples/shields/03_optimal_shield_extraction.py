@@ -29,9 +29,11 @@ def optimal_shield_extraction():
    
     shield = result.shield
 
-    for state_id in model.states:
+    state_ids = [x for x in model.states]
+
+    for state_id in state_ids[0:50]:
         choices = shield.construct().get_choice(state_id)
-        print(F"Allowed choices in state {state_id}, are {choices.choice_map} ")
+        print(F"Corrections in state {state_id}, are {choices.choice_map} ")
     
 
 

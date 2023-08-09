@@ -37,22 +37,24 @@ def example_pre_shield_simulator():
     pre_scheduler = shield.construct()
 
     simulator = stormpy.simulator.create_simulator(model, seed=42)
-    final_outcomes = dict()
-    for n in range(1000):
-        while not simulator.is_done():
-            current_state = simulator.get_current_state()
-            choices = pre_scheduler.get_choice(current_state).choice_map
-            index = random.randint(0, len(choices) - 1)
-            selected_action = choices[index]
-            state_string = model.state_valuations.get_string(current_state)
-            print(F"Simulator is in state {state_string}. Allowed Choices are {choices}. Selected Action: {selected_action}")
-            observation, reward = simulator.step(selected_action[1])
-        if observation not in final_outcomes:
-            final_outcomes[observation] = 1
-        else:
-            final_outcomes[observation] += 1
-        simulator.restart()
 
+    while not simulator.is_done():
+        current_state = simulator.get_current_state()
+        state_string = model.state_valuations.get_string(current_state)
+        print(F"Simulator is in state {state_string}.")
+        choices = [x for x in pre_scheduler.get_choice(current_state).choice_map if x[0] > 0]
+        choice_labels =  [model.choice_labeling.get_labels_of_choice(model.get_choice_index(current_state, choice[1])) for choice in choices]
+        
+        if not choices:
+            break
+        
+        index = random.randint(0, len(choices) - 1)
+        selected_action = choices[index]
+        choice_label = model.choice_labeling.get_labels_of_choice(model.get_choice_index(current_state, selected_action[1]))
+        print(F"Allowed Choices are {choice_labels}. Selected Action: {choice_label}")
+        observation, reward = simulator.step(selected_action[1])
+
+        
 
 
 if __name__ == '__main__':

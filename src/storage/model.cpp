@@ -223,6 +223,8 @@ void define_sparse_model(py::module& m, std::string const& vtSuffix) {
         .def("get_choice_index", [](SparseMdp<ValueType> const& mdp, uint64_t state, uint64_t actOff) { return mdp.getNondeterministicChoiceIndices()[state]+actOff; }, py::arg("state"), py::arg("action_offset"), "gets the choice index for the offset action from the given state.")
         .def("apply_scheduler", [](SparseMdp<ValueType> const& mdp, storm::storage::Scheduler<ValueType> const& scheduler, bool dropUnreachableStates) { return mdp.applyScheduler(scheduler, dropUnreachableStates); } , "apply scheduler", "scheduler"_a, "drop_unreachable_states"_a = true)
         .def("__str__", &getModelInfoPrinter)
+        .def("get_label_of_choice", [](SparseMdp<ValueType> const& mdp, uint64_t state, uint64_t actOff) {return mdp.getChoiceLabeling().getLabelsOfChoice(mdp.getNondeterministicChoiceIndices()[state]+actOff);}, py::arg("state"), py::arg("action_offset"))
+        
     ;
 
     py::class_<Smg<ValueType>, std::shared_ptr<Smg<ValueType>>> smg(m, ("Sparse" + vtSuffix + "Smg").c_str(), "SMG in sparse representation", model);
@@ -231,6 +233,9 @@ void define_sparse_model(py::module& m, std::string const& vtSuffix) {
         .def(py::init<ModelComponents<ValueType> const&>(), py::arg("components"))
         .def("get_player_of_state", &Smg<ValueType>::getPlayerOfState, py::arg("state_index"))
         .def("get_player_index", &Smg<ValueType>::getPlayerIndex, py::arg("player_name"))
+        .def("get_choice_index", [](Smg<ValueType> const& smg, uint64_t state, uint64_t actOff) { return smg.getNondeterministicChoiceIndices()[state]+actOff; }, py::arg("state"), py::arg("action_offset"), "gets the choice index for the offset action from the given state.")
+        .def("get_label_of_choice", [](Smg<ValueType> const& smg, uint64_t state, uint64_t actOff) {return smg.getChoiceLabeling().getLabelsOfChoice(smg.getNondeterministicChoiceIndices()[state]+actOff);}, py::arg("state"), py::arg("action_offset"))
+       
     ;
 
     py::class_<StochasticTwoPlayerGame<ValueType>, std::shared_ptr<StochasticTwoPlayerGame<ValueType>>> stg(m, ("Sparse" + vtSuffix + "Stg").c_str(), "STG in sparse representation", model);

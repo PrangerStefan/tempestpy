@@ -32,17 +32,3 @@ module Agent
 
 endmodule
 
-// <resultingFile, PreSafety, gamma=0.9> Pmax=? [G !'AgentIsInLavaAndNotDone'];
-// Model handling soll auch das Shield zurückgeben 
-// Im SparseMdpPrctlModelChecker wird das shield mit createShield erstellt 
-// es soll irgendwie im CheckResult landen welches im model-handling.h verifyWithSparseEngine (Methode) gehandelt wird.
-
-// Result für den MDP Typen ist im SparseMdpPrctlHelper.computeUntilProbabilities
-// MDPSparseModelCheckingHelperReturnType ist der Typ von dem 
-
-// Das ergebnis vom SparseMdpPrctlModelChecker ist ein ExplicitQuantitativeCheckResult
-
-// Prinzipieller ablauf
-// PRISM -> Parser -> ModelEngine |
-//			           model_handlling.h -> AbstractMC -> SparseMDPML -> SparseMdpPrctlHelper
-// Property -> Formula Parser ->  |

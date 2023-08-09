@@ -16,7 +16,7 @@ to a file
 
 def optimal_shield_export():
     path = stormpy.examples.files.prism_smg_lights
-    formula_str = "<tlsShield, Optimal> <<shield>> R{\"differenceWithInterferenceCost\"}min=? [ LRA ]"
+    formula_str = "<optimal, Optimal> <<shield>> R{\"differenceWithInterferenceCost\"}min=? [ LRA ]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)

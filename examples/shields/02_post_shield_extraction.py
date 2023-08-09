@@ -41,7 +41,7 @@ def post_shield_extraction():
   
     for state_id in model.states:
         choices = shield.construct().get_choice(state_id)
-        print(F"Allowed choices in state {state_id}, are {choices.choice_map} ")
+        print(F"Applied corrections in state {state_id}, are {choices.choice_map} ")
 
 
 
