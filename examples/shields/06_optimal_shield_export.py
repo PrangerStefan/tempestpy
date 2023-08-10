@@ -33,7 +33,7 @@ def optimal_shield_export():
 
     shield = result.shield
     
-    stormpy.shields.export_shieldDouble(model, shield)
+    stormpy.shields.export_shieldDouble(model, shield, "optimal.shield")
 
 
 if __name__ == '__main__':

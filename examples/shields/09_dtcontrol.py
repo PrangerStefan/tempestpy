@@ -8,14 +8,9 @@ import stormpy.shields
 import stormpy.examples
 import stormpy.examples.files
 
-"""
+from stormpy.dtcontrol import export_decision_tree
 
-Example of exporting a Pre Safety Shield
-to a file
-
-"""
-
-def pre_schield():
+def export_shield_as_dot():
     path = stormpy.examples.files.prism_mdp_lava_simple
     formula_str = "<pre, PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
@@ -26,19 +21,20 @@ def pre_schield():
     options.set_build_state_valuations(True)
     options.set_build_choice_labels(True)
     options.set_build_all_labels()
+    options.set_build_with_choice_origins(True)
     model = stormpy.build_sparse_model_with_options(program, options)
 
-    initial_state = model.initial_states[0]
-    assert initial_state == 0
-    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True)
-    assert result.has_scheduler
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True) #, shielding_expression=shield_specification)
+    
     assert result.has_shield
-    
-    shield = result.shield
 
-    stormpy.shields.export_shieldDouble(model, shield, "pre.shield")
-    
+    shield = result.shield
+    stormpy.shields.export_shieldDouble(model, shield, "preshield.storm.json")
+
+
+    export_decision_tree(result.shield)
+
 
 
 if __name__ == '__main__':
-    pre_schield()
+    export_shield_as_dot()

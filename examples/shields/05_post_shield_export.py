@@ -36,7 +36,7 @@ def pre_schield():
     
     shield = result.shield
 
-    stormpy.shields.export_shieldDouble(model, shield)
+    stormpy.shields.export_shieldDouble(model, shield, "post.shield")
     
 
 
