@@ -30,9 +30,7 @@ def export_shield_as_dot():
 
     shield = result.shield
     filename = "preshield.storm.json"
-    filename2 = "preshield.shield"
     stormpy.shields.export_shieldDouble(model, shield, filename)
-    stormpy.shields.export_shieldDouble(model, shield, filename2)
     
     output_folder = "pre_trees"
     name = 'pre_my_output'
