@@ -34,7 +34,7 @@ def pre_shield_extraction():
     assert initial_state == 0
     test = formulas[0].shielding_expression
     print(test)
-    shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, "pre", stormpy.logic.ShieldComparison.RELATIVE, 0.9) #TODO Parameter for shield expression would be nice to have
+    shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) #TODO Parameter for shield expression would be nice to have
     result = stormpy.model_checking(model, formulas[0], extract_scheduler=True, shield_expression=shield_specification) #, shielding_expression=shield_specification)
     
     assert result.has_scheduler

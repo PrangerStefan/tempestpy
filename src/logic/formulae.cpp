@@ -114,8 +114,8 @@ void define_formulae(py::module& m) {
     py::class_<storm::logic::BinaryBooleanStateFormula, std::shared_ptr<storm::logic::BinaryBooleanStateFormula>>(m, "BooleanBinaryStateFormula", "Boolean binary state formula", binaryStateFormula);
     
     py::class_<storm::logic::ShieldExpression, std::shared_ptr<storm::logic::ShieldExpression>>(m, "ShieldExpression")
-        .def(py::init<storm::logic::ShieldingType, std::string>(), py::arg("type"), py::arg("filename"))
-        .def(py::init<storm::logic::ShieldingType, std::string, storm::logic::ShieldComparison, double>(), py::arg("type"), py::arg("filename"), py::arg("comparison"), py::arg("value"))
+        .def(py::init<storm::logic::ShieldingType>(), py::arg("type"))
+        .def(py::init<storm::logic::ShieldingType, storm::logic::ShieldComparison, double>(), py::arg("type"), py::arg("comparison"), py::arg("value"))
         .def("is_relative", &storm::logic::ShieldExpression::isRelative)
         .def("is_pre_safety_shield", &storm::logic::ShieldExpression::isPreSafetyShield)
         .def("is_post_safety_shield", &storm::logic::ShieldExpression::isPostSafetyShield)

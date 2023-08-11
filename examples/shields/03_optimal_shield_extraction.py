@@ -11,7 +11,7 @@ import stormpy.examples.files
 
 def optimal_shield_extraction():
     path = stormpy.examples.files.prism_smg_robot
-    formula_str = "<path_correction, Optimal> <<sh>> R{\"travel_costs\"}min=? [ LRA ]"
+    formula_str = "<Optimal> <<sh>> R{\"travel_costs\"}min=? [ LRA ]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)

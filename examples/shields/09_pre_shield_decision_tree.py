@@ -22,7 +22,7 @@ from stormpy.decision_tree import create_decision_tree
 
 def export_shield_as_dot():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<pre, PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "<PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -41,17 +41,16 @@ def export_shield_as_dot():
     shield = result.shield
     filename = "preshield.storm.json"
     stormpy.shields.export_shield(model, shield, filename)
-
-    if classifiers is None:        
-        aa = AxisAlignedSplittingStrategy()
-        aa.priority = 1      
-
-        classifiers = [DecisionTree([aa], Entropy(), name)]
-
     
     output_folder = "pre_trees"
     name = 'pre_my_output'
-    suite = create_decision_tree(filename, name=name , output_folder=output_folder, export_pdf=True)
+
+    aa = AxisAlignedSplittingStrategy()
+    aa.priority = 1      
+
+    classifiers = [DecisionTree([aa], Entropy(), name)]
+
+    suite = create_decision_tree(filename, name=name , output_folder=output_folder, export_pdf=True, classifiers=classifiers)
     suite.display_html()
 
 if __name__ == '__main__':

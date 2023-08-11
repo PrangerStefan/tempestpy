@@ -20,7 +20,7 @@ for allowed actions.
 
 def post_shield_extraction():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<ShieldFileName, PostSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "<PostSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)

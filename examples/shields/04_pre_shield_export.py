@@ -17,7 +17,7 @@ to a file
 
 def pre_schield():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<pre, PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "<PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)

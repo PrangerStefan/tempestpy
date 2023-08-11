@@ -15,7 +15,7 @@ Simulating a model with the usage of a pre shield
 
 def example_pre_shield_simulator():
     path = stormpy.examples.files.prism_mdp_cliff_walking
-    formula_str = "<ShieldFileName, PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "<PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)

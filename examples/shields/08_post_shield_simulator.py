@@ -14,7 +14,7 @@ Simulating a model with the usage of a post shield
 
 def example_post_shield_simulator():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<ShieldFileName, PostSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]; Pmax=? [ F \"AgentIsInLavaAndNotDone\" ];"
+    formula_str = "<PostSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]; Pmax=? [ F \"AgentIsInLavaAndNotDone\" ];"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
