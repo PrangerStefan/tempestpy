@@ -8,11 +8,11 @@ import stormpy.shields
 import stormpy.examples
 import stormpy.examples.files
 
-from stormpy.dtcontrol import export_decision_tree
+from stormpy.decision_tree import create_decision_tree
 
 def export_shield_as_dot():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<pre, PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "<post, PostSafety, gamma=1> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -24,17 +24,20 @@ def export_shield_as_dot():
     options.set_build_with_choice_origins(True)
     model = stormpy.build_sparse_model_with_options(program, options)
 
-    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True) #, shielding_expression=shield_specification)
-    
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True) 
+
     assert result.has_shield
 
     shield = result.shield
-    stormpy.shields.export_shieldDouble(model, shield, "preshield.storm.json")
-
-
-    export_decision_tree(result.shield)
-
-
+    filename = "postshield.storm.json"
+    filename2 = "postshield.shield"
+    stormpy.shields.export_shieldDouble(model, shield, filename)
+    stormpy.shields.export_shieldDouble(model, shield, filename2)
+    
+    output_folder = "post_trees"
+    name = 'post_my_output'
+    suite = create_decision_tree(filename, name=name , output_folder=output_folder, export_pdf=True)
+    suite.display_html()
 
 if __name__ == '__main__':
     export_shield_as_dot()
