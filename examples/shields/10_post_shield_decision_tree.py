@@ -31,8 +31,8 @@ def export_shield_as_dot():
     shield = result.shield
     filename = "postshield.storm.json"
     filename2 = "postshield.shield"
-    stormpy.shields.export_shieldDouble(model, shield, filename)
-    stormpy.shields.export_shieldDouble(model, shield, filename2)
+    stormpy.shields.export_shield(model, shield, filename)
+    stormpy.shields.export_shield(model, shield, filename2)
     
     output_folder = "post_trees"
     name = 'post_my_output'

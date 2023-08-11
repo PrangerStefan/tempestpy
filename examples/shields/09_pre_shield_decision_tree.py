@@ -8,6 +8,16 @@ import stormpy.shields
 import stormpy.examples
 import stormpy.examples.files
 
+from sklearn.linear_model import LogisticRegression
+from dtcontrol.benchmark_suite import BenchmarkSuite
+from dtcontrol.decision_tree.decision_tree import DecisionTree
+from dtcontrol.decision_tree.determinization.max_freq_determinizer import MaxFreqDeterminizer
+from dtcontrol.decision_tree.impurity.entropy import Entropy
+from dtcontrol.decision_tree.impurity.multi_label_entropy import MultiLabelEntropy
+from dtcontrol.decision_tree.splitting.axis_aligned import AxisAlignedSplittingStrategy
+from dtcontrol.decision_tree.splitting.linear_classifier import LinearClassifierSplittingStrategy
+
+
 from stormpy.decision_tree import create_decision_tree
 
 def export_shield_as_dot():
@@ -30,7 +40,14 @@ def export_shield_as_dot():
 
     shield = result.shield
     filename = "preshield.storm.json"
-    stormpy.shields.export_shieldDouble(model, shield, filename)
+    stormpy.shields.export_shield(model, shield, filename)
+
+    if classifiers is None:        
+        aa = AxisAlignedSplittingStrategy()
+        aa.priority = 1      
+
+        classifiers = [DecisionTree([aa], Entropy(), name)]
+
     
     output_folder = "pre_trees"
     name = 'pre_my_output'
