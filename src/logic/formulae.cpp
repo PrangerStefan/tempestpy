@@ -14,6 +14,18 @@ void define_formulae(py::module& m) {
         .value("GEQ", storm::logic::ComparisonType::GreaterEqual)
     ;
 
+    py::enum_<storm::logic::ShieldingType>(m, "ShieldingType")
+        .value("POST_SAFETY", storm::logic::ShieldingType::PostSafety)
+        .value("PRE_SAFETY", storm::logic::ShieldingType::PreSafety)
+        .value("OPTIMAL_PRE", storm::logic::ShieldingType::OptimalPre)
+        .value("OPTIMAL_POST", storm::logic::ShieldingType::OptimalPost)
+    ;
+
+    py::enum_<storm::logic::ShieldComparison>(m, "ShieldComparison")
+        .value("ABSOLUTE", storm::logic::ShieldComparison::Absolute)
+        .value("RELATIVE", storm::logic::ShieldComparison::Relative)
+    ;
+
     py::class_<storm::logic::Formula, std::shared_ptr<storm::logic::Formula>> formula(m, "Formula", "Generic Storm Formula");
     formula.def("__str__", &storm::logic::Formula::toString)
         .def("clone", [](storm::logic::Formula const& f) { storm::logic::CloneVisitor cv; return cv.clone(f);})
@@ -100,5 +112,16 @@ void define_formulae(py::module& m) {
             .def_property_readonly("reward_name", &storm::logic::RewardOperatorFormula::getRewardModelName);
     py::class_<storm::logic::BinaryStateFormula, std::shared_ptr<storm::logic::BinaryStateFormula>> binaryStateFormula(m, "BinaryStateFormula", "State formula with two operands", stateFormula);
     py::class_<storm::logic::BinaryBooleanStateFormula, std::shared_ptr<storm::logic::BinaryBooleanStateFormula>>(m, "BooleanBinaryStateFormula", "Boolean binary state formula", binaryStateFormula);
-    py::class_<storm::logic::ShieldExpression, std::shared_ptr<storm::logic::ShieldExpression>>(m, "ShieldExpression");
+    
+    py::class_<storm::logic::ShieldExpression, std::shared_ptr<storm::logic::ShieldExpression>>(m, "ShieldExpression")
+        .def(py::init<storm::logic::ShieldingType, std::string>(), py::arg("type"), py::arg("filename"))
+        .def(py::init<storm::logic::ShieldingType, std::string, storm::logic::ShieldComparison, double>(), py::arg("type"), py::arg("filename"), py::arg("comparison"), py::arg("value"))
+        .def("is_relative", &storm::logic::ShieldExpression::isRelative)
+        .def("is_pre_safety_shield", &storm::logic::ShieldExpression::isPreSafetyShield)
+        .def("is_post_safety_shield", &storm::logic::ShieldExpression::isPostSafetyShield)
+        .def("is_optimal_shield", &storm::logic::ShieldExpression::isOptimalShield)
+        .def("is_optimal_pre_shield", &storm::logic::ShieldExpression::isOptimalPreShield)
+        .def("is_optimal_post_shield", &storm::logic::ShieldExpression::isOptimalPostShield)
+        .def_property_readonly("value", &storm::logic::ShieldExpression::getValue, "shield value")
+    ;
 }
