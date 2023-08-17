@@ -22,17 +22,19 @@ def optimal_shield_extraction():
     options.set_build_all_labels()
     model = stormpy.build_sparse_model_with_options(program, options)
    
-    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True)
-
+    shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.OPTIMAL) 
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True, shield_expression=shield_specification)
+    
     assert result.has_scheduler
     assert result.has_shield
    
     shield = result.shield
 
     state_ids = [x for x in model.states]
+    scheduler = shield.construct()
 
     for state_id in state_ids[0:50]:
-        choices = shield.construct().get_choice(state_id)
+        choices = scheduler.get_choice(state_id)
         print(F"Corrections in state {state_id}, are {choices.choice_map} ")
     
 

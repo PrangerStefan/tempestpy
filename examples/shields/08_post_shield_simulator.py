@@ -14,7 +14,7 @@ Simulating a model with the usage of a post shield
 
 def example_post_shield_simulator():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<PostSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]; Pmax=? [ F \"AgentIsInLavaAndNotDone\" ];"
+    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]; Pmax=? [ F \"AgentIsInLavaAndNotDone\" ];"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -27,7 +27,8 @@ def example_post_shield_simulator():
 
     initial_state = model.initial_states[0]
     assert initial_state == 0
-    result = stormpy.model_checking(model, formulas[0])
+    shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.POST_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) 
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True, shield_expression=shield_specification)
     result2 = stormpy.model_checking(model, formulas[1], extract_scheduler=True)
 
     assert result.has_shield

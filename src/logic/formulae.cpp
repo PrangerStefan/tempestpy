@@ -19,6 +19,7 @@ void define_formulae(py::module& m) {
         .value("PRE_SAFETY", storm::logic::ShieldingType::PreSafety)
         .value("OPTIMAL_PRE", storm::logic::ShieldingType::OptimalPre)
         .value("OPTIMAL_POST", storm::logic::ShieldingType::OptimalPost)
+        .value("OPTIMAL", storm::logic::ShieldingType::OptimalPost)
     ;
 
     py::enum_<storm::logic::ShieldComparison>(m, "ShieldComparison")

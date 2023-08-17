@@ -20,7 +20,7 @@ for allowed actions.
 
 def post_shield_extraction():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<PostSafety, gamma=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -33,14 +33,17 @@ def post_shield_extraction():
 
     initial_state = model.initial_states[0]
     assert initial_state == 0
-    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True)
+    
+    shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.POST_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) 
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True, shield_expression=shield_specification)
     assert result.has_scheduler
     assert result.has_shield
     
     shield = result.shield
+    post_scheduler = shield.construct()
   
     for state_id in model.states:
-        choices = shield.construct().get_choice(state_id)
+        choices = post_scheduler.get_choice(state_id)
         print(F"Applied corrections in state {state_id}, are {choices.choice_map} ")
 
 

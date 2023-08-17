@@ -12,7 +12,7 @@ from stormpy.decision_tree import create_decision_tree
 
 def export_shield_as_dot():
     path = stormpy.examples.files.prism_mdp_lava_simple
-    formula_str = "<PostSafety, gamma=1> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -24,7 +24,8 @@ def export_shield_as_dot():
     options.set_build_with_choice_origins(True)
     model = stormpy.build_sparse_model_with_options(program, options)
 
-    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True) 
+    shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.POST_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) 
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True, shield_expression=shield_specification)
 
     assert result.has_shield
 

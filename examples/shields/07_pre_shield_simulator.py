@@ -15,7 +15,7 @@ Simulating a model with the usage of a pre shield
 
 def example_pre_shield_simulator():
     path = stormpy.examples.files.prism_mdp_cliff_walking
-    formula_str = "<PreSafety, lambda=0.9> Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
 
     program = stormpy.parse_prism_program(path)
     formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
@@ -28,7 +28,10 @@ def example_pre_shield_simulator():
 
     initial_state = model.initial_states[0]
     assert initial_state == 0
-    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True)
+    
+    shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) 
+    result = stormpy.model_checking(model, formulas[0], extract_scheduler=True, shield_expression=shield_specification)
+    
     assert result.has_scheduler
     assert result.has_shield
     

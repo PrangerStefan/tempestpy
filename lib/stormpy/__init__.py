@@ -324,10 +324,7 @@ def check_model_sparse(model, property, only_initial_states=False, extract_sched
             task.set_produce_schedulers(extract_scheduler)
 
             if shield_expression is not None:
-                task.set_shielding_expression(shield_expression)
-            elif property.is_shielding_property():
-                task.set_shielding_expression(property.shielding_expression)
-
+                task.set_shielding_expression(shield_expression)            
 
             return core._model_checking_sparse_engine(model, task, environment=environment)
 
