@@ -26,12 +26,12 @@ class OneHotWrapper(gym.core.ObservationWrapper):
         self.observation_space = Dict(
             {
                 "data": gym.spaces.Box(0.0, 1.0, shape=(self.single_frame_dim * self.framestack,), dtype=np.float32),
-                "avail_actions": gym.spaces.Box(0, 10, shape=(env.action_space.n,), dtype=int),
+                "action_mask": gym.spaces.Box(0, 10, shape=(env.action_space.n,), dtype=int),
             }
             ) 
         
         
-        print(F"Set obersvation space to {self.observation_space}")
+       # print(F"Set obersvation space to {self.observation_space}")
         
 
     def observation(self, obs):
@@ -77,7 +77,7 @@ class OneHotWrapper(gym.core.ObservationWrapper):
         self.frame_buffer.append(single_frame)
         
         #obs["one-hot"] = np.concatenate(self.frame_buffer)
-        tmp = {"data": np.concatenate(self.frame_buffer), "avail_actions": obs["avail_actions"] }
+        tmp = {"data": np.concatenate(self.frame_buffer), "action_mask": obs["action_mask"] }
         return tmp#np.concatenate(self.frame_buffer)
 
 
@@ -88,7 +88,7 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         self.observation_space = Dict(
             {
                 "data": env.observation_space.spaces["image"],
-                "avail_actions" : Box(0, 10, shape=(self.max_available_actions,), dtype=np.int8),
+                "action_mask" : Box(0, 10, shape=(self.max_available_actions,), dtype=np.int8),
             }
         )
         
@@ -98,7 +98,7 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
     def create_action_mask(self):
         coordinates = self.env.agent_pos
         view_direction = self.env.agent_dir
-        print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
+        #print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
         cur_pos_str = f"[!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
         
         allowed_actions = []
@@ -109,73 +109,40 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         # else set everything to one
         mask = np.array([0.0] * self.max_available_actions, dtype=np.int8)
         
-        # if cur_pos_str in self.shield:
-        #     allowed_actions = self.shield[cur_pos_str]
-        #     for allowed_action in allowed_actions:
-        #         index = allowed_action[0]
-        #         mask[index] = 1.0
-        # else:
-        #     for index in len(mask):
-        #         mask[index] = 1.0
+        if cur_pos_str in self.shield:
+             allowed_actions = self.shield[cur_pos_str]
+             for allowed_action in allowed_actions:
+                 index = allowed_action[0]
+                 mask[index] = 1.0
+        else:
+            for index, x in enumerate(mask):
+                mask[index] = 1.0
             
             
-        print(F"Allowed actions for position {coordinates} and view {view_direction} are {allowed_actions}")
-        mask[0] = 1.0
+        #print(F"Action Mask for position {coordinates} and view {view_direction} is {mask}")
+    
         return mask
     
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset()
+        mask = self.create_action_mask()
         return {
             "data": obs["image"],
-            "avail_actions": np.array([0.0] * self.max_available_actions, dtype=np.int8)
+            "action_mask": mask
         }, infos
     
     def step(self, action):
-        print(F"Performed action in step: {action}")
+      #  print(F"Performed action in step: {action}")
         orig_obs, rew, done, truncated, info = self.env.step(action)
       
-        actions = self.create_action_mask()
+        mask = self.create_action_mask()
         #print(F"Original observation is {orig_obs}")
         obs = {
             "data": orig_obs["image"],
-            "avail_actions": actions,
+            "action_mask": mask,
         }
         
         #print(F"Info is {info}")
         return obs, rew, done, truncated, info
     
     
-
-
-class ImgObsWrapper(gym.core.ObservationWrapper):
-    """
-    Use the image as the only observation output, no language/mission.
-
-    Example:
-        >>> import gymnasium as gym
-        >>> from minigrid.wrappers import ImgObsWrapper
-        >>> env = gym.make("MiniGrid-Empty-5x5-v0")
-        >>> obs, _ = env.reset()
-        >>> obs.keys()
-        dict_keys(['image', 'direction', 'mission'])
-        >>> env = ImgObsWrapper(env)
-        >>> obs, _ = env.reset()
-        >>> obs.shape
-        (7, 7, 3)
-    """
-
-    def __init__(self, env):
-        """A wrapper that makes image the only observation.
-
-        Args:
-            env: The environment to apply the wrapper
-        """
-        super().__init__(env)
-        self.observation_space = env.observation_space.spaces["image"]
-        print(F"Set obersvation space to {self.observation_space}")
-
-    def observation(self, obs):
-        #print(F"obs in img obs wrapper {obs}")
-        tmp = {"data": obs["image"], "Test": obs["Test"]}
-        
-        return tmp

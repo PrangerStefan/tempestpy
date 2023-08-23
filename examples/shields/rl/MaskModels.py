@@ -25,10 +25,10 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
     ):
         orig_space = getattr(obs_space, "original_space", obs_space)
         custom_config = model_config['custom_model_config']
-        print(F"Original Space is: {orig_space}")
+       # print(F"Original Space is: {orig_space}")
         #print(model_config)
-        print(F"Observation space in model: {obs_space}")
-        print(F"Provided action space in model {action_space}")
+        #print(F"Observation space in model: {obs_space}")
+        #print(F"Provided action space in model {action_space}")
         
         TorchModelV2.__init__(
             self, obs_space, action_space, num_outputs, model_config, name, **kwargs
@@ -65,7 +65,7 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
 
       #  print(F"Caluclated Logits {logits} with size {logits.size()} Count: {self.count}")
 
-        action_mask = input_dict["obs"]["avail_actions"]
+        action_mask = input_dict["obs"]["action_mask"]
         #print(F"Action mask is {action_mask} with dimension {action_mask.size()}")
 
         # If action masking is disabled, directly return unmasked logits
@@ -77,7 +77,7 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
         masked_logits = logits + inf_mask
 
-        print(F"Infinity mask {inf_mask}, Masked logits {masked_logits}")
+       # print(F"Infinity mask {inf_mask}, Masked logits {masked_logits}")
 
         # # Return masked logits.
         return masked_logits, state

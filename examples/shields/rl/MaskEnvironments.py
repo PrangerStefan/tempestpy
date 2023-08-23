@@ -56,7 +56,7 @@ class ParametricActionsMiniGridEnv(gym.Env):
         return obs, infos
         return {
             "action_mask": self.action_mask,
-            "avail_actions": self.action_assignments,
+            "avail_action": self.action_assignments,
             "cart": obs,
         }, infos
 
@@ -83,7 +83,7 @@ class ParametricActionsMiniGridEnv(gym.Env):
         return orig_obs, rew, done, truncated, info
         obs = {
             "action_mask": self.action_mask,
-            "avail_actions": self.action_assignments,
+            "action_mask": self.action_assignments,
             "cart": orig_obs,
         }
         return obs, rew, done, truncated, info
