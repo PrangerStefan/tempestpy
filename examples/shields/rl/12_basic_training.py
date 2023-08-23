@@ -33,11 +33,81 @@ from ray.tune.logger import pretty_print
 from ray.rllib.utils.numpy import one_hot
 from ray.rllib.algorithms import ppo
 
+from ray.rllib.models.torch.fcnet import FullyConnectedNetwork as TorchFC
+from ray.rllib.models.tf.fcnet import FullyConnectedNetwork
+from ray.rllib.utils.torch_utils import FLOAT_MIN
+
 from ray.rllib.models.preprocessors import get_preprocessor
 
 import matplotlib.pyplot as plt
 
 import argparse
+from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
+from ray.rllib.utils.framework import try_import_tf, try_import_torch
+
+from Wrapper import OneHotWrapper
+
+
+torch, nn = try_import_torch()
+
+class TorchActionMaskModel(TorchModelV2, nn.Module):
+    """PyTorch version of above ActionMaskingModel."""
+
+    def __init__(
+        self,
+        obs_space,
+        action_space,
+        num_outputs,
+        model_config,
+        name,
+        **kwargs,
+    ):
+        orig_space = getattr(obs_space, "original_space", obs_space)
+        assert (
+            isinstance(orig_space, Dict)
+            and "action_mask" in orig_space.spaces
+            and "observations" in orig_space.spaces
+        )
+
+        TorchModelV2.__init__(
+            self, obs_space, action_space, num_outputs, model_config, name, **kwargs
+        )
+        nn.Module.__init__(self)
+
+        self.internal_model = TorchFC(
+            orig_space["observations"],
+            action_space,
+            num_outputs,
+            model_config,
+            name + "_internal",
+        )
+
+        # disable action masking --> will likely lead to invalid actions
+        self.no_masking = False
+        if "no_masking" in model_config["custom_model_config"]:
+            self.no_masking = model_config["custom_model_config"]["no_masking"]
+
+    def forward(self, input_dict, state, seq_lens):
+        # Extract the available actions tensor from the observation.
+        action_mask = input_dict["obs"]["action_mask"]
+
+        # Compute the unmasked logits.
+        logits, _ = self.internal_model({"obs": input_dict["obs"]["observations"]})
+
+        # If action masking is disabled, directly return unmasked logits
+        if self.no_masking:
+            return logits, state
+
+        # Convert action_mask into a [0.0 || -inf]-type mask.
+        inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
+        masked_logits = logits + inf_mask
+
+        # Return masked logits.
+        return masked_logits, state
+
+    def value_function(self):
+        return self.internal_model.value_function()
+
 
 
 class MyCallbacks(DefaultCallbacks):
@@ -66,69 +136,7 @@ class MyCallbacks(DefaultCallbacks):
         # print(episode.user_data["count"])
         
     
-       
-
-class OneHotWrapper(gym.core.ObservationWrapper):
-    def __init__(self, env, vector_index, framestack):
-        super().__init__(env)
-        self.framestack = framestack
-        # 49=7x7 field of vision; 11=object types; 6=colors; 3=state types.
-        # +4: Direction.
-        self.single_frame_dim = 49 * (11 + 6 + 3) + 4
-        self.init_x = None
-        self.init_y = None
-        self.x_positions = []
-        self.y_positions = []
-        self.x_y_delta_buffer = deque(maxlen=100)
-        self.vector_index = vector_index
-        self.frame_buffer = deque(maxlen=self.framestack)
-        for _ in range(self.framestack):
-            self.frame_buffer.append(np.zeros((self.single_frame_dim,)))
-
-        self.observation_space = gym.spaces.Box(
-            0.0, 1.0, shape=(self.single_frame_dim * self.framestack,), dtype=np.float32
-        )
-
-    def observation(self, obs):
-        # Debug output: max-x/y positions to watch exploration progress.
-        if self.step_count == 0:
-            for _ in range(self.framestack):
-                self.frame_buffer.append(np.zeros((self.single_frame_dim,)))
-            if self.vector_index == 0:
-                if self.x_positions:
-                    max_diff = max(
-                        np.sqrt(
-                            (np.array(self.x_positions) - self.init_x) ** 2
-                            + (np.array(self.y_positions) - self.init_y) ** 2
-                        )
-                    )
-                    self.x_y_delta_buffer.append(max_diff)
-                    print(
-                        "100-average dist travelled={}".format(
-                            np.mean(self.x_y_delta_buffer)
-                        )
-                    )
-                    self.x_positions = []
-                    self.y_positions = []
-                self.init_x = self.agent_pos[0]
-                self.init_y = self.agent_pos[1]
-
-      
-        self.x_positions.append(self.agent_pos[0])
-        self.y_positions.append(self.agent_pos[1])
-
-        # One-hot the last dim into 11, 6, 3 one-hot vectors, then flatten.
-        objects = one_hot(obs[:, :, 0], depth=11)
-        colors = one_hot(obs[:, :, 1], depth=6)
-        states = one_hot(obs[:, :, 2], depth=3)
-      
-        all_ = np.concatenate([objects, colors, states], -1)
-        all_flat = np.reshape(all_, (-1,))
-        direction = one_hot(np.array(self.agent_dir), depth=4).astype(np.float32)
-        single_frame = np.concatenate([all_flat, direction])
-        self.frame_buffer.append(single_frame)
-        return np.concatenate(self.frame_buffer)
-
+    
 
 
 def parse_arguments(argparse):
