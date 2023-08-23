@@ -26,7 +26,7 @@ class OneHotWrapper(gym.core.ObservationWrapper):
         self.observation_space = Dict(
             {
                 "data": gym.spaces.Box(0.0, 1.0, shape=(self.single_frame_dim * self.framestack,), dtype=np.float32),
-                "avail_actions": gym.spaces.Box(0, 10, shape=(10,), dtype=int),
+                "avail_actions": gym.spaces.Box(0, 10, shape=(env.action_space.n,), dtype=int),
             }
             ) 
         
@@ -82,34 +82,63 @@ class OneHotWrapper(gym.core.ObservationWrapper):
 
 
 class MiniGridEnvWrapper(gym.core.Wrapper):
-    def __init__(self, env):
+    def __init__(self, env, shield):
         super(MiniGridEnvWrapper, self).__init__(env)
+        self.max_available_actions = env.action_space.n
         self.observation_space = Dict(
             {
                 "data": env.observation_space.spaces["image"],
-                "avail_actions" : Box(0, 10, shape=(10,), dtype=np.int8),
+                "avail_actions" : Box(0, 10, shape=(self.max_available_actions,), dtype=np.int8),
             }
         )
         
+        self.shield = shield
         
-    def test(self):
-        print("Testing some stuff")
+        
+    def create_action_mask(self):
+        coordinates = self.env.agent_pos
+        view_direction = self.env.agent_dir
+        print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
+        cur_pos_str = f"[!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
+        
+        allowed_actions = []
+        
+        
+        # Create the mask
+        # If shield restricts action mask only valid with 1.0
+        # else set everything to one
+        mask = np.array([0.0] * self.max_available_actions, dtype=np.int8)
+        
+        # if cur_pos_str in self.shield:
+        #     allowed_actions = self.shield[cur_pos_str]
+        #     for allowed_action in allowed_actions:
+        #         index = allowed_action[0]
+        #         mask[index] = 1.0
+        # else:
+        #     for index in len(mask):
+        #         mask[index] = 1.0
+            
+            
+        print(F"Allowed actions for position {coordinates} and view {view_direction} are {allowed_actions}")
+        mask[0] = 1.0
+        return mask
     
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset()
         return {
             "data": obs["image"],
-            "avail_actions": np.array([0.0] * 10, dtype=np.int8)
+            "avail_actions": np.array([0.0] * self.max_available_actions, dtype=np.int8)
         }, infos
     
     def step(self, action):
+        print(F"Performed action in step: {action}")
         orig_obs, rew, done, truncated, info = self.env.step(action)
-        
-        self.test()
+      
+        actions = self.create_action_mask()
         #print(F"Original observation is {orig_obs}")
         obs = {
             "data": orig_obs["image"],
-            "avail_actions":  np.array([0.0] * 10, dtype=np.int8),
+            "avail_actions": actions,
         }
         
         #print(F"Info is {info}")
