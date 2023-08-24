@@ -109,7 +109,7 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         # else set everything to one
         mask = np.array([0.0] * self.max_available_actions, dtype=np.int8)
         
-        if cur_pos_str in self.shield:
+        if cur_pos_str in self.shield and self.shield[cur_pos_str]:
              allowed_actions = self.shield[cur_pos_str]
              for allowed_action in allowed_actions:
                  index = allowed_action[0]
@@ -118,8 +118,8 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
             for index, x in enumerate(mask):
                 mask[index] = 1.0
             
-            
-        #print(F"Action Mask for position {coordinates} and view {view_direction} is {mask}")
+   
+        #print(F"Action Mask for position {coordinates} and view {view_direction} is {mask} Position String: {cur_pos_str})")
     
         return mask
     

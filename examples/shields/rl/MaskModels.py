@@ -1,5 +1,4 @@
 from typing import Dict, Optional, Union
-
 from ray.rllib.algorithms.dqn.dqn_torch_model import DQNTorchModel
 from ray.rllib.models.torch.fcnet import FullyConnectedNetwork as TorchFC
 from ray.rllib.models.tf.fcnet import FullyConnectedNetwork
@@ -75,6 +74,8 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         # assert(False)
         # Convert action_mask into a [0.0 || -inf]-type mask.
         inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
+        # print(F"Logits Size: {logits.size()} Inf-Mask Size: {inf_mask.size()}")
+        # print(F"Logits:{logits} Inf-Mask: {inf_mask}")
         masked_logits = logits + inf_mask
 
        # print(F"Infinity mask {inf_mask}, Masked logits {masked_logits}")
