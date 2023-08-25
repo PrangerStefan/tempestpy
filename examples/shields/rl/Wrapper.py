@@ -82,7 +82,7 @@ class OneHotWrapper(gym.core.ObservationWrapper):
 
 
 class MiniGridEnvWrapper(gym.core.Wrapper):
-    def __init__(self, env, shield):
+    def __init__(self, env, shield={}):
         super(MiniGridEnvWrapper, self).__init__(env)
         self.max_available_actions = env.action_space.n
         self.observation_space = Dict(
@@ -91,7 +91,6 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
                 "action_mask" : Box(0, 10, shape=(self.max_available_actions,), dtype=np.int8),
             }
         )
-        
         self.shield = shield
         
         
@@ -124,7 +123,7 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         return mask
     
     def reset(self, *, seed=None, options=None):
-        obs, infos = self.env.reset()
+        obs, infos = self.env.reset(seed=seed, options=options)
         mask = self.create_action_mask()
         return {
             "data": obs["image"],
