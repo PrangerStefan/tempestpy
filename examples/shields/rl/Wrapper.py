@@ -6,6 +6,8 @@ from gymnasium.spaces import Dict, Box
 from collections import deque
 from ray.rllib.utils.numpy import one_hot
 
+from helpers import get_action_index_mapping
+
 class OneHotWrapper(gym.core.ObservationWrapper):
     def __init__(self, env, vector_index, framestack):
         super().__init__(env)
@@ -82,7 +84,7 @@ class OneHotWrapper(gym.core.ObservationWrapper):
 
 
 class MiniGridEnvWrapper(gym.core.Wrapper):
-    def __init__(self, env, shield={}):
+    def __init__(self, env, shield={}, keys=[]):
         super(MiniGridEnvWrapper, self).__init__(env)
         self.max_available_actions = env.action_space.n
         self.observation_space = Dict(
@@ -91,29 +93,43 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
                 "action_mask" : Box(0, 10, shape=(self.max_available_actions,), dtype=np.int8),
             }
         )
+        self.keys = keys
         self.shield = shield
-        
         
     def create_action_mask(self):
         coordinates = self.env.agent_pos
         view_direction = self.env.agent_dir
+    
+        key_text = ""
+    
+        # only support one key for now
+        if self.keys:
+            key_text = F"!Agent_has_{self.keys[0]}_key\t& "
+            
+    
+        if self.env.carrying and self.env.carrying.type == "key":
+            key_text = F"Agent_has_{self.env.carrying.color}_key\t& "
+
         #print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
-        cur_pos_str = f"[!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
+        cur_pos_str = f"[{key_text}!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
         
         allowed_actions = []
         
         
         # Create the mask
         # If shield restricts action mask only valid with 1.0
-        # else set everything to one
+        # else set all actions as valid
         mask = np.array([0.0] * self.max_available_actions, dtype=np.int8)
         
         if cur_pos_str in self.shield and self.shield[cur_pos_str]:
              allowed_actions = self.shield[cur_pos_str]
              for allowed_action in allowed_actions:
-                 index = allowed_action[0]
+                 index =  get_action_index_mapping(allowed_action[1])          
+                 if index is None:
+                     assert(False)       
                  mask[index] = 1.0
         else:
+            print("Not in shield")
             for index, x in enumerate(mask):
                 mask[index] = 1.0
             
