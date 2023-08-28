@@ -54,19 +54,12 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
 
     def forward(self, input_dict, state, seq_lens):
         # Extract the available actions tensor from the observation.
-        # print(F"Input dict is {input_dict} at obs: {input_dict['obs']}")
-        # print(F"State is {state}")        
-        
-        # print(input_dict["env"])
-
-        # Compute the unmasked logits.
+         # Compute the unmasked logits.
         logits, _ = self.internal_model({"obs": input_dict["obs"]["data"]})
 
-      #  print(F"Caluclated Logits {logits} with size {logits.size()} Count: {self.count}")
-
+   
         action_mask = input_dict["obs"]["action_mask"]
-        #print(F"Action mask is {action_mask} with dimension {action_mask.size()}")
-
+      
         # If action masking is disabled, directly return unmasked logits
         if self.no_masking:
             return logits, state
@@ -74,12 +67,9 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         # assert(False)
         # Convert action_mask into a [0.0 || -inf]-type mask.
         inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
-        # print(F"Logits Size: {logits.size()} Inf-Mask Size: {inf_mask.size()}")
-        # print(F"Logits:{logits} Inf-Mask: {inf_mask}")
         masked_logits = logits + inf_mask
 
-       # print(F"Infinity mask {inf_mask}, Masked logits {masked_logits}")
-
+   
         # # Return masked logits.
         return masked_logits, state
 
