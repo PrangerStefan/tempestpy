@@ -2,6 +2,8 @@ import minigrid
 from minigrid.core.actions import Actions
 import gymnasium as gym
 
+from datetime import datetime
+
 import stormpy
 import stormpy.core
 import stormpy.simulator
@@ -27,6 +29,9 @@ def extract_keys(env):
                 keys.append(obj.color)
     
     return keys
+
+def create_log_dir(args):
+    return F"{args.log_dir}{datetime.now()}-{args.algorithm}-masking:{not args.no_masking}-env:{args.env}"
 
 
 def get_action_index_mapping(actions):
@@ -62,19 +67,13 @@ def parse_arguments(argparse):
                         choices=[
                                 "MiniGrid-LavaCrossingS9N1-v0",
                                 "MiniGrid-DoorKey-8x8-v0", 
-                                "MiniGrid-Dynamic-Obstacles-8x8-v0",
-                                "MiniGrid-Empty-Random-6x6-v0",
-                                "MiniGrid-Fetch-6x6-N2-v0", 
+                                "MiniGrid-LockedRoom-v0",
                                 "MiniGrid-FourRooms-v0", 
-                                "MiniGrid-KeyCorridorS6R3-v0", 
-                                "MiniGrid-GoToDoor-8x8-v0",
                                 "MiniGrid-LavaGapS7-v0",
                                 "MiniGrid-SimpleCrossingS9N3-v0",
-                                "MiniGrid-BlockedUnlockPickup-v0",
-                                "MiniGrid-LockedRoom-v0",
-                                "MiniGrid-ObstructedMaze-1Dlh-v0",
                                 "MiniGrid-DoorKey-16x16-v0",
-                                "MiniGrid-RedBlueDoors-6x6-v0",])
+                                "MiniGrid-Empty-Random-6x6-v0",    
+                                ])
     
    # parser.add_argument("--seed", type=int, help="seed for environment", default=None)
     parser.add_argument("--grid_to_prism_path", default="./main")
@@ -114,8 +113,8 @@ def create_shield(grid_to_prism_path, grid_file, prism_path):
     
     
     program = stormpy.parse_prism_program(prism_path)
-    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
-    # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
+    # formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
     # shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY,
     #                                                       stormpy.logic.ShieldComparison.ABSOLUTE, 0.9) 
  

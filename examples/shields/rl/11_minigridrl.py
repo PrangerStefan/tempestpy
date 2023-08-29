@@ -7,8 +7,6 @@ from ray.rllib.policy import Policy
 from ray.rllib.utils.typing import PolicyID
 
 
-from datetime import datetime
-
 import gymnasium as gym
 
 import minigrid
@@ -27,7 +25,7 @@ from ray.rllib.utils.torch_utils import FLOAT_MIN
 from ray.rllib.models.preprocessors import get_preprocessor
 from MaskModels import TorchActionMaskModel
 from Wrapper import OneHotWrapper, MiniGridEnvWrapper
-from helpers import extract_keys, parse_arguments, create_shield_dict
+from helpers import extract_keys, parse_arguments, create_shield_dict, create_log_dir
 
 import matplotlib.pyplot as plt
 
@@ -80,8 +78,6 @@ def env_creater_custom(config):
     
     return env
 
-def create_log_dir(args):
-    return F"{args.log_dir}{datetime.now()}-{args.algorithm}-masking:{not args.no_masking}"
 
 
 def register_custom_minigrid_env(args):
@@ -96,7 +92,7 @@ def register_custom_minigrid_env(args):
 
 def ppo(args):
     
-    ray.init(num_cpus=3)
+    ray.init(num_cpus=1)
 
     
     register_custom_minigrid_env(args)
