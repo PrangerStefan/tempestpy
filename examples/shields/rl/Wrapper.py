@@ -7,7 +7,7 @@ from gymnasium.spaces import Dict, Box
 from collections import deque
 from ray.rllib.utils.numpy import one_hot
 
-from helpers import get_action_index_mapping
+from helpers import get_action_index_mapping, create_shield_dict, extract_keys
 
 
 class OneHotWrapper(gym.core.ObservationWrapper):
@@ -86,7 +86,7 @@ class OneHotWrapper(gym.core.ObservationWrapper):
 
 
 class MiniGridEnvWrapper(gym.core.Wrapper):
-    def __init__(self, env, shield={}, keys=[]):
+    def __init__(self, env, args=None):
         super(MiniGridEnvWrapper, self).__init__(env)
         self.max_available_actions = env.action_space.n
         self.observation_space = Dict(
@@ -95,8 +95,7 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
                 "action_mask" : Box(0, 10, shape=(self.max_available_actions,), dtype=np.int8),
             }
         )
-        self.keys = keys
-        self.shield = shield
+        self.args = args
 
     def create_action_mask(self):
         coordinates = self.env.agent_pos
@@ -140,8 +139,8 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         if front_tile is not None and front_tile.type == "key":
             mask[Actions.pickup] = 1.0
             
-        if self.env.carrying:
-            mask[Actions.drop] = 1.0
+        # if self.env.carrying:
+        #     mask[Actions.drop] = 1.0
             
         if front_tile and front_tile.type == "door":
             mask[Actions.toggle] = 1.0
@@ -150,6 +149,8 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
 
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset(seed=seed, options=options)
+        self.shield = create_shield_dict(self.env, self.args)
+        self.keys = extract_keys(self.env)
         mask = self.create_action_mask()
         return {
             "data": obs["image"],

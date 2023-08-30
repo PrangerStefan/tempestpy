@@ -34,9 +34,6 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         )
         nn.Module.__init__(self)
         
-        assert("shield" in custom_config)
-        
-        self.shield = custom_config["shield"]
         self.count = 0
 
         self.internal_model = TorchFC(

@@ -20,7 +20,7 @@ import os
 def extract_keys(env):
     env.reset()
     keys = []
-    print(env.grid)
+    #print(env.grid)
     for j in range(env.grid.height):
         for i in range(env.grid.width):
             obj = env.grid.get(i,j)
@@ -113,8 +113,8 @@ def create_shield(grid_to_prism_path, grid_file, prism_path):
     
     
     program = stormpy.parse_prism_program(prism_path)
-    # formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
-    formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
+    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
+    # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
     # shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY,
     #                                                       stormpy.logic.ShieldComparison.ABSOLUTE, 0.9) 
  
@@ -150,7 +150,7 @@ def create_shield(grid_to_prism_path, grid_file, prism_path):
     return action_dictionary
 
         
-def create_shield_dict(args):
+def create_shield_dict(env, args):
     env = create_environment(args)
     # print(env.printGrid(init=False))
     

@@ -27,13 +27,12 @@ class CustomCallback(BaseCallback):
 
 
 class MiniGridEnvWrapper(gym.core.Wrapper):
-    def __init__(self, env, shield={}, keys=[], no_masking=False):
+    def __init__(self, env, args=None, no_masking=False):
         super(MiniGridEnvWrapper, self).__init__(env)
         self.max_available_actions = env.action_space.n
         self.observation_space = env.observation_space.spaces["image"]
         
-        self.keys = keys
-        self.shield = shield
+        self.args = args
         self.no_masking = no_masking
 
     def create_action_mask(self):
@@ -94,6 +93,12 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
 
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset(seed=seed, options=options)
+        
+        keys = extract_keys(self.env)
+        shield = create_shield_dict(self.env, self.args)
+        
+        self.keys = keys
+        self.shield = shield
         return obs["image"], infos
 
     def step(self, action):
@@ -116,11 +121,10 @@ def mask_fn(env: gym.Env):
 def main():
     import argparse
     args = parse_arguments(argparse)
-    shield = create_shield_dict(args)
+    
     
     env = gym.make(args.env, render_mode="rgb_array")
-    keys = extract_keys(env)
-    env = MiniGridEnvWrapper(env, shield=shield, keys=keys, no_masking=args.no_masking)
+    env = MiniGridEnvWrapper(env,args=args, no_masking=args.no_masking)
     env = ActionMasker(env, mask_fn)
     callback = CustomCallback(1, env)
     model = MaskablePPO(MaskableActorCriticPolicy, env, verbose=1, tensorboard_log=create_log_dir(args))

@@ -5,7 +5,7 @@ from ray.rllib.evaluation.episode import Episode
 from ray.rllib.evaluation.episode_v2 import EpisodeV2
 from ray.rllib.policy import Policy
 from ray.rllib.utils.typing import PolicyID
-
+from ray.rllib.algorithms.algorithm import Algorithm
 
 import gymnasium as gym
 
@@ -29,9 +29,6 @@ from helpers import extract_keys, parse_arguments, create_shield_dict, create_lo
 
 import matplotlib.pyplot as plt
 
-
-
-
 class MyCallbacks(DefaultCallbacks):
     def on_episode_start(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode: Episode | EpisodeV2, env_index: int | None = None, **kwargs) -> None:
         # print(F"Epsiode started Environment: {base_env.get_sub_environments()}")
@@ -50,7 +47,7 @@ class MyCallbacks(DefaultCallbacks):
     def on_episode_step(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy] | None = None, episode: Episode | EpisodeV2, env_index: int | None = None, **kwargs) -> None:
          episode.user_data["count"] = episode.user_data["count"] + 1
          env = base_env.get_sub_environments()[0]
-         #print(env.printGrid())
+        # print(env.printGrid())
     
     def on_episode_end(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode: Episode | EpisodeV2 | Exception, env_index: int | None = None, **kwargs) -> None:
         # print(F"Epsiode end Environment: {base_env.get_sub_environments()}")
@@ -65,16 +62,16 @@ def env_creater_custom(config):
     shield = config.get("shield", {})
     name = config.get("name", "MiniGrid-LavaCrossingS9N1-v0")
     framestack = config.get("framestack", 4)
-    
+    args = config.get("args", None)
     env = gym.make(name)
-    keys = extract_keys(env)
-    env = MiniGridEnvWrapper(env, shield=shield, keys=keys)
+    env = MiniGridEnvWrapper(env, args=args)
     # env = minigrid.wrappers.ImgObsWrapper(env)
     # env = ImgObsWrapper(env)
     env = OneHotWrapper(env,
                         config.vector_index if hasattr(config, "vector_index") else 0,
                         framestack=framestack
                         )
+    
     
     return env
 
@@ -96,12 +93,11 @@ def ppo(args):
 
     
     register_custom_minigrid_env(args)
-    shield_dict = create_shield_dict(args)
     
     config = (PPOConfig()
         .rollouts(num_rollout_workers=1)
         .resources(num_gpus=0)
-        .environment(env="mini-grid", env_config={"shield": shield_dict, "name": args.env})
+        .environment(env="mini-grid", env_config={"name": args.env, "args": args})
         .framework("torch")       
         .callbacks(MyCallbacks)
         .rl_module(_enable_rl_module_api = False)
@@ -111,7 +107,7 @@ def ppo(args):
         })
         .training(_enable_learner_api=False ,model={
             "custom_model": "pa_model",
-            "custom_model_config" : {"shield": shield_dict, "no_masking": args.no_masking}            
+            "custom_model_config" : {"no_masking": args.no_masking}            
         }))
     
     algo =(
@@ -119,11 +115,7 @@ def ppo(args):
         config.build()
     )
     
-    # while not terminated and not truncated:
-    #     action = algo.compute_single_action(obs)
-    #     obs, reward, terminated, truncated = env.step(action)
-    
-    for i in range(30):
+    for i in range(args.iterations):
         result = algo.train()
         print(pretty_print(result))
 
@@ -131,18 +123,24 @@ def ppo(args):
             checkpoint_dir = algo.save()
             print(f"Checkpoint saved in directory {checkpoint_dir}")
             
+    # terminated = truncated = False
+    
+    # while not terminated and not truncated:
+    #      action = algo.compute_single_action(obs)
+    #      obs, reward, terminated, truncated = env.step(action)
+    
+            
     ray.shutdown()
 
 
 def dqn(args):
     register_custom_minigrid_env(args)
-    shield_dict = create_shield_dict(args)
 
     
     config = DQNConfig()
     config = config.resources(num_gpus=0)
     config = config.rollouts(num_rollout_workers=1)
-    config = config.environment(env="mini-grid", env_config={"shield": shield_dict, "name": args.env })
+    config = config.environment(env="mini-grid", env_config={"name": args.env, "args": args })
     config = config.framework("torch")
     config = config.callbacks(MyCallbacks)
     config = config.rl_module(_enable_rl_module_api = False)
@@ -152,7 +150,7 @@ def dqn(args):
         })
     config = config.training(hiddens=[], dueling=False, model={    
             "custom_model": "pa_model",
-            "custom_model_config" : {"shield": shield_dict, "no_masking": args.no_masking}
+            "custom_model_config" : {"no_masking": args.no_masking}
     })
     
     algo = (
