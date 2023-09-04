@@ -22,10 +22,9 @@ from ray.rllib.models import ModelCatalog
 
 from ray.rllib.utils.torch_utils import FLOAT_MIN
 
-from ray.rllib.models.preprocessors import get_preprocessor
 from MaskModels import TorchActionMaskModel
 from Wrapper import OneHotWrapper, MiniGridEnvWrapper
-from helpers import extract_keys, parse_arguments, create_shield_dict, create_log_dir
+from helpers import parse_arguments, create_log_dir
 
 import matplotlib.pyplot as plt
 
@@ -34,7 +33,9 @@ class MyCallbacks(DefaultCallbacks):
         # print(F"Epsiode started Environment: {base_env.get_sub_environments()}")
         env = base_env.get_sub_environments()[0]
         episode.user_data["count"] = 0
+        # print("On episode start print")
         # print(env.printGrid())
+        # print(worker)
         # print(env.action_space.n)
         # print(env.actions)
         # print(env.mission)
@@ -52,17 +53,19 @@ class MyCallbacks(DefaultCallbacks):
     def on_episode_end(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode: Episode | EpisodeV2 | Exception, env_index: int | None = None, **kwargs) -> None:
         # print(F"Epsiode end Environment: {base_env.get_sub_environments()}")
         env = base_env.get_sub_environments()[0]
-        # print(env.printGrid())
-        # print(episode.user_data["count"])
+        #print("On episode end print")
+        #print(env.printGrid())
         
                     
 
 def env_creater_custom(config):
     framestack = config.get("framestack", 4)
-    shield = config.get("shield", {})
     name = config.get("name", "MiniGrid-LavaCrossingS9N1-v0")
     framestack = config.get("framestack", 4)
     args = config.get("args", None)
+    args.grid_path = F"{args.grid_path}_{config.worker_index}.txt"
+    args.prism_path = F"{args.prism_path}_{config.worker_index}.prism"
+    
     env = gym.make(name)
     env = MiniGridEnvWrapper(env, args=args)
     # env = minigrid.wrappers.ImgObsWrapper(env)
@@ -88,14 +91,10 @@ def register_custom_minigrid_env(args):
 
 
 def ppo(args):
-    
-    ray.init(num_cpus=1)
-
-    
     register_custom_minigrid_env(args)
     
     config = (PPOConfig()
-        .rollouts(num_rollout_workers=1)
+        .rollouts(num_rollout_workers=args.workers)
         .resources(num_gpus=0)
         .environment(env="mini-grid", env_config={"name": args.env, "args": args})
         .framework("torch")       
@@ -123,15 +122,6 @@ def ppo(args):
             checkpoint_dir = algo.save()
             print(f"Checkpoint saved in directory {checkpoint_dir}")
             
-    # terminated = truncated = False
-    
-    # while not terminated and not truncated:
-    #      action = algo.compute_single_action(obs)
-    #      obs, reward, terminated, truncated = env.step(action)
-    
-            
-    ray.shutdown()
-
 
 def dqn(args):
     register_custom_minigrid_env(args)
@@ -139,7 +129,7 @@ def dqn(args):
     
     config = DQNConfig()
     config = config.resources(num_gpus=0)
-    config = config.rollouts(num_rollout_workers=1)
+    config = config.rollouts(num_rollout_workers=args.workers)
     config = config.environment(env="mini-grid", env_config={"name": args.env, "args": args })
     config = config.framework("torch")
     config = config.callbacks(MyCallbacks)
@@ -166,8 +156,6 @@ def dqn(args):
             checkpoint_dir = algo.save()
             print(f"Checkpoint saved in directory {checkpoint_dir}")
             
-    ray.shutdown()
-
 
 def main():
     import argparse

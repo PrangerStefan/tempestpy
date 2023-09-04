@@ -93,7 +93,7 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
 
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset(seed=seed, options=options)
-        
+      
         keys = extract_keys(self.env)
         shield = create_shield_dict(self.env, self.args)
         
@@ -102,13 +102,9 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         return obs["image"], infos
 
     def step(self, action):
-      #  print(F"Performed action in step: {action}")
-        orig_obs, rew, done, truncated, info = self.env.step(action)
-
-        #print(F"Original observation is {orig_obs}")
+        orig_obs, rew, done, truncated, info = self.env.step(action)        
         obs = orig_obs["image"]
-
-        #print(F"Info is {info}")
+        
         return obs, rew, done, truncated, info
 
 

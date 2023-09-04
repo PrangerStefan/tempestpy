@@ -34,10 +34,6 @@ class OneHotWrapper(gym.core.ObservationWrapper):
             }
             )
 
-
-       # print(F"Set obersvation space to {self.observation_space}")
-
-
     def observation(self, obs):
         # Debug output: max-x/y positions to watch exploration progress.
         # print(F"Initial observation in Wrapper {obs}")
@@ -80,9 +76,8 @@ class OneHotWrapper(gym.core.ObservationWrapper):
         single_frame = np.concatenate([all_flat, direction])
         self.frame_buffer.append(single_frame)
 
-        #obs["one-hot"] = np.concatenate(self.frame_buffer)
         tmp = {"data": np.concatenate(self.frame_buffer), "action_mask": obs["action_mask"] }
-        return tmp#np.concatenate(self.frame_buffer)
+        return tmp
 
 
 class MiniGridEnvWrapper(gym.core.Wrapper):
@@ -111,7 +106,6 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         if self.env.carrying and self.env.carrying.type == "key":
             key_text = F"Agent_has_{self.env.carrying.color}_key\t& "
 
-        #print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
         cur_pos_str = f"[{key_text}!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
 
         allowed_actions = []
@@ -130,7 +124,6 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
                      assert(False)
                  mask[index] = 1.0
         else:
-            # print(F"Not in shield {cur_pos_str}")
             for index, x in enumerate(mask):
                 mask[index] = 1.0
         
@@ -158,11 +151,9 @@ class MiniGridEnvWrapper(gym.core.Wrapper):
         }, infos
 
     def step(self, action):
-      #  print(F"Performed action in step: {action}")
         orig_obs, rew, done, truncated, info = self.env.step(action)
 
         mask = self.create_action_mask()
-        #print(F"Original observation is {orig_obs}")
         obs = {
             "data": orig_obs["image"],
             "action_mask": mask,

@@ -18,7 +18,6 @@ import os
 
    
 def extract_keys(env):
-    env.reset()
     keys = []
     #print(env.grid)
     for j in range(env.grid.height):
@@ -66,6 +65,7 @@ def parse_arguments(argparse):
                         default="MiniGrid-LavaCrossingS9N1-v0", 
                         choices=[
                                 "MiniGrid-LavaCrossingS9N1-v0",
+                                "MiniGrid-LavaCrossingS9N3-v0",
                                 "MiniGrid-DoorKey-8x8-v0", 
                                 "MiniGrid-LockedRoom-v0",
                                 "MiniGrid-FourRooms-v0", 
@@ -77,24 +77,19 @@ def parse_arguments(argparse):
     
    # parser.add_argument("--seed", type=int, help="seed for environment", default=None)
     parser.add_argument("--grid_to_prism_path", default="./main")
-    parser.add_argument("--grid_path", default="Grid.txt")
-    parser.add_argument("--prism_path", default="Grid.PRISM")
+    parser.add_argument("--grid_path", default="grid")
+    parser.add_argument("--prism_path", default="grid")
     parser.add_argument("--no_masking", default=False)
     parser.add_argument("--algorithm", default="ppo", choices=["ppo", "dqn"])
     parser.add_argument("--log_dir", default="../log_results/")
     parser.add_argument("--iterations", type=int, default=30 )
+    parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
+    parser.add_argument("--workers", type=int, default=1)
+
     
     args = parser.parse_args()
     
     return args
-
-
-
-def create_environment(args):
-    env_id= args.env
-    env = gym.make(env_id)
-    env.reset()
-    return env
 
 
 def export_grid_to_text(env, grid_file):
@@ -104,24 +99,18 @@ def export_grid_to_text(env, grid_file):
     f.close()
 
 
-def create_shield(grid_to_prism_path, grid_file, prism_path):
+def create_shield(grid_to_prism_path, grid_file, prism_path, formula):
     os.system(F"{grid_to_prism_path} -v 'agent' -i {grid_file} -o {prism_path}")
     
     f = open(prism_path, "a")
     f.write("label \"AgentIsInLava\" = AgentIsInLava;")
     f.close()
-    
-    
+
     program = stormpy.parse_prism_program(prism_path)
-    formula_str = "Pmax=? [G !\"AgentIsInLavaAndNotDone\"]"
-    # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
-    # shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY,
-    #                                                       stormpy.logic.ShieldComparison.ABSOLUTE, 0.9) 
- 
+     
     shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.1) 
-    # shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) 
     
-    formulas = stormpy.parse_properties_for_prism_program(formula_str, program)
+    formulas = stormpy.parse_properties_for_prism_program(formula, program)
     options = stormpy.BuilderOptions([p.raw_formula for p in formulas])
     options.set_build_state_valuations(True)
     options.set_build_choice_labels(True)
@@ -151,21 +140,12 @@ def create_shield(grid_to_prism_path, grid_file, prism_path):
 
         
 def create_shield_dict(env, args):
-    env = create_environment(args)
-    # print(env.printGrid(init=False))
-    
     grid_file = args.grid_path
     grid_to_prism_path = args.grid_to_prism_path
     export_grid_to_text(env, grid_file)
     
     prism_path = args.prism_path
-    shield_dict = create_shield(grid_to_prism_path ,grid_file, prism_path)
-    #shield_dict = {state.id : shield.get_choice(state).choice_map for state in model.states}
-   
-    #print(F"Shield dictionary {shield_dict}")
-    # for state_id in model.states:
-    #     choices = shield.get_choice(state_id)
-    #     print(F"Allowed choices in state {state_id}, are {choices.choice_map} ")
+    shield_dict = create_shield(grid_to_prism_path ,grid_file, prism_path, args.formula)
     
     return shield_dict
 

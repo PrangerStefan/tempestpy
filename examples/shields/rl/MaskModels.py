@@ -24,10 +24,6 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
     ):
         orig_space = getattr(obs_space, "original_space", obs_space)
         custom_config = model_config['custom_model_config']
-       # print(F"Original Space is: {orig_space}")
-        #print(model_config)
-        #print(F"Observation space in model: {obs_space}")
-        #print(F"Provided action space in model {action_space}")
         
         TorchModelV2.__init__(
             self, obs_space, action_space, num_outputs, model_config, name, **kwargs
@@ -43,17 +39,15 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
             model_config,
             name + "_internal",
         )
-
-        # disable action masking --> will likely lead to invalid actions
+        
         self.no_masking = False
         if "no_masking" in model_config["custom_model_config"]:
             self.no_masking = model_config["custom_model_config"]["no_masking"]
 
     def forward(self, input_dict, state, seq_lens):
         # Extract the available actions tensor from the observation.
-         # Compute the unmasked logits.
+        # Compute the unmasked logits.
         logits, _ = self.internal_model({"obs": input_dict["obs"]["data"]})
-
    
         action_mask = input_dict["obs"]["action_mask"]
       
@@ -61,13 +55,11 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         if self.no_masking:
             return logits, state
 
-        # assert(False)
-        # Convert action_mask into a [0.0 || -inf]-type mask.
         inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
         masked_logits = logits + inf_mask
 
    
-        # # Return masked logits.
+        # Return masked logits.
         return masked_logits, state
 
     def value_function(self):
