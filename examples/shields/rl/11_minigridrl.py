@@ -1,10 +1,10 @@
-# from typing import Dict
-# from ray.rllib.env.base_env import BaseEnv
-# from ray.rllib.evaluation import RolloutWorker
-# from ray.rllib.evaluation.episode import Episode
-# from ray.rllib.evaluation.episode_v2 import EpisodeV2
-# from ray.rllib.policy import Policy
-# from ray.rllib.utils.typing import PolicyID
+from typing import Dict
+from ray.rllib.env.base_env import BaseEnv
+from ray.rllib.evaluation import RolloutWorker
+from ray.rllib.evaluation.episode import Episode
+from ray.rllib.evaluation.episode_v2 import EpisodeV2
+from ray.rllib.policy import Policy
+from ray.rllib.utils.typing import PolicyID
 
 import gymnasium as gym
 
@@ -15,47 +15,47 @@ import minigrid
 from ray.tune import register_env
 from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms.dqn.dqn import DQNConfig
-# from ray.rllib.algorithms.callbacks import DefaultCallbacks
+from ray.rllib.algorithms.callbacks import DefaultCallbacks
 from ray.tune.logger import pretty_print
 from ray.rllib.models import ModelCatalog
 
 
 from TorchActionMaskModel import TorchActionMaskModel
 from Wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
-from helpers import parse_arguments, create_log_dir
+from helpers import parse_arguments, create_log_dir, ShieldingConfig
 from ShieldHandlers import MiniGridShieldHandler
 
 import matplotlib.pyplot as plt
 
 from ray.tune.logger import TBXLogger   
 
-# class MyCallbacks(DefaultCallbacks):
-#     def on_episode_start(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode: Episode | EpisodeV2, env_index: int | None = None, **kwargs) -> None:
-#         # print(F"Epsiode started Environment: {base_env.get_sub_environments()}")
-#         env = base_env.get_sub_environments()[0]
-#         episode.user_data["count"] = 0
-#         # print("On episode start print")
-#         # print(env.printGrid())
-#         # print(worker)
-#         # print(env.action_space.n)
-#         # print(env.actions)
-#         # print(env.mission)
-#         # print(env.observation_space)
-#         # img = env.get_frame()
-#         # plt.imshow(img)
-#         # plt.show()
+class MyCallbacks(DefaultCallbacks):
+    def on_episode_start(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode: Episode | EpisodeV2, env_index: int | None = None, **kwargs) -> None:
+        # print(F"Epsiode started Environment: {base_env.get_sub_environments()}")
+        env = base_env.get_sub_environments()[0]
+        episode.user_data["count"] = 0
+        # print("On episode start print")
+        # print(env.printGrid())
+        # print(worker)
+        # print(env.action_space.n)
+        # print(env.actions)
+        # print(env.mission)
+        # print(env.observation_space)
+        # img = env.get_frame()
+        # plt.imshow(img)
+        # plt.show()
     
        
-#     def on_episode_step(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy] | None = None, episode: Episode | EpisodeV2, env_index: int | None = None, **kwargs) -> None:
-#          episode.user_data["count"] = episode.user_data["count"] + 1
-#          env = base_env.get_sub_environments()[0]
-#         # print(env.printGrid())
+    def on_episode_step(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy] | None = None, episode: Episode | EpisodeV2, env_index: int | None = None, **kwargs) -> None:
+         episode.user_data["count"] = episode.user_data["count"] + 1
+         env = base_env.get_sub_environments()[0]
+        # print(env.printGrid())
     
-#     def on_episode_end(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode: Episode | EpisodeV2 | Exception, env_index: int | None = None, **kwargs) -> None:
-#         # print(F"Epsiode end Environment: {base_env.get_sub_environments()}")
-#         env = base_env.get_sub_environments()[0]
-#         #print("On episode end print")
-#         #print(env.printGrid())
+    def on_episode_end(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode: Episode | EpisodeV2 | Exception, env_index: int | None = None, **kwargs) -> None:
+        # print(F"Epsiode end Environment: {base_env.get_sub_environments()}")
+        env = base_env.get_sub_environments()[0]
+        #print("On episode end print")
+        #print(env.printGrid())
         
                     
 
@@ -83,7 +83,7 @@ def shielding_env_creater(config):
 
 
 def register_minigrid_shielding_env(args):
-    env_name = "mini-grid"
+    env_name = "mini-grid-shielding"
     register_env(env_name, shielding_env_creater)
 
     ModelCatalog.register_custom_model(
@@ -98,25 +98,21 @@ def ppo(args):
     config = (PPOConfig()
         .rollouts(num_rollout_workers=args.workers)
         .resources(num_gpus=0)
-        .environment(env="mini-grid", env_config={"name": args.env, "args": args})
+        .environment(env="mini-grid-shielding", env_config={"name": args.env, "args": args, "shielding": args.shielding is ShieldingConfig.Enabled or args.shielding is ShieldingConfig.Training})
         .framework("torch")
-        #.callbacks(MyCallbacks)
+        .callbacks(MyCallbacks)
         .rl_module(_enable_rl_module_api = False)
         .debugging(logger_config={
             "type": TBXLogger, 
             "logdir": create_log_dir(args)
         })
         .training(_enable_learner_api=False ,model={
-            "custom_model": "shielding_model",
-            "custom_model_config" : {"no_masking": args.no_masking}            
+            "custom_model": "shielding_model"
         }))
     
-    algo =(
-        
+    algo =(   
         config.build()
-    )
-    
-    algo.eva
+    )    
     
     for i in range(args.iterations):
         result = algo.train()
@@ -134,7 +130,7 @@ def dqn(args):
     config = DQNConfig()
     config = config.resources(num_gpus=0)
     config = config.rollouts(num_rollout_workers=args.workers)
-    config = config.environment(env="mini-grid", env_config={"name": args.env, "args": args })
+    config = config.environment(env="mini-grid-shielding", env_config={"name": args.env, "args": args })
     config = config.framework("torch")
     #config = config.callbacks(MyCallbacks)
     config = config.rl_module(_enable_rl_module_api = False)
@@ -143,8 +139,7 @@ def dqn(args):
             "logdir": create_log_dir(args)
         })
     config = config.training(hiddens=[], dueling=False, model={    
-            "custom_model": "shielding_model",
-            "custom_model_config" : {"no_masking": args.no_masking}
+            "custom_model": "shielding_model"
     })
     
     algo = (

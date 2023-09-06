@@ -2,6 +2,9 @@ import minigrid
 from minigrid.core.actions import Actions
 
 from datetime import datetime
+from enum import Enum
+
+import os
 
 import stormpy
 import stormpy.core
@@ -13,8 +16,16 @@ import stormpy.logic
 import stormpy.examples
 import stormpy.examples.files
 
+class ShieldingConfig(Enum):
+    Training = 'training'
+    Evaluation = 'evaluation'
+    Disabled = 'none'
+    Enabled = 'full'
+    
+    def __str__(self) -> str:
+        return self.value
 
-   
+
 def extract_keys(env):
     keys = []
     #print(env.grid)
@@ -28,7 +39,7 @@ def extract_keys(env):
     return keys
 
 def create_log_dir(args):
-    return F"{args.log_dir}{datetime.now()}-{args.algorithm}-masking:{not args.no_masking}-env:{args.env}"
+    return F"{args.log_dir}{datetime.now()}-{args.algorithm}-shielding:{args.shielding}-env:{args.env}"
 
 
 def get_action_index_mapping(actions):
@@ -77,12 +88,12 @@ def parse_arguments(argparse):
     parser.add_argument("--grid_to_prism_binary_path", default="./main")
     parser.add_argument("--grid_path", default="grid")
     parser.add_argument("--prism_path", default="grid")
-    parser.add_argument("--no_masking", default=False)
     parser.add_argument("--algorithm", default="ppo", choices=["ppo", "dqn"])
     parser.add_argument("--log_dir", default="../log_results/")
     parser.add_argument("--iterations", type=int, default=30 )
     parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
     parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--shielding", type=ShieldingConfig, choices=list(ShieldingConfig), default=ShieldingConfig.Enabled)
 
     
     args = parser.parse_args()

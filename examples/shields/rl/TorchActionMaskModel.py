@@ -38,9 +38,6 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
             name + "_internal",
         )
         
-        self.no_masking = False
-        if "no_masking" in model_config["custom_model_config"]:
-            self.no_masking = model_config["custom_model_config"]["no_masking"]
 
     def forward(self, input_dict, state, seq_lens):
         # Extract the available actions tensor from the observation.
@@ -48,10 +45,6 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         logits, _ = self.internal_model({"obs": input_dict["obs"]["data"]})
    
         action_mask = input_dict["obs"]["action_mask"]
-      
-        # If action masking is disabled, directly return unmasked logits
-        if self.no_masking:
-            return logits, state
 
         inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
         masked_logits = logits + inf_mask

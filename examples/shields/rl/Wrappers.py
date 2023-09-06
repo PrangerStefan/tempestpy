@@ -82,7 +82,7 @@ class OneHotShieldingWrapper(gym.core.ObservationWrapper):
 
 
 class MiniGridShieldingWrapper(gym.core.Wrapper):
-    def __init__(self, env, shield_creator : ShieldHandler, create_shield_at_reset=True):
+    def __init__(self, env, shield_creator : ShieldHandler, create_shield_at_reset=True, mask_actions=True):
         super(MiniGridShieldingWrapper, self).__init__(env)
         self.max_available_actions = env.action_space.n
         self.observation_space = Dict(
@@ -94,8 +94,12 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
         self.shield_creator = shield_creator
         self.create_shield_at_reset = create_shield_at_reset
         self.shield = shield_creator.create_shield(env=self.env)
+        self.mask_actions = mask_actions
 
     def create_action_mask(self):
+        if not self.mask_actions:
+            return np.array([1.0] * self.max_available_actions, dtype=np.int8)
+        
         coordinates = self.env.agent_pos
         view_direction = self.env.agent_dir
 
@@ -146,7 +150,7 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset(seed=seed, options=options)
         
-        if self.create_shield_at_reset:
+        if self.create_shield_at_reset and self.mask_actions:
             self.shield = self.shield_creator.create_shield(env=self.env)
         
         self.keys = extract_keys(self.env)
