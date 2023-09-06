@@ -45,7 +45,7 @@ import argparse
 from ray.rllib.models.torch.torch_modelv2 import TorchModelV2
 from ray.rllib.utils.framework import try_import_tf, try_import_torch
 
-from Wrapper import OneHotWrapper
+from examples.shields.rl.Wrappers import OneHotShieldingWrapper
 
 
 torch, nn = try_import_torch()
@@ -162,7 +162,7 @@ def env_creater(config):
     env = gym.make(name)
     # env = minigrid.wrappers.RGBImgPartialObsWrapper(env)
     env = minigrid.wrappers.ImgObsWrapper(env)
-    env = OneHotWrapper(env,
+    env = OneHotShieldingWrapper(env,
                         config.vector_index if hasattr(config, "vector_index") else 0,
                         framestack=framestack
                         )

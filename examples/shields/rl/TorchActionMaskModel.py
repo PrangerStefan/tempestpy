@@ -11,7 +11,6 @@ torch, nn = try_import_torch()
 
 
 class TorchActionMaskModel(TorchModelV2, nn.Module):
-    """PyTorch version of above ActionMaskingModel."""
 
     def __init__(
         self,
@@ -23,7 +22,6 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         **kwargs,
     ):
         orig_space = getattr(obs_space, "original_space", obs_space)
-        custom_config = model_config['custom_model_config']
         
         TorchModelV2.__init__(
             self, obs_space, action_space, num_outputs, model_config, name, **kwargs
@@ -58,7 +56,6 @@ class TorchActionMaskModel(TorchModelV2, nn.Module):
         inf_mask = torch.clamp(torch.log(action_mask), min=FLOAT_MIN)
         masked_logits = logits + inf_mask
 
-   
         # Return masked logits.
         return masked_logits, state
 
