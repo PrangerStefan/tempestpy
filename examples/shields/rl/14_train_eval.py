@@ -102,8 +102,10 @@ def ppo(args):
         if i % 5 == 0:
             algo.save()
         
-    writer = SummaryWriter(log_dir=F"{create_log_dir(args)}-eval")
-    csv_logger = CSVLogger()
+    eval_log_dir = F"{create_log_dir(args)}-eval"
+        
+    writer = SummaryWriter(log_dir=eval_log_dir)
+    csv_logger = CSVLogger(config=config, logdir=eval_log_dir)
     
     for i in range(iterations):
         eval_result = algo.evaluate()
@@ -111,6 +113,7 @@ def ppo(args):
         print(eval_result)
         # logger.on_result(eval_result)
 
+        csv_logger.on_result(eval_result)
         
         evaluation = eval_result['evaluation']
         epsiode_reward_mean = evaluation['episode_reward_mean']
@@ -118,7 +121,7 @@ def ppo(args):
         print(epsiode_reward_mean)
         writer.add_scalar("evaluation/episode_reward_mean", epsiode_reward_mean, i)
         writer.add_scalar("evaluation/episode_len_mean", episode_len_mean, i)
-     
+
         
         
     writer.close()
