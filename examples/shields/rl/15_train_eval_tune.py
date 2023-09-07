@@ -6,10 +6,11 @@ import minigrid
 
 # import ray
 from ray.tune import register_env
+from ray import tune, air
 from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms.dqn.dqn import DQNConfig
 # from ray.rllib.algorithms.callbacks import DefaultCallbacks
-from ray.tune.logger import pretty_print, TBXLogger, TBXLoggerCallback, DEFAULT_LOGGERS, UnifiedLogger, CSVLogger
+from ray.tune.logger import pretty_print, TBXLogger, TBXLoggerCallback, DEFAULT_LOGGERS, UnifiedLogger
 from ray.rllib.models import ModelCatalog
 
 
@@ -87,43 +88,24 @@ def ppo(args):
             "custom_model": "shielding_model"      
         }))
     
-    algo =(
-        
-        config.build()
-    )
+    tuner = tune.Tuner("PPO",
+                        run_config=air.RunConfig(
+                                stop = {"episode_reward_mean": 50}, 
+                                checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True),
+                                storage_path=F"{create_log_dir(args)}-tuner"
+    ),
+    param_space=config,)
+    
+    tuner.fit()
     
     iterations = args.iterations
+    print(config.to_dict())
+    tune.run("PPO", config=config)
     
-    
-    
-    for i in range(iterations):
-        algo.train()
-    
-        if i % 5 == 0:
-            algo.save()
-        
-    writer = SummaryWriter(log_dir=F"{create_log_dir(args)}-eval")
-    csv_logger = CSVLogger()
-    
-    for i in range(iterations):
-        eval_result = algo.evaluate()
-        print(pretty_print(eval_result))
-        print(eval_result)
-        # logger.on_result(eval_result)
+        # print(epsiode_reward_mean)
+        # writer.add_scalar("evaluation/episode_reward", epsiode_reward_mean, i)
 
-        
-        evaluation = eval_result['evaluation']
-        epsiode_reward_mean = evaluation['episode_reward_mean']
-        episode_len_mean = evaluation['episode_len_mean']
-        print(epsiode_reward_mean)
-        writer.add_scalar("evaluation/episode_reward_mean", epsiode_reward_mean, i)
-        writer.add_scalar("evaluation/episode_len_mean", episode_len_mean, i)
-     
-        
-        
-    writer.close()
-
-
+    
 def main():
     import argparse
     args = parse_arguments(argparse)

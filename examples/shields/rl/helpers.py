@@ -20,7 +20,7 @@ class ShieldingConfig(Enum):
     Training = 'training'
     Evaluation = 'evaluation'
     Disabled = 'none'
-    Enabled = 'full'
+    Full = 'full'
     
     def __str__(self) -> str:
         return self.value
@@ -39,7 +39,7 @@ def extract_keys(env):
     return keys
 
 def create_log_dir(args):
-    return F"{args.log_dir}{datetime.now()}-{args.algorithm}-shielding:{args.shielding}-env:{args.env}"
+    return F"{args.log_dir}{datetime.now()}-{args.algorithm}-shielding:{args.shielding}-env:{args.env}-iterations:{args.iterations}"
 
 
 def get_action_index_mapping(actions):
@@ -93,7 +93,7 @@ def parse_arguments(argparse):
     parser.add_argument("--iterations", type=int, default=30 )
     parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
     parser.add_argument("--workers", type=int, default=1)
-    parser.add_argument("--shielding", type=ShieldingConfig, choices=list(ShieldingConfig), default=ShieldingConfig.Enabled)
+    parser.add_argument("--shielding", type=ShieldingConfig, choices=list(ShieldingConfig), default=ShieldingConfig.Full)
 
     
     args = parser.parse_args()

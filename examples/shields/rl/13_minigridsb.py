@@ -11,8 +11,8 @@ from minigrid.core.actions import Actions
 import numpy as np
 import time
 
-from helpers import parse_arguments, extract_keys, get_action_index_mapping, create_log_dir
-from ShieldHandlers import MiniGridShieldHandler
+from helpers import parse_arguments, create_log_dir, ShieldingConfig
+from ShieldHandlers import MiniGridShieldHandler, create_shield_query
 from Wrappers import MiniGridSbShieldingWrapper
 
 class CustomCallback(BaseCallback):
@@ -24,6 +24,7 @@ class CustomCallback(BaseCallback):
     def _on_step(self) -> bool:
         print(self.env.printGrid())
         return super()._on_step()
+
 
 
 
@@ -42,10 +43,10 @@ def main():
     shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula)
     
     env = gym.make(args.env, render_mode="rgb_array")
-    env = MiniGridSbShieldingWrapper(env, shield_creator=shield_creator, no_masking=args.no_masking)
+    env = MiniGridSbShieldingWrapper(env, shield_creator=shield_creator, shield_query_creator=create_shield_query, mask_actions=args.shielding == ShieldingConfig.Full)
     env = ActionMasker(env, mask_fn)
     callback = CustomCallback(1, env)
-    model = MaskablePPO(MaskableActorCriticPolicy, env, verbose=1, tensorboard_log=create_log_dir(args))
+    model = MaskablePPO(MaskableActorCriticPolicy, env, gamma=0.4, verbose=1, tensorboard_log=create_log_dir(args))
     
     iterations = args.iterations
     

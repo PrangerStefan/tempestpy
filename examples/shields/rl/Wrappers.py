@@ -82,7 +82,12 @@ class OneHotShieldingWrapper(gym.core.ObservationWrapper):
 
 
 class MiniGridShieldingWrapper(gym.core.Wrapper):
-    def __init__(self, env, shield_creator : ShieldHandler, create_shield_at_reset=True, mask_actions=True):
+    def __init__(self, 
+                 env, 
+                shield_creator : ShieldHandler,
+                shield_query_creator,
+                create_shield_at_reset=True,    
+                mask_actions=True):
         super(MiniGridShieldingWrapper, self).__init__(env)
         self.max_available_actions = env.action_space.n
         self.observation_space = Dict(
@@ -95,32 +100,18 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
         self.create_shield_at_reset = create_shield_at_reset
         self.shield = shield_creator.create_shield(env=self.env)
         self.mask_actions = mask_actions
+        self.shield_query_creator = shield_query_creator
 
     def create_action_mask(self):
         if not self.mask_actions:
             return np.array([1.0] * self.max_available_actions, dtype=np.int8)
         
-        coordinates = self.env.agent_pos
-        view_direction = self.env.agent_dir
-
-        key_text = ""
-
-        # only support one key for now
-        if self.keys:
-            key_text = F"!Agent_has_{self.keys[0]}_key\t& "
-
-
-        if self.env.carrying and self.env.carrying.type == "key":
-            key_text = F"Agent_has_{self.env.carrying.color}_key\t& "
-
-        cur_pos_str = f"[{key_text}!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
-
-        allowed_actions = []
-
+        cur_pos_str = self.shield_query_creator(self.env)
       
         # Create the mask
         # If shield restricts action mask only valid with 1.0
         # else set all actions as valid
+        allowed_actions = []
         mask = np.array([0.0] * self.max_available_actions, dtype=np.int8)
 
         if cur_pos_str in self.shield and self.shield[cur_pos_str]:
@@ -144,7 +135,7 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
             
         if front_tile and front_tile.type == "door":
             mask[Actions.toggle] = 1.0
-        
+            
         return mask
 
     def reset(self, *, seed=None, options=None):
@@ -175,38 +166,32 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
 
 
 class MiniGridSbShieldingWrapper(gym.core.Wrapper):
-    def __init__(self, env, shield_creator : ShieldHandler, no_masking=False):
+    def __init__(self, 
+                 env, 
+                 shield_creator : ShieldHandler,
+                 shield_query_creator,
+                 create_shield_at_reset = True,
+                 mask_actions=True,
+                 ):
         super(MiniGridSbShieldingWrapper, self).__init__(env)
         self.max_available_actions = env.action_space.n
         self.observation_space = env.observation_space.spaces["image"]
         
         self.shield_creator = shield_creator
-        self.no_masking = no_masking
+        self.mask_actions = mask_actions
+        self.shield_query_creator = shield_query_creator
 
     def create_action_mask(self):
-        if self.no_masking:
+        if not self.mask_actions:
             return  np.array([1.0] * self.max_available_actions, dtype=np.int8)
                
-        coordinates = self.env.agent_pos
-        view_direction = self.env.agent_dir
-
-        key_text = ""
-
-        # only support one key for now
-        if self.keys:
-            key_text = F"!Agent_has_{self.keys[0]}_key\t& "
-
-
-        if self.env.carrying and self.env.carrying.type == "key":
-            key_text = F"Agent_has_{self.env.carrying.color}_key\t& "
-
-        #print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
-        cur_pos_str = f"[{key_text}!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
+        cur_pos_str = self.shield_query_creator(self.env)
+        
         allowed_actions = []
 
         # Create the mask
-        # If shield restricts action mask only valid with 1.0
-        # else set all actions as valid
+        # If shield restricts actions, mask only valid actions with 1.0
+        # else set all actions valid
         mask = np.array([0.0] * self.max_available_actions, dtype=np.int8)
 
         if cur_pos_str in self.shield and self.shield[cur_pos_str]:
@@ -215,24 +200,20 @@ class MiniGridSbShieldingWrapper(gym.core.Wrapper):
                  index =  get_action_index_mapping(allowed_action[1])
                  if index is None:
                      assert(False)
+                     
                  mask[index] = 1.0
         else:
-            # print(F"Not in shield {cur_pos_str}")
             for index, x in enumerate(mask):
                 mask[index] = 1.0
         
         front_tile = self.env.grid.get(self.env.front_pos[0], self.env.front_pos[1])
 
-        # if front_tile is not None and front_tile.type == "key":
-        #     mask[Actions.pickup] = 1.0
-            
-        # if self.env.carrying:
-        #     mask[Actions.drop] = 1.0
             
         if front_tile and front_tile.type == "door":
             mask[Actions.toggle] = 1.0            
             
-        return mask
+        return mask  
+    
 
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset(seed=seed, options=options)
@@ -245,7 +226,7 @@ class MiniGridSbShieldingWrapper(gym.core.Wrapper):
         return obs["image"], infos
 
     def step(self, action):
-        orig_obs, rew, done, truncated, info = self.env.step(action)        
+        orig_obs, rew, done, truncated, info = self.env.step(action)
         obs = orig_obs["image"]
         
         return obs, rew, done, truncated, info

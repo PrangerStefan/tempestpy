@@ -15,7 +15,7 @@ import os
 class ShieldHandler(ABC):
     def __init__(self) -> None:
         pass
-    def create_shield(self, **kwargs):
+    def create_shield(self, **kwargs) -> dict:
         pass
 
 class MiniGridShieldHandler(ShieldHandler):
@@ -32,7 +32,9 @@ class MiniGridShieldHandler(ShieldHandler):
 
     
     def __create_prism(self):
-        os.system(F"{self.grid_to_prism_path} -v 'agent' -i {self.grid_file} -o {self.prism_path}")
+        result = os.system(F"{self.grid_to_prism_path} -v 'agent' -i {self.grid_file} -o {self.prism_path}")
+    
+        assert result == 0, "Prism file could not be generated"
     
         f = open(self.prism_path, "a")
         f.write("label \"AgentIsInLava\" = AgentIsInLava;")
@@ -78,4 +80,17 @@ class MiniGridShieldHandler(ShieldHandler):
         self.__create_prism()
        
         return self.__create_shield_dict()
-            
+        
+def create_shield_query(env):
+    coordinates = env.env.agent_pos
+    view_direction = env.env.agent_dir
+
+    key_text = ""
+
+    # only support one key for now
+   
+    #print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
+    cur_pos_str = f"[{key_text}!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
+
+    return cur_pos_str
+    
