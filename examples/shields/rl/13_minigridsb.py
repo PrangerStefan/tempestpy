@@ -8,12 +8,11 @@ import gymnasium as gym
 
 from minigrid.core.actions import Actions
 
-import numpy as np
 import time
 
 from helpers import parse_arguments, create_log_dir, ShieldingConfig
-from ShieldHandlers import MiniGridShieldHandler, create_shield_query
-from Wrappers import MiniGridSbShieldingWrapper
+from shieldhandlers import MiniGridShieldHandler, create_shield_query
+from wrappers import MiniGridSbShieldingWrapper
 
 class CustomCallback(BaseCallback):
     def __init__(self, verbose: int = 0, env=None):

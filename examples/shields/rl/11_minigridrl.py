@@ -1,11 +1,6 @@
-
-
 import gymnasium as gym
-
 import minigrid
-# import numpy as np
 
-# import ray
 from ray.tune import register_env
 from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms.dqn.dqn import DQNConfig
@@ -13,13 +8,11 @@ from ray.tune.logger import pretty_print
 from ray.rllib.models import ModelCatalog
 
 
-from TorchActionMaskModel import TorchActionMaskModel
-from Wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
+from torch_action_mask_model import TorchActionMaskModel
+from wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
 from helpers import parse_arguments, create_log_dir, ShieldingConfig
-from ShieldHandlers import MiniGridShieldHandler, create_shield_query
+from shieldhandlers import MiniGridShieldHandler, create_shield_query
 from callbacks import MyCallbacks
-
-import matplotlib.pyplot as plt
 
 from ray.tune.logger import TBXLogger   
 

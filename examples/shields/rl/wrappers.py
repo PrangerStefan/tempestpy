@@ -8,7 +8,7 @@ from collections import deque
 from ray.rllib.utils.numpy import one_hot
 
 from helpers import get_action_index_mapping, extract_keys
-from ShieldHandlers import ShieldHandler
+from shieldhandlers import ShieldHandler
 
 
 class OneHotShieldingWrapper(gym.core.ObservationWrapper):

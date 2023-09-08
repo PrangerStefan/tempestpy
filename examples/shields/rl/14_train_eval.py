@@ -1,26 +1,19 @@
-
 import gymnasium as gym
-
 import minigrid
-# import numpy as np
 
-# import ray
 from ray.tune import register_env
 from ray.rllib.algorithms.ppo import PPOConfig
-from ray.rllib.algorithms.dqn.dqn import DQNConfig
-# from ray.rllib.algorithms.callbacks import DefaultCallbacks
-from ray.tune.logger import pretty_print, TBXLogger, TBXLoggerCallback, DEFAULT_LOGGERS, UnifiedLogger, CSVLogger
+from ray.tune.logger import pretty_print, UnifiedLogger, CSVLogger
 from ray.rllib.models import ModelCatalog
 
 
-from TorchActionMaskModel import TorchActionMaskModel
-from Wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
+from torch_action_mask_model import TorchActionMaskModel
+from wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
 from helpers import parse_arguments, create_log_dir, ShieldingConfig
-from ShieldHandlers import MiniGridShieldHandler, create_shield_query
+from shieldhandlers import MiniGridShieldHandler, create_shield_query
 
 from callbacks import MyCallbacks
 
-import matplotlib.pyplot as plt
 from torch.utils.tensorboard import SummaryWriter
 
 
@@ -34,10 +27,6 @@ def shielding_env_creater(config):
     args.prism_path = F"{args.prism_path}_{config.worker_index}.prism"
     
     shielding = config.get("shielding", False)
-    
-    # if shielding:
-    #     assert(False)
-    
     shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula)
     
     env = gym.make(name)
