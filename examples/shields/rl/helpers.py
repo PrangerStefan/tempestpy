@@ -39,7 +39,7 @@ def extract_keys(env):
     return keys
 
 def create_log_dir(args):
-    return F"{args.log_dir}{datetime.now()}-{args.algorithm}-shielding:{args.shielding}-env:{args.env}-iterations:{args.iterations}"
+    return F"{args.log_dir}{args.algorithm}-shielding:{args.shielding}-iterations:{args.iterations}"
 
 
 def get_action_index_mapping(actions):
