@@ -86,9 +86,12 @@ def ppo(args):
                        ),
                         run_config=air.RunConfig(
                                 stop = {"episode_reward_mean": 94,
-                                        "timesteps_total": args.steps,
-                                        "training_iteration": args.iterations}, 
-                                checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=2 ),
+                                        "timesteps_total": args.steps,}, 
+                                checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True,
+                                                                       num_to_keep=1, 
+                                                                       checkpoint_score_attribute="episode_reward_mean",
+                                                                       ),
+                                
                                storage_path=F"{logdir}"
     )
                         ,
@@ -116,7 +119,7 @@ def ppo(args):
     csv_logger = CSVLogger(config=config, logdir=eval_log_dir)
     
     
-    for i in range(args.iterations):
+    for i in range(args.evaluations):
         eval_result = algo.evaluate()
         print(pretty_print(eval_result))
         print(eval_result)

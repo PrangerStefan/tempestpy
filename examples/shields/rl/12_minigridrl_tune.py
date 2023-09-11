@@ -116,8 +116,7 @@ def main():
                         ),
                         run_config=air.RunConfig(
                                 stop = {"episode_reward_mean": 94,
-                                        "timesteps_total": 12000,
-                                        "training_iteration": args.iterations}, 
+                                        "timesteps_total": 12000,}, 
                                 checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=2 ),
                                 storage_path=F"{logdir}"
                         ),

@@ -47,12 +47,10 @@ def main():
     callback = CustomCallback(1, env)
     model = MaskablePPO(MaskableActorCriticPolicy, env, gamma=0.4, verbose=1, tensorboard_log=create_log_dir(args))
     
-    iterations = args.iterations
+    steps = args.steps
     
-    if iterations < 10_000:
-        iterations = 10_000
     
-    model.learn(iterations, callback=callback)
+    model.learn(steps, callback=callback)
  
   #W  mean_reward, std_reward = evaluate_policy(model, model.get_env())
     

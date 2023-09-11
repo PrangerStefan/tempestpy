@@ -81,11 +81,11 @@ def ppo(args):
         config.build()
     )
     
-    iterations = args.iterations
+    evaluations = args.evaluations
     
     
     
-    for i in range(iterations):
+    for i in range(evaluations):
         algo.train()
     
         if i % 5 == 0:
@@ -96,7 +96,7 @@ def ppo(args):
     writer = SummaryWriter(log_dir=eval_log_dir)
     csv_logger = CSVLogger(config=config, logdir=eval_log_dir)
     
-    for i in range(iterations):
+    for i in range(evaluations):
         eval_result = algo.evaluate()
         print(pretty_print(eval_result))
         print(eval_result)

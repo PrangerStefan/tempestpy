@@ -39,7 +39,7 @@ def extract_keys(env):
     return keys
 
 def create_log_dir(args):
-    return F"{args.log_dir}{args.algorithm}-shielding:{args.shielding}-iterations:{args.iterations}"
+    return F"{args.log_dir}{args.algorithm}-shielding:{args.shielding}-evaluations:{args.evaluations}-steps:{args.steps}"
 
 
 def get_action_index_mapping(actions):
@@ -90,7 +90,7 @@ def parse_arguments(argparse):
     parser.add_argument("--prism_path", default="grid")
     parser.add_argument("--algorithm", default="PPO", type=str.upper , choices=["PPO", "DQN"])
     parser.add_argument("--log_dir", default="../log_results/")
-    parser.add_argument("--iterations", type=int, default=10 )
+    parser.add_argument("--evaluations", type=int, default=10 )
     parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--shielding", type=ShieldingConfig, choices=list(ShieldingConfig), default=ShieldingConfig.Full)

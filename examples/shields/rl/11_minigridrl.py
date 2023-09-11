@@ -71,7 +71,7 @@ def ppo(args):
         config.build()
     )    
     
-    for i in range(args.iterations):
+    for i in range(args.evaluations):
         result = algo.train()
         print(pretty_print(result))
 
@@ -103,7 +103,7 @@ def dqn(args):
         config.build()
     )
          
-    for i in range(args.iterations):
+    for i in range(args.evaluations):
         result = algo.train()
         print(pretty_print(result))
 
