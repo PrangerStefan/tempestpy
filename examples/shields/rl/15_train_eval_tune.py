@@ -139,7 +139,7 @@ def main():
 
     ppo(args)
    
-
+    ray.shutdown()
 
 if __name__ == '__main__':
     main()

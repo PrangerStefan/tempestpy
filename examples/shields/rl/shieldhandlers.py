@@ -69,7 +69,7 @@ class MiniGridShieldHandler(ShieldHandler):
 
             action_dictionary[state_valuation] = actions_to_be_executed
 
-        stormpy.shields.export_shield(model, shield, "Grid.shield")
+        # stormpy.shields.export_shield(model, shield, "Grid.shield")
        
         return action_dictionary
     
