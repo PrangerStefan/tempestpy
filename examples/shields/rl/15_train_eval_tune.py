@@ -20,7 +20,7 @@ from callbacks import MyCallbacks
  
 
 def shielding_env_creater(config):
-    name = config.get("name", "MiniGrid-LavaCrossingS9N1-v0")
+    name = config.get("name", "MiniGrid-LavaCrossingS9N3-v0")
     framestack = config.get("framestack", 4)
     args = config.get("args", None)
     args.grid_path = F"{args.grid_path}_{config.worker_index}.txt"
@@ -89,7 +89,6 @@ def ppo(args):
                                         "training_iteration": args.iterations}, 
                                 checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=2 ),
                                storage_path=F"{logdir}"
-                                #storage_path="../niceslogging/test"
     )
                         ,
     param_space=config,)

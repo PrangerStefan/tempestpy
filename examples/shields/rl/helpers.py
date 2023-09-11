@@ -88,7 +88,7 @@ def parse_arguments(argparse):
     parser.add_argument("--grid_to_prism_binary_path", default="./main")
     parser.add_argument("--grid_path", default="grid")
     parser.add_argument("--prism_path", default="grid")
-    parser.add_argument("--algorithm", default="ppo", choices=["ppo", "dqn"])
+    parser.add_argument("--algorithm", default="PPO", type=str.upper , choices=["PPO", "DQN"])
     parser.add_argument("--log_dir", default="../log_results/")
     parser.add_argument("--iterations", type=int, default=30 )
     parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"

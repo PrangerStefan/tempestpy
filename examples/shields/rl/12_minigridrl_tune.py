@@ -1,7 +1,9 @@
 import gymnasium as gym
 import minigrid
 
+from ray import tune, air
 from ray.tune import register_env
+from ray.rllib.algorithms.algorithm import Algorithm
 from ray.rllib.algorithms.ppo import PPOConfig
 from ray.rllib.algorithms.dqn.dqn import DQNConfig
 from ray.tune.logger import pretty_print
@@ -14,7 +16,8 @@ from helpers import parse_arguments, create_log_dir, ShieldingConfig
 from shieldhandlers import MiniGridShieldHandler, create_shield_query
 from callbacks import MyCallbacks
 
-from ray.tune.logger import TBXLogger   
+from torch.utils.tensorboard import SummaryWriter
+from ray.tune.logger import TBXLogger, UnifiedLogger, CSVLogger
 
 def shielding_env_creater(config):
     name = config.get("name", "MiniGrid-LavaCrossingS9N1-v0")
@@ -67,17 +70,8 @@ def ppo(args):
             "custom_model": "shielding_model"
         }))
     
-    algo =(   
-        config.build()
-    )    
+    return config
     
-    for i in range(args.iterations):
-        result = algo.train()
-        print(pretty_print(result))
-
-        if i % 5 == 0:
-            checkpoint_dir = algo.save()
-            print(f"Checkpoint saved in directory {checkpoint_dir}")
             
 
 def dqn(args):
@@ -99,18 +93,7 @@ def dqn(args):
             "custom_model": "shielding_model"
     })
     
-    algo = (
-        config.build()
-    )
-         
-    for i in range(args.iterations):
-        result = algo.train()
-        print(pretty_print(result))
-
-        if i % 5 == 0:
-            print("Saving checkpoint")
-            checkpoint_dir = algo.save()
-            print(f"Checkpoint saved in directory {checkpoint_dir}")
+    return config
             
 
 def main():
@@ -118,11 +101,31 @@ def main():
     args = parse_arguments(argparse)
 
     if args.algorithm == "PPO":
-        ppo(args)
+        config = ppo(args)
     elif args.algorithm == "DQN":
-        dqn(args)
+        config = dqn(args)
+        
+    logdir = create_log_dir(args)
+        
+    tuner = tune.Tuner(args.algorithm,
+                        tune_config=tune.TuneConfig(
+                            metric="episode_reward_mean",
+                            mode="max",
+                            num_samples=1,
+                            
+                        ),
+                        run_config=air.RunConfig(
+                                stop = {"episode_reward_mean": 94,
+                                        "timesteps_total": 12000,
+                                        "training_iteration": args.iterations}, 
+                                checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True, num_to_keep=2 ),
+                                storage_path=F"{logdir}"
+                        ),
+                        param_space=config,
+                    )
 
-
+    tuner.fit()
+ 
    
 
 
