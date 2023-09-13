@@ -49,7 +49,7 @@ class MiniGridShieldHandler(ShieldHandler):
     def __create_shield_dict(self):
         print(self.prism_path)
         program = stormpy.parse_prism_program(self.prism_path)
-        shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.1) 
+        shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) 
         
         formulas = stormpy.parse_properties_for_prism_program(self.formula, program)
         options = stormpy.BuilderOptions([p.raw_formula for p in formulas])
