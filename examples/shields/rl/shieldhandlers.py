@@ -12,6 +12,12 @@ from abc import ABC
 
 import os
 
+class Action():
+    def __init__(self, idx, prob=1, labels=[]) -> None:
+        self.idx = idx
+        self.prob = prob
+        self.labels = labels
+
 class ShieldHandler(ABC):
     def __init__(self) -> None:
         pass
@@ -41,6 +47,7 @@ class MiniGridShieldHandler(ShieldHandler):
         f.close()
         
     def __create_shield_dict(self):
+        print(self.prism_path)
         program = stormpy.parse_prism_program(self.prism_path)
         shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.1) 
         
@@ -56,6 +63,7 @@ class MiniGridShieldHandler(ShieldHandler):
         assert result.has_scheduler
         assert result.has_shield
         shield = result.shield
+        stormpy.shields.export_shield(model, shield, "Grid.shield")
         
         action_dictionary = {}
         shield_scheduler = shield.construct()
@@ -65,12 +73,11 @@ class MiniGridShieldHandler(ShieldHandler):
             choices = choice.choice_map
             state_valuation = model.state_valuations.get_string(stateID)
 
-            actions_to_be_executed = [(choice[1] ,model.choice_labeling.get_labels_of_choice(model.get_choice_index(stateID, choice[1]))) for choice in choices]
+            #actions_to_be_executed = [(choice[1] ,model.choice_labeling.get_labels_of_choice(model.get_choice_index(stateID, choice[1]))) for choice in choices]
+            actions_to_be_executed = [Action(idx= choice[1], prob=choice[0], labels=model.choice_labeling.get_labels_of_choice(model.get_choice_index(stateID, choice[1]))) for choice in choices]
 
             action_dictionary[state_valuation] = actions_to_be_executed
 
-        # stormpy.shields.export_shield(model, shield, "Grid.shield")
-       
         return action_dictionary
     
     

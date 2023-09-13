@@ -39,28 +39,21 @@ def extract_keys(env):
     return keys
 
 def create_log_dir(args):
-    return F"{args.log_dir}{args.algorithm}-shielding:{args.shielding}-evaluations:{args.evaluations}-steps:{args.steps}"
+    return F"{args.log_dir}{args.algorithm}-shielding:{args.shielding}-evaluations:{args.evaluations}-steps:{args.steps}-env:{args.env}"
 
 
 def get_action_index_mapping(actions):
     for action_str in actions:
-        if "left" in action_str:
+        if "move" in action_str:
+            return Actions.forward
+        elif "left" in action_str:
             return Actions.left
         elif "right" in action_str:
             return Actions.right
-        elif "east" in action_str: 
-            return Actions.forward
-        elif "south" in action_str:
-            return Actions.forward
-        elif "west" in action_str:
-            return Actions.forward
-        elif "north" in action_str:
-            return Actions.forward
         elif "pickup" in action_str:
             return Actions.pickup
         elif "done" in action_str:
-            return Actions.done
-    
+            return Actions.done    
     
     raise ValueError(F"Action string {action_str} not supported")
 
@@ -75,6 +68,10 @@ def parse_arguments(argparse):
                         choices=[
                                 "MiniGrid-LavaCrossingS9N1-v0",
                                 "MiniGrid-LavaCrossingS9N3-v0",
+                                "MiniGrid-LavaSlipperyS12-v0",
+                                "MiniGrid-LavaSlipperyS12-v1",
+                                "MiniGrid-LavaSlipperyS12-v2",
+                                "MiniGrid-LavaSlipperyS12-v3",
                                 # "MiniGrid-DoorKey-8x8-v0", 
                                 # "MiniGrid-LockedRoom-v0",
                                 # "MiniGrid-FourRooms-v0", 
