@@ -39,8 +39,10 @@ def extract_keys(env):
     return keys
 
 def create_log_dir(args):
-    return F"{args.log_dir}{args.algorithm}-shielding:{args.shielding}-evaluations:{args.evaluations}-steps:{args.steps}-env:{args.env}"
+    return F"{args.log_dir}sh:{args.shielding}-env:{args.env}"
 
+def test_name(args):
+    return F"sh:{args.shielding}-env:{args.env}"
 
 def get_action_index_mapping(actions):
     for action_str in actions:
