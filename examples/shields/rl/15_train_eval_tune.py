@@ -118,7 +118,7 @@ def ppo(args):
 ]
     pprint.pprint({k: v for k, v in best_result.metrics.items() if k in metrics_to_print})
 
-    algo = Algorithm.from_checkpoint(best_result.checkpoint)
+   # algo = Algorithm.from_checkpoint(best_result.checkpoint)
     
        
     # eval_log_dir = F"{logdir}-eval"
