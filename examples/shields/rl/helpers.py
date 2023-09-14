@@ -42,7 +42,7 @@ def create_log_dir(args):
     return F"{args.log_dir}sh:{args.shielding}-env:{args.env}"
 
 def test_name(args):
-    return F"{args.expname}-sh:{args.shielding}-env:{args.env}"
+    return F"{args.expname}"
 
 def get_action_index_mapping(actions):
     for action_str in actions:
