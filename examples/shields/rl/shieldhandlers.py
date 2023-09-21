@@ -8,6 +8,8 @@ import stormpy.logic
 import stormpy.examples
 import stormpy.examples.files
 
+
+from helpers import extract_doors, extract_keys
 from abc import ABC
 
 import os
@@ -44,6 +46,7 @@ class MiniGridShieldHandler(ShieldHandler):
     
         f = open(self.prism_path, "a")
         f.write("label \"AgentIsInLava\" = AgentIsInLava;")
+        f.write("label \"AgentIsInGoal\" = AgentIsInGoal;")
         f.close()
         
     def __create_shield_dict(self):
@@ -63,7 +66,7 @@ class MiniGridShieldHandler(ShieldHandler):
         assert result.has_scheduler
         assert result.has_shield
         shield = result.shield
-        stormpy.shields.export_shield(model, shield, "Grid.shield")
+        # stormpy.shields.export_shield(model, shield, "Grid.shield")
         
         action_dictionary = {}
         shield_scheduler = shield.construct()
@@ -73,7 +76,6 @@ class MiniGridShieldHandler(ShieldHandler):
             choices = choice.choice_map
             state_valuation = model.state_valuations.get_string(stateID)
 
-            #actions_to_be_executed = [(choice[1] ,model.choice_labeling.get_labels_of_choice(model.get_choice_index(stateID, choice[1]))) for choice in choices]
             actions_to_be_executed = [Action(idx= choice[1], prob=choice[0], labels=model.choice_labeling.get_labels_of_choice(model.get_choice_index(stateID, choice[1]))) for choice in choices]
 
             action_dictionary[state_valuation] = actions_to_be_executed
@@ -91,13 +93,52 @@ class MiniGridShieldHandler(ShieldHandler):
 def create_shield_query(env):
     coordinates = env.env.agent_pos
     view_direction = env.env.agent_dir
+    
+    keys = extract_keys(env)
+    doors = extract_doors(env)
+    
+    
+    if env.carrying:
+        carrying = F"Agent_is_carrying_object\t"
+    else:
+        carrying = "!Agent_is_carrying_object\t"
+    
+    key_positions = []
+    agent_key_status = []
+    
+    for key in keys:    
+        key_color = key[0].color
+        key_x = key[1]
+        key_y = key[2]
+       # '[!Agent_is_carrying_object\t& !Agent_has_yellow_key\t& !AgentDone\t& Dooryellowlocked\t& !Dooryellowopen\t& xAgent=1\t& yAgent=1\t& viewAgent=0\t& xKeyyellow=2\t& yKeyyellow=2]'
+        if env.carrying and env.carrying.type == "key":
+            agent_key_text = F"Agent_has_{env.carrying.color}_key\t& "
+            key_position = F"xKey{key_color}={key_x}\t& yKey{key_color}={key_y}\t"
+        else:
+            agent_key_text = F"!Agent_has_{key_color}_key\t& "
+            key_position = F"xKey{key_color}={key_x}\t& yKey{key_color}={key_y}\t"
+        
+        key_positions.append(key_position)            
+        agent_key_status.append(agent_key_text)
+    
+    key_positions[-1] = key_positions[-1].strip()
+    
+    door_status = []
+    for door in doors:
+        status = ""
+        if door.is_open:
+            status = F"!Door{door.color}locked\t& Door{door.color}open\t&"
+        elif door.is_locked:
+            status = F"Door{door.color}locked\t& !Door{door.color}open\t&"
+        else:
+            status = F"!Door{door.color}locked\t& !Door{door.color}open\t&"
+            
+        door_status.append(status)
+        
 
-    key_text = ""
+    
+    agent_position = F"xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}"    
+    query = f"[{carrying}& {''.join(agent_key_status)}!AgentDone\t& {''.join(door_status)} {agent_position}\t& {''.join(key_positions)}]"
 
-    # only support one key for now
-   
-    #print(F"Agent pos is {self.env.agent_pos} and direction {self.env.agent_dir} ")
-    cur_pos_str = f"[{key_text}!AgentDone\t& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}]"
-
-    return cur_pos_str
+    return query
     
