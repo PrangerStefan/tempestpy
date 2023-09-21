@@ -66,7 +66,7 @@ class MiniGridShieldHandler(ShieldHandler):
         assert result.has_scheduler
         assert result.has_shield
         shield = result.shield
-        # stormpy.shields.export_shield(model, shield, "Grid.shield")
+        stormpy.shields.export_shield(model, shield, "Grid.shield")
         
         action_dictionary = {}
         shield_scheduler = shield.construct()

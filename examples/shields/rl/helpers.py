@@ -71,8 +71,12 @@ def get_action_index_mapping(actions):
             return Actions.done    
         elif "drop" in action_str:
             return Actions.drop
+        elif "toggle" in action_str:
+            return Actions.toggle
+        elif "unlock" in action_str:
+            return Actions.toggle
     
-    raise ValueError(F"Action string {action_str} not supported")
+    return Actions.done
 
 
 

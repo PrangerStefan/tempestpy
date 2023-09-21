@@ -24,9 +24,10 @@ def shielding_env_creater(config):
     args.prism_path = F"{args.prism_path}_{config.worker_index}.prism"
     
     shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula)
-    
     env = gym.make(name)
-    env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, shield_query_creator=create_shield_query)
+    env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, 
+                                   shield_query_creator=create_shield_query,
+                                   create_shield_at_reset=args.shield_creation_at_reset)
     # env = minigrid.wrappers.ImgObsWrapper(env)
     # env = ImgObsWrapper(env)
     env = OneHotShieldingWrapper(env,
@@ -78,6 +79,8 @@ def ppo(args):
         if i % 5 == 0:
             checkpoint_dir = algo.save()
             print(f"Checkpoint saved in directory {checkpoint_dir}")
+    
+    algo.save()
             
 
 def dqn(args):
