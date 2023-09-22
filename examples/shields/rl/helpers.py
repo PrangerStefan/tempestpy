@@ -37,7 +37,7 @@ def extract_keys(env):
     
     if env.carrying and env.carrying.type == "key":
         keys.append((env.carrying, -1, -1))
-    
+    # TODO Maybe need to add ordering of keys so it matches the order in the shield
     return keys
 
 def extract_doors(env):
@@ -50,6 +50,18 @@ def extract_doors(env):
                 doors.append(obj)
                 
     return doors
+
+def extract_adversaries(env):
+    adv = []
+    
+    if not hasattr(env, "adversaries"):
+        return []
+    
+    for color, adversary in env.adversaries.items():
+        adv.append(adversary)
+    
+    
+    return adv
 
 def create_log_dir(args):
     return F"{args.log_dir}sh:{args.shielding}-env:{args.env}"
@@ -87,6 +99,7 @@ def parse_arguments(argparse):
                         help="gym environment to load", 
                         default="MiniGrid-LavaCrossingS9N1-v0", 
                         choices=[
+                                "MiniGrid-Adv-8x8-v0",
                                 "MiniGrid-LavaCrossingS9N1-v0",
                                 "MiniGrid-LavaCrossingS9N3-v0",
                                 "MiniGrid-LavaSlipperyS12-v0",
@@ -94,10 +107,10 @@ def parse_arguments(argparse):
                                 "MiniGrid-LavaSlipperyS12-v2",
                                 "MiniGrid-LavaSlipperyS12-v3",
                                 "MiniGrid-DoorKey-8x8-v0",
-                                "MiniGrid-DoubleDoor-16x16-v0",
-                                "MiniGrid-DoubleDoor-12x12-v0",
-                                "MiniGrid-DoubleDoor-10x8-v0",
-                                "MiniGrid-SingleDoor-7x6-v0",
+                                # "MiniGrid-DoubleDoor-16x16-v0",
+                                # "MiniGrid-DoubleDoor-12x12-v0",
+                                # "MiniGrid-DoubleDoor-10x8-v0",
+                                # "MiniGrid-SingleDoor-7x6-v0",
                                 # "MiniGrid-LockedRoom-v0",
                                 # "MiniGrid-FourRooms-v0", 
                                 # "MiniGrid-LavaGapS7-v0",
