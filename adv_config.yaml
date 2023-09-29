@@ -1,0 +1,12 @@
+---
+labels:
+  - label: "AgentIsInGoal"
+    text: "AgentIsInGoal"
+  - label: "AgentRanIntoAdversary"
+    text: "AgentRanIntoAdversary"
+
+formulas:
+  - formula: "AgentRanIntoAdversary"
+    content: "(xAgent=xBlue) & (yAgent=yBlue)"
+  
+...

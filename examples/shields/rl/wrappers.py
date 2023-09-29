@@ -110,7 +110,7 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
         cur_pos_str = self.shield_query_creator(self.env)
         # print(F"Pos string {cur_pos_str}")
         # print(F"Shield {list(self.shield.keys())[0]}")
-        # print(cur_pos_str in self.shield)
+        # print(F"Is pos str in shield: {cur_pos_str in self.shield}")
         # Create the mask
         # If shield restricts action mask only valid with 1.0
         # else set all actions as valid
@@ -127,6 +127,8 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
                     assert(False)
                 
                 allowed =  random.choices([0.0, 1.0], weights=(1 - allowed_action.prob, allowed_action.prob))[0]
+                if allowed_action.prob == 0 and allowed:
+                    assert False
                 mask[index] = allowed               
                      
         else:
@@ -141,7 +143,7 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
             
         if front_tile and front_tile.type == "door":
             mask[Actions.toggle] = 1.0
-            
+        # print(F"Mask is {mask} State: {cur_pos_str}")
         return mask
 
     def reset(self, *, seed=None, options=None):

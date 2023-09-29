@@ -71,6 +71,9 @@ def test_name(args):
 
 def get_action_index_mapping(actions):
     for action_str in actions:
+        if not "Agent" in action_str:
+            continue
+        
         if "move" in action_str:
             return Actions.forward
         elif "left" in action_str:
@@ -88,9 +91,8 @@ def get_action_index_mapping(actions):
         elif "unlock" in action_str:
             return Actions.toggle
     
-    return Actions.done
-
-
+    raise ValueError("No action mapping found")
+    
 
 def parse_arguments(argparse):
     parser = argparse.ArgumentParser()
@@ -100,6 +102,8 @@ def parse_arguments(argparse):
                         default="MiniGrid-LavaCrossingS9N1-v0", 
                         choices=[
                                 "MiniGrid-Adv-8x8-v0",
+                                "MiniGrid-AdvSimple-8x8-v0",
+                                "MiniGrid-SingleDoor-7x6-v0",
                                 "MiniGrid-LavaCrossingS9N1-v0",
                                 "MiniGrid-LavaCrossingS9N3-v0",
                                 "MiniGrid-LavaSlipperyS12-v0",
@@ -110,7 +114,6 @@ def parse_arguments(argparse):
                                 # "MiniGrid-DoubleDoor-16x16-v0",
                                 # "MiniGrid-DoubleDoor-12x12-v0",
                                 # "MiniGrid-DoubleDoor-10x8-v0",
-                                # "MiniGrid-SingleDoor-7x6-v0",
                                 # "MiniGrid-LockedRoom-v0",
                                 # "MiniGrid-FourRooms-v0", 
                                 # "MiniGrid-LavaGapS7-v0",
@@ -126,7 +129,8 @@ def parse_arguments(argparse):
     parser.add_argument("--algorithm", default="PPO", type=str.upper , choices=["PPO", "DQN"])
     parser.add_argument("--log_dir", default="../log_results/")
     parser.add_argument("--evaluations", type=int, default=10 )
-    parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
+    # parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
+    parser.add_argument("--formula", default="Pmax=? [G !\"AgentRanIntoAdversary\"]") 
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--shielding", type=ShieldingConfig, choices=list(ShieldingConfig), default=ShieldingConfig.Full)
     parser.add_argument("--steps", default=20_000, type=int)

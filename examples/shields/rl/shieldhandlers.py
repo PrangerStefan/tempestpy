@@ -40,13 +40,12 @@ class MiniGridShieldHandler(ShieldHandler):
 
     
     def __create_prism(self):
-        result = os.system(F"{self.grid_to_prism_path} -v 'Agent,Blue' -i {self.grid_file} -o {self.prism_path}")
+        result = os.system(F"{self.grid_to_prism_path} -v 'Agent,Blue' -i {self.grid_file} -o {self.prism_path} -c adv_config.yaml")
     
         assert result == 0, "Prism file could not be generated"
     
         f = open(self.prism_path, "a")
         f.write("label \"AgentIsInLava\" = AgentIsInLava;")
-        f.write("label \"AgentIsInGoal\" = AgentIsInGoal;")
         f.close()
         
     def __create_shield_dict(self):
@@ -63,7 +62,6 @@ class MiniGridShieldHandler(ShieldHandler):
         
         result = stormpy.model_checking(model, formulas[0], extract_scheduler=True, shield_expression=shield_specification)
         
-        assert result.has_scheduler
         assert result.has_shield
         shield = result.shield
         stormpy.shields.export_shield(model, shield, "Grid.shield")
@@ -172,8 +170,13 @@ def create_shield_query(env):
     if key_positions:
         key_positions_text = F"\t& {''.join(key_positions)}"
     
+    move_text = ""
+    
+    if adversaries:
+        move_text = F"move=0\t& "
+    
     agent_position = F"xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}"    
-    query = f"[{agent_carrying}& {''.join(agent_key_status)}!AgentDone\t{adv_status_text}{door_status_text}{agent_position}{adv_positions_text}{key_positions_text}]"
+    query = f"[{agent_carrying}& {''.join(agent_key_status)}!AgentDone\t{adv_status_text}{move_text}{door_status_text}{agent_position}{adv_positions_text}{key_positions_text}]"
 
     return query
     
