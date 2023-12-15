@@ -20,13 +20,15 @@ def shielding_env_creater(config):
     name = config.get("name", "MiniGrid-LavaCrossingS9N1-v0")
     framestack = config.get("framestack", 4)
     args = config.get("args", None)
-    args.grid_path = F"{args.grid_path}_{config.worker_index}.txt"
-    args.prism_path = F"{args.prism_path}_{config.worker_index}.prism"
+    args.grid_path = F"{args.grid_path}_{config.worker_index}_{args.prism_config}.txt"
+    args.prism_path = F"{args.prism_path}_{config.worker_index}_{args.prism_config}.prism"
     
-    shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula)
+
+    shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula, args.shield_value, args.prism_config)
     env = gym.make(name)
     env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, 
                                    shield_query_creator=create_shield_query,
+                                   mask_actions=args.shielding != ShieldingConfig.Disabled,
                                    create_shield_at_reset=args.shield_creation_at_reset)
     # env = minigrid.wrappers.ImgObsWrapper(env)
     # env = ImgObsWrapper(env)
@@ -63,15 +65,18 @@ def ppo(args):
         .debugging(logger_config={
             "type": TBXLogger, 
             "logdir": create_log_dir(args)
-        })
+        })    
+        # .exploration(exploration_config={"exploration_fraction": 0.1})
         .training(_enable_learner_api=False ,model={
             "custom_model": "shielding_model"
         }))
-    
+    # config.entropy_coeff =  0.05
     algo =(   
         config.build()
-    )    
+    )   
     
+    
+
     for i in range(args.evaluations):
         result = algo.train()
         print(pretty_print(result))

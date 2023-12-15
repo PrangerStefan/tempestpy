@@ -64,7 +64,7 @@ def extract_adversaries(env):
     return adv
 
 def create_log_dir(args):
-    return F"{args.log_dir}sh:{args.shielding}-env:{args.env}"
+    return F"{args.log_dir}sh:{args.shielding}-value:{args.shield_value}-env:{args.env}-conf:{args.prism_config}"
 
 def test_name(args):
     return F"{args.expname}"
@@ -99,7 +99,7 @@ def parse_arguments(argparse):
     # parser.add_argument("--env", help="gym environment to load", default="MiniGrid-Empty-8x8-v0")
     parser.add_argument("--env", 
                         help="gym environment to load", 
-                        default="MiniGrid-LavaCrossingS9N1-v0", 
+                        default="MiniGrid-LavaSlipperyS12-v2", 
                         choices=[
                                 "MiniGrid-Adv-8x8-v0",
                                 "MiniGrid-AdvSimple-8x8-v0",
@@ -128,14 +128,17 @@ def parse_arguments(argparse):
     parser.add_argument("--prism_path", default="grid")
     parser.add_argument("--algorithm", default="PPO", type=str.upper , choices=["PPO", "DQN"])
     parser.add_argument("--log_dir", default="../log_results/")
-    parser.add_argument("--evaluations", type=int, default=10 )
-    # parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
-    parser.add_argument("--formula", default="Pmax=? [G !\"AgentRanIntoAdversary\"]") 
+    parser.add_argument("--evaluations", type=int, default=30 )
+    parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
+    # parser.add_argument("--formula", default="<<Agent>> Pmax=? [G <= 4 !\"AgentRanIntoAdversary\"]")
     parser.add_argument("--workers", type=int, default=1)
     parser.add_argument("--shielding", type=ShieldingConfig, choices=list(ShieldingConfig), default=ShieldingConfig.Full)
     parser.add_argument("--steps", default=20_000, type=int)
     parser.add_argument("--expname", default="exp")
     parser.add_argument("--shield_creation_at_reset", action=argparse.BooleanOptionalAction)
+    parser.add_argument("--prism_config",  default=None)
+    parser.add_argument("--shield_value", default=0.9, type=float)
+    # parser.add_argument("--random_starts", default=1, type=int)
     args = parser.parse_args()
     
     return args

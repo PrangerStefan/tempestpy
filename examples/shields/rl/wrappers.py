@@ -102,15 +102,20 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
         self.shield = shield_creator.create_shield(env=self.env)
         self.mask_actions = mask_actions
         self.shield_query_creator = shield_query_creator
+        print(F"Shielding is {self.mask_actions}")
 
     def create_action_mask(self):
+        # print(F"{self.mask_actions} No shielding")
         if not self.mask_actions:
-            return np.array([1.0] * self.max_available_actions, dtype=np.int8)
+            # print("No shielding")
+            ret = np.array([1.0] * self.max_available_actions, dtype=np.int8)
+            # print(ret)
+            return ret
         
         cur_pos_str = self.shield_query_creator(self.env)
         # print(F"Pos string {cur_pos_str}")
         # print(F"Shield {list(self.shield.keys())[0]}")
-        # print(F"Is pos str in shield: {cur_pos_str in self.shield}")
+        # print(F"Is pos str in shield: {cur_pos_str in self.shield}, Position Str {cur_pos_str}")
         # Create the mask
         # If shield restricts action mask only valid with 1.0
         # else set all actions as valid
@@ -119,6 +124,9 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
 
         if cur_pos_str in self.shield and self.shield[cur_pos_str]:
             allowed_actions = self.shield[cur_pos_str]
+            zeroes = np.array([0.0] * len(allowed_actions), dtype=np.int8)
+            has_allowed_actions = False
+
             for allowed_action in allowed_actions:
                 index =  get_action_index_mapping(allowed_action.labels) # Allowed_action is a set
                 if index is None:
@@ -129,8 +137,14 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
                 allowed =  random.choices([0.0, 1.0], weights=(1 - allowed_action.prob, allowed_action.prob))[0]
                 if allowed_action.prob == 0 and allowed:
                     assert False
+                if allowed:
+                    has_allowed_actions = True
                 mask[index] = allowed               
-                     
+            
+            # if not has_allowed_actions:
+            #     print(F"No action allowed for pos string {cur_pos_str}")
+            #     assert(False)
+
         else:
             for index, x in enumerate(mask):
                 mask[index] = 1.0
@@ -186,6 +200,7 @@ class MiniGridSbShieldingWrapper(gym.core.Wrapper):
         self.shield_creator = shield_creator
         self.mask_actions = mask_actions
         self.shield_query_creator = shield_query_creator
+        print(F"Shielding is {self.mask_actions}")
 
     def create_action_mask(self):
         if not self.mask_actions:

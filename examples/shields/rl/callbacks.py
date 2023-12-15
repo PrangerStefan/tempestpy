@@ -44,6 +44,14 @@ class MyCallbacks(DefaultCallbacks):
         episode.user_data["count"] = episode.user_data["count"] + 1
         env = base_env.get_sub_environments()[0]
         # print(env.printGrid())
+
+        if hasattr(env, "adversaries"):
+            for adversary in env.adversaries.values():
+                if adversary.cur_pos[0] == env.agent_pos[0] and adversary.cur_pos[1] == env.agent_pos[1]:
+                    print(F"Adversary ran into agent. Adversary {adversary.cur_pos}, Agent {env.agent_pos}")
+                    # assert False
+                
+         
     
     def on_episode_end(self, *, worker: RolloutWorker, base_env: BaseEnv, policies, episode, env_index, **kwargs) -> None:
         # print(F"Epsiode end Environment: {base_env.get_sub_environments()}")

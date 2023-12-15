@@ -33,8 +33,8 @@ def shielding_env_creater(config):
                                            prism_path=args.prism_path,
                                            formula=args.formula)
     
-    env = gym.make(name)
-    env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, shield_query_creator=create_shield_query ,mask_actions=shielding)
+    env = gym.make(name, randomize_start=True)
+    env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, shield_query_creator=create_shield_query ,mask_actions=shielding != ShieldingConfig.Disabled)
 
     env = OneHotShieldingWrapper(env,
                         config.vector_index if hasattr(config, "vector_index") else 0,

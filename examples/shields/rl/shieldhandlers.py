@@ -27,11 +27,13 @@ class ShieldHandler(ABC):
         pass
 
 class MiniGridShieldHandler(ShieldHandler):
-    def __init__(self, grid_file, grid_to_prism_path, prism_path, formula) -> None:
+    def __init__(self, grid_file, grid_to_prism_path, prism_path, formula, shield_value=0.9 ,prism_config=None) -> None:
         self.grid_file = grid_file
         self.grid_to_prism_path = grid_to_prism_path
         self.prism_path = prism_path
         self.formula = formula
+        self.prism_config = prism_config
+        self.shield_value = shield_value
     
     def __export_grid_to_text(self, env):
         f = open(self.grid_file, "w")
@@ -40,7 +42,12 @@ class MiniGridShieldHandler(ShieldHandler):
 
     
     def __create_prism(self):
-        result = os.system(F"{self.grid_to_prism_path} -v 'Agent,Blue' -i {self.grid_file} -o {self.prism_path} -c adv_config.yaml")
+        # result = os.system(F"{self.grid_to_prism_path} -v 'Agent,Blue' -i {self.grid_file} -o {self.prism_path} -c adv_config.yaml")
+        if self.prism_config is None:
+            result = os.system(F"{self.grid_to_prism_path} -v 'Agent' -i {self.grid_file} -o {self.prism_path}")
+        else:
+            result = os.system(F"{self.grid_to_prism_path} -v 'Agent' -i {self.grid_file} -o {self.prism_path} -c {self.prism_config}")
+        # result = os.system(F"{self.grid_to_prism_path} -v 'Agent' -i {self.grid_file} -o {self.prism_path} -c adv_config.yaml")
     
         assert result == 0, "Prism file could not be generated"
     
@@ -51,7 +58,7 @@ class MiniGridShieldHandler(ShieldHandler):
     def __create_shield_dict(self):
         print(self.prism_path)
         program = stormpy.parse_prism_program(self.prism_path)
-        shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, 0.9) 
+        shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, self.shield_value) 
         
         formulas = stormpy.parse_properties_for_prism_program(self.formula, program)
         options = stormpy.BuilderOptions([p.raw_formula for p in formulas])
@@ -175,7 +182,7 @@ def create_shield_query(env):
     if adversaries:
         move_text = F"move=0\t& "
     
-    agent_position = F"xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}"    
+    agent_position = F"& xAgent={coordinates[0]}\t& yAgent={coordinates[1]}\t& viewAgent={view_direction}"    
     query = f"[{agent_carrying}& {''.join(agent_key_status)}!AgentDone\t{adv_status_text}{move_text}{door_status_text}{agent_position}{adv_positions_text}{key_positions_text}]"
 
     return query
