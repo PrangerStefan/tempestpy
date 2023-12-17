@@ -25,7 +25,7 @@ def shielding_env_creater(config):
     
 
     shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula, args.shield_value, args.prism_config)
-    env = gym.make(name)
+    env = gym.make(name, randomize_start=True)
     env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, 
                                    shield_query_creator=create_shield_query,
                                    mask_actions=args.shielding != ShieldingConfig.Disabled,

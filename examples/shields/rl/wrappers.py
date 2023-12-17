@@ -134,7 +134,7 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
                     print(F"Shield at pos {cur_pos_str}, shield {self.shield[cur_pos_str]}")                    
                     assert(False)
                 
-                allowed =  random.choices([0.0, 1.0], weights=(1 - allowed_action.prob, allowed_action.prob))[0]
+                allowed =  1.0 # random.choices([0.0, 1.0], weights=(1 - allowed_action.prob, allowed_action.prob))[0]
                 if allowed_action.prob == 0 and allowed:
                     assert False
                 if allowed:
