@@ -138,6 +138,10 @@ def parse_arguments(argparse):
     parser.add_argument("--shield_creation_at_reset", action=argparse.BooleanOptionalAction)
     parser.add_argument("--prism_config",  default=None)
     parser.add_argument("--shield_value", default=0.9, type=float)
+    parser.add_argument("--prob_direct", default=1/4, type=float)
+    parser.add_argument("--prob_forward", default=3/4, type=float)
+    parser.add_argument("--prob_next", default=1/8, type=float)
+    parser.add_argument("--shield_comparision", default='relative', choices=['relative', 'absolute'])
     # parser.add_argument("--random_starts", default=1, type=int)
     args = parser.parse_args()
     

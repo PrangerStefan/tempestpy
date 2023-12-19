@@ -23,9 +23,19 @@ def shielding_env_creater(config):
     args.grid_path = F"{args.grid_path}_{config.worker_index}_{args.prism_config}.txt"
     args.prism_path = F"{args.prism_path}_{config.worker_index}_{args.prism_config}.prism"
     
+    prob_forward = args.prob_forward
+    prob_direct = args.prob_direct
+    prob_next = args.prob_next
 
-    shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula, args.shield_value, args.prism_config)
-    env = gym.make(name, randomize_start=True)
+    shield_creator = MiniGridShieldHandler(args.grid_path, 
+                                            args.grid_to_prism_binary_path,
+                                            args.prism_path, 
+                                            args.formula,
+                                            args.shield_value,
+                                            args.prism_config,
+                                            shield_comparision=args.shield_comparision)
+
+    env = gym.make(name, randomize_start=True,probability_forward=prob_forward, probability_direct_neighbour=prob_direct, probability_next_neighbour=prob_next)
     env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, 
                                    shield_query_creator=create_shield_query,
                                    mask_actions=args.shielding != ShieldingConfig.Disabled,

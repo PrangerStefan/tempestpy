@@ -27,13 +27,14 @@ class ShieldHandler(ABC):
         pass
 
 class MiniGridShieldHandler(ShieldHandler):
-    def __init__(self, grid_file, grid_to_prism_path, prism_path, formula, shield_value=0.9 ,prism_config=None) -> None:
+    def __init__(self, grid_file, grid_to_prism_path, prism_path, formula, shield_value=0.9 ,prism_config=None, shield_comparision='relative') -> None:
         self.grid_file = grid_file
         self.grid_to_prism_path = grid_to_prism_path
         self.prism_path = prism_path
         self.formula = formula
         self.prism_config = prism_config
         self.shield_value = shield_value
+        self.shield_comparision = shield_comparision
     
     def __export_grid_to_text(self, env):
         f = open(self.grid_file, "w")
@@ -58,7 +59,13 @@ class MiniGridShieldHandler(ShieldHandler):
     def __create_shield_dict(self):
         print(self.prism_path)
         program = stormpy.parse_prism_program(self.prism_path)
-        shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, stormpy.logic.ShieldComparison.RELATIVE, self.shield_value) 
+
+        shield_comp = stormpy.logic.ShieldComparison.RELATIVE
+
+        if self.shield_comparision == 'absolute':
+            shield_comp = stormpy.logic.ShieldComparison.ABSOLUTE
+
+        shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, shield_comp, self.shield_value) 
         
         formulas = stormpy.parse_properties_for_prism_program(self.formula, program)
         options = stormpy.BuilderOptions([p.raw_formula for p in formulas])
