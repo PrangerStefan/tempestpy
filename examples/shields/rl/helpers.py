@@ -64,7 +64,7 @@ def extract_adversaries(env):
     return adv
 
 def create_log_dir(args):
-    return F"{args.log_dir}sh:{args.shielding}-value:{args.shield_value}-env:{args.env}-conf:{args.prism_config}"
+    return F"{args.log_dir}sh:{args.shielding}-value:{args.shield_value}-comp:{args.shield_comparision}-env:{args.env}-conf:{args.prism_config}"
 
 def test_name(args):
     return F"{args.expname}"
