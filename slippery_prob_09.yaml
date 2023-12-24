@@ -1,0 +1,39 @@
+---
+labels:
+  - label: "AgentIsInGoal"
+    text: "AgentIsInGoal"
+
+constants:
+  - constant: "prop_slippery_turn"
+    type: "double"
+    value: "9/9"
+    overwrite: True
+  - constant: "prop_next_neighbour_turn"
+    type: "double"
+    value: "0/9"
+    overwrite: True
+  - constant: "prop_slippery_move_forward"
+    type: "double"
+    value: "9/10"
+    overwrite: True
+  - constant: "prop_direct_neighbour"
+    type: "double"
+    value: "1/10"
+    overwrite: True  
+  - constant: "prop_next_neighbour"
+    type: "double"
+    value: "1/20"
+    overwrite: True
+  - constant: "total_prop"
+    type: "double"
+    value: "4"
+    overwrite: True
+...
+
+# const double prop_zero = 0/9;
+# const double prop_next_neighbour = 1/9;
+# const double prop_slippery_move_forward = 7/9;
+# const double prop_slippery_turn = 6/9;
+# const double prop_next_neighbour_turn = 1/9;
+# const double prop_direct_neighbour = 2/9;
+# const double total_prop = 9;
