@@ -10,7 +10,7 @@ from ray.tune.logger import UnifiedLogger
 from ray.rllib.models import ModelCatalog
 from ray.tune.logger import pretty_print, UnifiedLogger, CSVLogger
 from ray.rllib.algorithms.algorithm import Algorithm
-from ray.rllib.algorithm.callbacks import make_multi_callbacks
+from ray.rllib.algorithms.callbacks import make_multi_callbacks
 from ray.air import session
 
 from torch_action_mask_model import TorchActionMaskModel
