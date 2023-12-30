@@ -34,7 +34,7 @@ class MyCallbacks(DefaultCallbacks):
 
     def on_episode_start(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode, env_index, **kwargs) -> None:
         file_writer = tf.summary.create_file_writer(worker.io_context.log_dir)
-        with self.file_writer.as_default():
+        with file_writer.as_default():
             tf.summary.text("first_text_from_episode_start", "testing_in_episode", step=0)
         # print(F"Epsiode started Environment: {base_env.get_sub_environments()}")
         env = base_env.get_sub_environments()[0]
