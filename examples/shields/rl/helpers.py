@@ -132,6 +132,7 @@ def parse_arguments(argparse):
     parser.add_argument("--formula", default="Pmax=? [G !\"AgentIsInLavaAndNotDone\"]")  # formula_str = "Pmax=? [G ! \"AgentIsInGoalAndNotDone\"]"
     # parser.add_argument("--formula", default="<<Agent>> Pmax=? [G <= 4 !\"AgentRanIntoAdversary\"]")
     parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument("--num_gpus", type=float, default=0)
     parser.add_argument("--shielding", type=ShieldingConfig, choices=list(ShieldingConfig), default=ShieldingConfig.Full)
     parser.add_argument("--steps", default=20_000, type=int)
     parser.add_argument("--expname", default="exp")
