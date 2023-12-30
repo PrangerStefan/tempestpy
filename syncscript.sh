@@ -2,9 +2,9 @@
 
 . ../env/bin/activate
 
-commit_message="$(git log -1 --oneline | sed 's/\s/_/g')"
+commit_message="$(git log -1 --pretty=format:"%s_%h" | sed 's/\s/_/g')"
 git diff --quiet || commit_message="${commit_message}_dirty"
-datetime="$(date +%Y%m%d_%H%M%S)"
+datetime="$(date +%Y%-m-%dT%H:%M:%S)"
 
 exp_name="${commit_message}-${datetime}"
 experiment_log_dir="${2}/${exp_name}"
