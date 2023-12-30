@@ -78,7 +78,7 @@ def ppo(args):
                                   "shielding": args.shielding is ShieldingConfig.Full or args.shielding is ShieldingConfig.Training,
                                   },)
         .framework("torch")
-        .callbacks(MyCallbacks, ShieldInfoCallback(logdir, [1,12]))
+        .callbacks(MyCallbacks, ShieldInfoCallback)
         .evaluation(evaluation_config={
                                        "evaluation_interval": 1,
                                         "evaluation_duration": 10,
