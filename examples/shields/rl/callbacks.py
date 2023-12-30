@@ -28,7 +28,7 @@ class ShieldInfoCallback(DefaultCallbacks):
 
 class MyCallbacks(DefaultCallbacks):
     def on_algorithm_init(self, algorithm: Algorithm, **kwargs):
-        file_writer = tf.summary.create_file_writer(algorithm.log_dir)
+        file_writer = tf.summary.create_file_writer(algorithm.logdir)
         with file_writer.as_default():
             tf.summary.text("first_text", "testing", step=0)
 
