@@ -2,8 +2,12 @@
 
 import subprocess
 
-slippery_configs=["slippery_prob_075.yaml", "slippery_prob_08.yaml","slippery_prob_085.yaml","slippery_prob_09.yaml",
-                  "slippery_prob_095.yaml", "slippery_prob_1.yaml"]
+slippery_configs=["/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_075.yaml", 
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_08.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_085.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_09.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_095.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_1.yaml"]
 
 slippery_probs=[[0.125, 0.25, 0.75], # 0.75
                 [0.1, 0.2, 0.8],     # 0.8
@@ -26,6 +30,6 @@ for sh in shielding:
     for sh_comp in ["relative", "absolute"]:
       for probs, config in prob_confs:
         command = f"echo \"Running experiment with sh:{sh}, sh_value:{probs[2]}, sh_comp:{sh_comp}, probvalues:{probs}, config{config}\""    
-        execute_command = f'./syncscript.sh {250000} {"../logresults/"} {"70"} {"MiniGrid-LavaSlipperyS12-v2"} {sh} {sh_comp} {config} {probs[0]} {probs[1]} {probs[2]} {shield_value}'
+        execute_command = f'./syncscript_local.sh {250000} {"../logresults/"} {"70"} {"MiniGrid-LavaSlipperyS12-v2"} {sh} {sh_comp} {config} {probs[0]} {probs[1]} {probs[2]} {shield_value}'
         subprocess.call(execute_command, shell=True)#.decode("utf-8").split('\n')
     

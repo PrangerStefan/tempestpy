@@ -2,8 +2,13 @@
 
 import subprocess
 
-slippery_configs=["slippery_prob_075.yaml", "slippery_prob_08.yaml","slippery_prob_085.yaml","slippery_prob_09.yaml",
-                  "slippery_prob_095.yaml", "slippery_prob_1.yaml"]
+slippery_configs=["/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_075.yaml", 
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_08.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_085.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_09.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_095.yaml",
+                  "/home/knolli/Documents/University/Thesis/tempest-py/slippery_prob_1.yaml"]
+
 
 slippery_probs=[[0.125, 0.25, 0.75], # 0.75
                 [0.1, 0.2, 0.8],     # 0.8
