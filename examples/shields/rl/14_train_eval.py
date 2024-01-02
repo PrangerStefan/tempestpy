@@ -53,7 +53,7 @@ def register_minigrid_shielding_env(args):
 
 def ppo(args):
     register_minigrid_shielding_env(args)
-    
+    train_batch_size = 4000
     config = (PPOConfig()
         .rollouts(num_rollout_workers=args.workers)
         .resources(num_gpus=0)
@@ -74,18 +74,17 @@ def ppo(args):
         })
         .training(_enable_learner_api=False ,model={
             "custom_model": "shielding_model"      
-        }))
+        }, train_batch_size=train_batch_size))
     
     algo =(
         
         config.build()
     )
     
-    evaluations = args.evaluations
     
+    iterations = int((args.steps / train_batch_size)) + 1
     
-    
-    for i in range(evaluations):
+    for i in range(iterations):
         algo.train()
     
         if i % 5 == 0:
