@@ -14,43 +14,11 @@ from ray.rllib.algorithms.callbacks import make_multi_callbacks
 from ray.air import session
 
 from torch_action_mask_model import TorchActionMaskModel
-from wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
-from helpers import parse_arguments, create_log_dir, ShieldingConfig, test_name
-from shieldhandlers import MiniGridShieldHandler, create_shield_query
+from rllibutils import OneHotShieldingWrapper, MiniGridShieldingWrapper, shielding_env_creater
+from utils import MiniGridShieldHandler, create_shield_query, parse_arguments, create_log_dir, ShieldingConfig, test_name
 
 from torch.utils.tensorboard import SummaryWriter
-from callbacks import MyCallbacks
-
-
-def shielding_env_creater(config):
-    name = config.get("name", "MiniGrid-LavaCrossingS9N3-v0")
-    framestack = config.get("framestack", 4)
-    args = config.get("args", None)
-    args.grid_path = F"{args.expname}_{args.grid_path}_{config.worker_index}.txt"
-    args.prism_path = F"{args.expname}_{args.prism_path}_{config.worker_index}.prism"
-    shielding = config.get("shielding", False)
-    shield_creator = MiniGridShieldHandler(grid_file=args.grid_path,
-                                           grid_to_prism_path=args.grid_to_prism_binary_path,
-                                           prism_path=args.prism_path,
-                                           formula=args.formula,
-                                           shield_value=args.shield_value,
-                                           prism_config=args.prism_config,
-                                           shield_comparision=args.shield_comparision)
-
-    prob_forward = args.prob_forward
-    prob_direct = args.prob_direct
-    prob_next = args.prob_next
-
-    env = gym.make(name, randomize_start=True,probability_forward=prob_forward, probability_direct_neighbour=prob_direct, probability_next_neighbour=prob_next)
-    env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, shield_query_creator=create_shield_query ,mask_actions=shielding != ShieldingConfig.Disabled)
-
-    env = OneHotShieldingWrapper(env,
-                        config.vector_index if hasattr(config, "vector_index") else 0,
-                        framestack=framestack
-                        )
-
-
-    return env
+from callbacks import CustomCallback
 
 
 def register_minigrid_shielding_env(args):
@@ -79,7 +47,7 @@ def ppo(args):
                                   "shielding": args.shielding is ShieldingConfig.Full or args.shielding is ShieldingConfig.Training,
                                   },)
         .framework("torch")
-        .callbacks(MyCallbacks)
+        .callbacks(CustomCallback)
         .evaluation(evaluation_config={
                                        "evaluation_interval": 1,
                                         "evaluation_duration": 10,
@@ -132,31 +100,6 @@ def ppo(args):
     "episode_len_mean",
 ]
     pprint.pprint({k: v for k, v in best_result.metrics.items() if k in metrics_to_print})
-
-   # algo = Algorithm.from_checkpoint(best_result.checkpoint)
-
-
-    # eval_log_dir = F"{logdir}-eval"
-
-    # writer = SummaryWriter(log_dir=eval_log_dir)
-    # csv_logger = CSVLogger(config=config, logdir=eval_log_dir)
-
-
-    # for i in range(args.evaluations):
-    #     eval_result = algo.evaluate()
-    #     print(pretty_print(eval_result))
-    #     print(eval_result)
-    #     # logger.on_result(eval_result)
-
-    #     csv_logger.on_result(eval_result)
-
-    #     evaluation = eval_result['evaluation']
-    #     epsiode_reward_mean = evaluation['episode_reward_mean']
-    #     episode_len_mean = evaluation['episode_len_mean']
-    #     print(epsiode_reward_mean)
-    #     writer.add_scalar("evaluation/episode_reward_mean", epsiode_reward_mean, i)
-    #     writer.add_scalar("evaluation/episode_len_mean", episode_len_mean, i)
-
 
 def main():
     ray.init(num_cpus=3)

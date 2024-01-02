@@ -2,7 +2,6 @@ from sb3_contrib import MaskablePPO
 from sb3_contrib.common.maskable.evaluation import evaluate_policy
 from sb3_contrib.common.maskable.policies import MaskableActorCriticPolicy
 from sb3_contrib.common.wrappers import ActionMasker
-from stable_baselines3.common.callbacks import BaseCallback
 
 import gymnasium as gym
 
@@ -10,27 +9,12 @@ from minigrid.core.actions import Actions
 
 import time
 
-from helpers import parse_arguments, create_log_dir, ShieldingConfig
-from shieldhandlers import MiniGridShieldHandler, create_shield_query
-from wrappers import MiniGridSbShieldingWrapper
-
-class CustomCallback(BaseCallback):
-    def __init__(self, verbose: int = 0, env=None):
-        super(CustomCallback, self).__init__(verbose)
-        self.env = env
-        
-        
-    def _on_step(self) -> bool:
-        print(self.env.printGrid())
-        return super()._on_step()
-
-
-
+from utils import MiniGridShieldHandler, create_shield_query, parse_arguments, create_log_dir, ShieldingConfig
+from sb3utils import MiniGridSbShieldingWrapper
 
 def mask_fn(env: gym.Env):
     return env.create_action_mask()
     
-
 
 def main():
     import argparse
@@ -44,13 +28,12 @@ def main():
     env = gym.make(args.env, render_mode="rgb_array")
     env = MiniGridSbShieldingWrapper(env, shield_creator=shield_creator, shield_query_creator=create_shield_query, mask_actions=args.shielding == ShieldingConfig.Full)
     env = ActionMasker(env, mask_fn)
-    callback = CustomCallback(1, env)
     model = MaskablePPO(MaskableActorCriticPolicy, env, gamma=0.4, verbose=1, tensorboard_log=create_log_dir(args))
     
     steps = args.steps
     
     
-    model.learn(steps, callback=callback)
+    model.learn(steps)
  
   #W  mean_reward, std_reward = evaluate_policy(model, model.get_env())
     

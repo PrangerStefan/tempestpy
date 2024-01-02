@@ -9,47 +9,11 @@ from ray.rllib.models import ModelCatalog
 
 
 from torch_action_mask_model import TorchActionMaskModel
-from wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
-from helpers import parse_arguments, create_log_dir, ShieldingConfig
-from shieldhandlers import MiniGridShieldHandler, create_shield_query
-from callbacks import MyCallbacks
+from rllibutils import OneHotShieldingWrapper, MiniGridShieldingWrapper, shielding_env_creater
+from utils import MiniGridShieldHandler, create_shield_query, parse_arguments, create_log_dir, ShieldingConfig
+from callbacks import CustomCallback
 
 from ray.tune.logger import TBXLogger   
-
-def shielding_env_creater(config):
-    name = config.get("name", "MiniGrid-LavaCrossingS9N1-v0")
-    framestack = config.get("framestack", 4)
-    args = config.get("args", None)
-    args.grid_path = F"{args.grid_path}_{config.worker_index}_{args.prism_config}.txt"
-    args.prism_path = F"{args.prism_path}_{config.worker_index}_{args.prism_config}.prism"
-    
-    prob_forward = args.prob_forward
-    prob_direct = args.prob_direct
-    prob_next = args.prob_next
-
-    shield_creator = MiniGridShieldHandler(args.grid_path, 
-                                            args.grid_to_prism_binary_path,
-                                            args.prism_path, 
-                                            args.formula,
-                                            args.shield_value,
-                                            args.prism_config,
-                                            shield_comparision=args.shield_comparision)
-
-    env = gym.make(name, randomize_start=True,probability_forward=prob_forward, probability_direct_neighbour=prob_direct, probability_next_neighbour=prob_next)
-    env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, 
-                                   shield_query_creator=create_shield_query,
-                                   mask_actions=args.shielding != ShieldingConfig.Disabled,
-                                   create_shield_at_reset=args.shield_creation_at_reset)
-    # env = minigrid.wrappers.ImgObsWrapper(env)
-    # env = ImgObsWrapper(env)
-    env = OneHotShieldingWrapper(env,
-                        config.vector_index if hasattr(config, "vector_index") else 0,
-                        framestack=framestack
-                        )
-    
-    
-    return env
-
 
 
 def register_minigrid_shielding_env(args):
@@ -71,7 +35,7 @@ def ppo(args):
         .resources(num_gpus=0)
         .environment(env="mini-grid-shielding", env_config={"name": args.env, "args": args, "shielding": args.shielding is ShieldingConfig.Full or args.shielding is ShieldingConfig.Training})
         .framework("torch")
-        .callbacks(MyCallbacks)
+        .callbacks(CustomCallback)
         .rl_module(_enable_rl_module_api = False)
         .debugging(logger_config={
             "type": TBXLogger, 
@@ -109,7 +73,7 @@ def dqn(args):
     config = config.rollouts(num_rollout_workers=args.workers)
     config = config.environment(env="mini-grid-shielding", env_config={"name": args.env, "args": args })
     config = config.framework("torch")
-    config = config.callbacks(MyCallbacks)
+    config = config.callbacks(CustomCallback)
     config = config.rl_module(_enable_rl_module_api = False)
     config = config.debugging(logger_config={
             "type": TBXLogger, 

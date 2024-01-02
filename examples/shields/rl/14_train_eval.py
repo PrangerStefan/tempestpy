@@ -8,38 +8,12 @@ from ray.rllib.models import ModelCatalog
 
 
 from torch_action_mask_model import TorchActionMaskModel
-from wrappers import OneHotShieldingWrapper, MiniGridShieldingWrapper
-from helpers import parse_arguments, create_log_dir, ShieldingConfig
-from shieldhandlers import MiniGridShieldHandler, create_shield_query
+from rllibutils import OneHotShieldingWrapper, MiniGridShieldingWrapper, shielding_env_creater
+from utils import MiniGridShieldHandler, create_shield_query, parse_arguments, create_log_dir, ShieldingConfig
 
-from callbacks import MyCallbacks
+from callbacks import CustomCallback
 
 from torch.utils.tensorboard import SummaryWriter
-
-
-  
-
-def shielding_env_creater(config):
-    name = config.get("name", "MiniGrid-LavaCrossingS9N1-v0")
-    framestack = config.get("framestack", 4)
-    args = config.get("args", None)
-    args.grid_path = F"{args.grid_path}_{config.worker_index}.txt"
-    args.prism_path = F"{args.prism_path}_{config.worker_index}.prism"
-    
-    shielding = config.get("shielding", False)
-    shield_creator = MiniGridShieldHandler(args.grid_path, args.grid_to_prism_binary_path, args.prism_path, args.formula)
-    
-    env = gym.make(name)
-    env = MiniGridShieldingWrapper(env, shield_creator=shield_creator, shield_query_creator=create_shield_query ,mask_actions=shielding)
-
-    env = OneHotShieldingWrapper(env,
-                        config.vector_index if hasattr(config, "vector_index") else 0,
-                        framestack=framestack
-                        )
-    
-    
-    return env
-
 
 def register_minigrid_shielding_env(args):
     env_name = "mini-grid-shielding"
@@ -60,7 +34,7 @@ def ppo(args):
         .environment( env="mini-grid-shielding",
                       env_config={"name": args.env, "args": args, "shielding": args.shielding is ShieldingConfig.Full or args.shielding is ShieldingConfig.Training})
         .framework("torch")
-        .callbacks(MyCallbacks)
+        .callbacks(CustomCallback)
         .evaluation(evaluation_config={ 
                                        "evaluation_interval": 1,
                                         "evaluation_duration": 10,
