@@ -6,8 +6,6 @@ commit_message="$(git log -1 --pretty=format:"%s_%h" | sed 's/\s/_/g')"
 git diff --quiet || commit_message="${commit_message}_dirty"
 datetime="$(date +%Y%-m-%dT%H:%M:%S)"
 
-exp_name="${commit_message}-${datetime}"
-experiment_log_dir="${2}/${exp_name}"
 
 #cpu=nehalem192g0
 cpu=epyc512g0
@@ -25,7 +23,11 @@ prob_next=$8
 prob_direct=$9
 prob_forward="${10}"
 shield_comparision="${11}"
-NUM_GPUS="0"
+NUM_GPUS="1"
+
+exp_name="${commit_message}-${datetime}-env:${env}-sh:${shielding}-value:${shield_value}-comp:${shield_comparision}-prob:${prob_forward}"
+experiment_log_dir="${2}/${exp_name}"
+
 
 MINIGRID_BINARY=""
 if [ "$(whoami)" = "spranger" ]; then
