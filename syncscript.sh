@@ -10,9 +10,9 @@ exp_name="${commit_message}-${datetime}"
 experiment_log_dir="${2}/${exp_name}"
 
 #cpu=nehalem192g0
-cpu=opteron192g0
+cpu=epyc512g0
+gpu=i9-64g0
 #cpu=haswell378g0
-gpu=cuda
 
 env=$4
 shielding=$5
@@ -25,8 +25,14 @@ prob_next=$8
 prob_direct=$9
 prob_forward="${10}"
 shield_comparision="${11}"
+NUM_GPUS="0"
 
-
+MINIGRID_BINARY=""
+if [ "$(whoami)" = "spranger" ]; then
+	MINIGRID_BINARY="/workstore/spranger/tempestpy/Minigrid2PRISM/build/main"
+else
+	MINIGRID_BINARY="/workstore/tknoll/Minigrid2PRISM/build/main"
+fi
 
 # echo $experiment_log_dir
 # echo $(pwd)
@@ -34,7 +40,21 @@ shield_comparision="${11}"
 # python3 examples/shields/rl/11_minigridrl.py --expname "$exp_name" --steps "$1" --log_dir "$experiment_log_dir"/ --evaluations "$3" --env "$4" --shielding "$5" --shield_comparision "$6" --prism_config "$7" --prob_next "$8" --prob_direct "$9" --prob_forward "${10}"  --shield_value "${11}" &
 
 set -x
-srun -w $cpu python3 examples/shields/rl/15_train_eval_tune.py --env $4 --shielding $5 --steps $1 --expname "$exp_name" --log_dir "$experiment_log_dir" --evaluations $3 --grid_to_prism_binary_path /workstore/tknoll/Minigrid2PRISM/build/main --shield_comparision $6 --prism_config $7 --prob_next $8 --prob_direct $9 --prob_forward "${10}" --shield_comparision $6 --shield_value "${11}"  &
+srun -w $gpu python3 examples/shields/rl/15_train_eval_tune.py --env $4 \
+     --shielding $5 \
+     --steps $1 \
+     --expname "$exp_name" \
+     --log_dir "$experiment_log_dir" \
+     --evaluations $3 \
+     --grid_to_prism_binary_path $MINIGRID_BINARY \
+     --shield_comparision $6  \
+     --prism_config $7  \
+     --prob_next $8 \
+     --prob_direct $9 \
+     --prob_forward "${10}" \
+     --shield_comparision $6 \
+     --shield_value "${11}" \
+     --num_gpus ${NUM_GPUS} &
 set +x
 
 sleep 20
