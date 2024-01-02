@@ -9,8 +9,7 @@ from gymnasium.spaces import Dict, Box
 from collections import deque
 from ray.rllib.utils.numpy import one_hot
 
-from helpers import get_action_index_mapping
-from shieldhandlers import ShieldHandler
+from utils import get_action_index_mapping, MiniGridShieldHandler, create_shield_query, ShieldingConfig
 
 
 class OneHotShieldingWrapper(gym.core.ObservationWrapper):
@@ -85,7 +84,7 @@ class OneHotShieldingWrapper(gym.core.ObservationWrapper):
 class MiniGridShieldingWrapper(gym.core.Wrapper):
     def __init__(self, 
                  env, 
-                shield_creator : ShieldHandler,
+                shield_creator : MiniGridShieldHandler,
                 shield_query_creator,
                 create_shield_at_reset=True,    
                 mask_actions=True):

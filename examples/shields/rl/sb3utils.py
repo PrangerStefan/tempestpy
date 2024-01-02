@@ -2,10 +2,12 @@ import gymnasium as gym
 import numpy as np
 import random
 
+from utils import MiniGridShieldHandler, create_shield_query
+
 class MiniGridSbShieldingWrapper(gym.core.Wrapper):
     def __init__(self, 
                  env, 
-                 shield_creator : ShieldHandler,
+                 shield_creator : MiniGridShieldHandler,
                  shield_query_creator,
                  create_shield_at_reset = True,
                  mask_actions=True,

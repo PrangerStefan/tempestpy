@@ -8,9 +8,11 @@ import stormpy.logic
 import stormpy.examples
 import stormpy.examples.files
 
-
-from helpers import extract_doors, extract_keys, extract_adversaries
+from enum import Enum
 from abc import ABC
+
+
+from minigrid.core.actions import Actions
 
 import os
 import time
@@ -66,6 +68,7 @@ class MiniGridShieldHandler(ShieldHandler):
             shield_comp = stormpy.logic.ShieldComparison.ABSOLUTE
 
         shield_specification = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, shield_comp, self.shield_value) 
+
         
         formulas = stormpy.parse_properties_for_prism_program(self.formula, program)
         options = stormpy.BuilderOptions([p.raw_formula for p in formulas])
@@ -82,6 +85,7 @@ class MiniGridShieldHandler(ShieldHandler):
         shield_scheduler = shield.construct()
         state_valuations = model.state_valuations
         choice_labeling = model.choice_labeling
+        stormpy.shields.export_shield(model, shield, "myshield")
         
         for stateID in model.states:
             choice = shield_scheduler.get_choice(stateID)

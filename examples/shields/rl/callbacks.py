@@ -15,11 +15,9 @@ from ray.rllib.algorithms.callbacks import DefaultCallbacks, make_multi_callback
 
 import matplotlib.pyplot as plt
 
-import tensorflow as tf
 
-class MyCallbacks(DefaultCallbacks):
+class CustomCallback(DefaultCallbacks):
     def on_episode_start(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode, env_index, **kwargs) -> None:
-        # print(F"Epsiode started Environment: {base_env.get_sub_environments()}")
         env = base_env.get_sub_environments()[0]
         episode.user_data["count"] = 0
         episode.user_data["ran_into_lava"] = []
@@ -29,28 +27,11 @@ class MyCallbacks(DefaultCallbacks):
         episode.hist_data["goals_reached"] = []
         episode.hist_data["ran_into_adversary"] = []
 
-        # print("On episode start print")
-        # print(env.printGrid())
-        # print(worker)
-        # print(env.action_space.n)
-        # print(env.actions)
-        # print(env.mission)
-        # print(env.observation_space)
-        # plt.imshow(img)
-        # plt.show()
-
 
     def on_episode_step(self, *, worker: RolloutWorker, base_env: BaseEnv, policies, episode, env_index, **kwargs) -> None:
         episode.user_data["count"] = episode.user_data["count"] + 1
         env = base_env.get_sub_environments()[0]
-        # print(env.printGrid())
-
-        if hasattr(env, "adversaries"):
-            for adversary in env.adversaries.values():
-                if adversary.cur_pos[0] == env.agent_pos[0] and adversary.cur_pos[1] == env.agent_pos[1]:
-                    print(F"Adversary ran into agent. Adversary {adversary.cur_pos}, Agent {env.agent_pos}")
-                    # assert False
-
+        
 
 
     def on_episode_end(self, *, worker: RolloutWorker, base_env: BaseEnv, policies, episode, env_index, **kwargs) -> None:
