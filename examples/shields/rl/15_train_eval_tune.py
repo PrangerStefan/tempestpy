@@ -74,7 +74,7 @@ def ppo(args):
 
                        ),
                         run_config=air.RunConfig(
-                                stop = {"episode_reward_mean": 94,
+                                stop = {"episode_reward_mean": 1,
                                         "timesteps_total": args.steps,},
                                 checkpoint_config=air.CheckpointConfig(checkpoint_at_end=True,
                                                                        num_to_keep=1,
