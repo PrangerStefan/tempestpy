@@ -43,21 +43,21 @@ fi
 # python3 examples/shields/rl/11_minigridrl.py --expname "$exp_name" --steps "$1" --log_dir "$experiment_log_dir"/ --evaluations "$3" --env "$4" --shielding "$5" --shield_comparision "$6" --prism_config "$7" --prob_next "$8" --prob_direct "$9" --prob_forward "${10}"  --shield_value "${11}" &
 
 set -x
-srun -w $gpu python3 examples/shields/rl/15_train_eval_tune.py --env $4 \
-     --shielding $5 \
-     --steps $1 \
+srun -w $gpu python3 examples/shields/rl/15_train_eval_tune.py \
      --expname "$exp_name" \
      --log_dir "$experiment_log_dir" \
-     --evaluations $3 \
      --grid_to_prism_binary_path $MINIGRID_BINARY \
-     --shield_comparision $6  \
+     --steps $1 \
+     --evaluations $3 \
+     --env $4 \
+     --shielding $5 \
+     --shield_comparision $6 \
      --prism_config $7  \
      --prob_displacement $8 \
      --prob_intended $9 \
      --prob_turn_displacement "${10}" \
-     --prop_turn_intended "${12}" \
-     --shield_comparision $6 \
      --shield_value "${11}" \
+     --prop_turn_intended "${12}" \
      --num_gpus ${NUM_GPUS} &
 set +x
 
@@ -69,10 +69,3 @@ while [[ -n $(jobs -r) ]]; do
   sleep 60;
 done
 rsync -avtr --append --stats $(pwd)/$experiment_log_dir/$exp_name tensorboard:/media/data1/easy_rl_tb_logs
-
-
-#!/bin/bash
-
-. ../env/bin/activate
-
-
