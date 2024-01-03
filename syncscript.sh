@@ -19,10 +19,10 @@ experiment_log_dir="${2}"
 num_evaluations=$3
 shield_value=$6
 prism_config=$7
-prob_displacement=$8
-prob_intended=$9
-prob_turn_displacement="${10}"
-prop_turn_intended="${12}"
+#prob_displacement=$8
+#prob_intended=$9
+#prob_turn_displacement="${10}"
+#prop_turn_intended="${12}"
 shield_comparision="${11}"
 NUM_GPUS="1"
 
@@ -53,11 +53,11 @@ srun -p $gpu python3 examples/shields/rl/15_train_eval_tune.py \
      --shielding $5 \
      --shield_comparision $6 \
      --prism_config $7  \
-     --prob_displacement $8 \
-     --prob_intended $9 \
-     --prob_turn_displacement "${10}" \
+     --probability_displacement $8 \
+     --probability_intended $9 \
+     --probability_turn_displacement "${10}" \
      --shield_value "${11}" \
-     --prop_turn_intended "${12}" \
+     --probability_turn_intended "${12}" \
      --num_gpus ${NUM_GPUS} &
 set +x
 
