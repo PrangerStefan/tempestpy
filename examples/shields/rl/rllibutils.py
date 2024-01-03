@@ -104,7 +104,6 @@ class MiniGridShieldingWrapper(gym.core.Wrapper):
         print(F"Shielding is {self.mask_actions}")
 
     def create_action_mask(self):
-        print(f'shielding is {self.mask_actions}')
         if not self.mask_actions:
             ret = np.array([1.0] * self.max_available_actions, dtype=np.int8)
             return ret

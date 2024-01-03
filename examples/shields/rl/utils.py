@@ -313,6 +313,8 @@ def parse_arguments(argparse):
     parser.add_argument("--shield_value", default=0.9, type=float)
     parser.add_argument("--probability_displacement", default=1/4, type=float)
     parser.add_argument("--probability_intended", default=3/4, type=float)
+    parser.add_argument("--probability_turn_displacement", default=0/4, type=float)
+    parser.add_argument("--probability_turn_intended", default=4/4, type=float)
     parser.add_argument("--shield_comparision", default='relative', choices=['relative', 'absolute'])
     # parser.add_argument("--random_starts", default=1, type=int)
     args = parser.parse_args()
