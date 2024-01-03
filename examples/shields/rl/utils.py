@@ -51,13 +51,12 @@ class MiniGridShieldHandler(ShieldHandler):
         else:
             result = os.system(F"{self.grid_to_prism_path} -v 'Agent' -i {self.grid_file} -o {self.prism_path} -c {self.prism_config}")
         # result = os.system(F"{self.grid_to_prism_path} -v 'Agent' -i {self.grid_file} -o {self.prism_path} -c adv_config.yaml")
-    
+
         assert result == 0, "Prism file could not be generated"
-    
+
         f = open(self.prism_path, "a")
-        f.write("label \"AgentIsInLava\" = AgentIsInLava;")
         f.close()
-        
+
     def __create_shield_dict(self):
         print(self.prism_path)
         program = stormpy.parse_prism_program(self.prism_path)
