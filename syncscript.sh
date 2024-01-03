@@ -19,13 +19,14 @@ experiment_log_dir="${2}"
 num_evaluations=$3
 shield_value=$6
 prism_config=$7
-prob_next=$8
-prob_direct=$9
-prob_forward="${10}"
+prob_displacement=$8
+prob_intended=$9
+prob_turn_displacement="${10}"
+prop_turn_intended="${12}"
 shield_comparision="${11}"
 NUM_GPUS="1"
 
-exp_name="${commit_message}-${datetime}-env:${env}-sh:${shielding}-value:${shield_value}-comp:${shield_comparision}-prob:${prob_forward}"
+exp_name="${commit_message}-${datetime}-env:${env}-sh:${shielding}-value:${shield_value}-comp:${shield_comparision}-prob:${prob_intended}"
 experiment_log_dir="${2}/${exp_name}"
 
 
@@ -51,9 +52,10 @@ srun -w $gpu python3 examples/shields/rl/15_train_eval_tune.py --env $4 \
      --grid_to_prism_binary_path $MINIGRID_BINARY \
      --shield_comparision $6  \
      --prism_config $7  \
-     --prob_next $8 \
-     --prob_direct $9 \
-     --prob_forward "${10}" \
+     --prob_displacement $8 \
+     --prob_intended $9 \
+     --prob_turn_displacement "${10}" \
+     --prop_turn_intended "${12}" \
      --shield_comparision $6 \
      --shield_value "${11}" \
      --num_gpus ${NUM_GPUS} &
