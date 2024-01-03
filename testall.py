@@ -73,4 +73,4 @@ input("")
 with ThreadPoolExecutor(max_workers=NUM_WORKER) as e:
     for task in tasks:
         print(f"submitted {task}")
-        e.submit(run_command, f"echo {task[0]}", task[1])
+        e.submit(run_command, task[0], task[1])

@@ -9,7 +9,7 @@ datetime="$(date +%Y%-m-%dT%H:%M:%S)"
 
 #cpu=nehalem192g0
 cpu=epyc512g0
-gpu=i9-64g0
+gpu=cuda
 #cpu=haswell378g0
 
 env=$4
@@ -43,7 +43,7 @@ fi
 # python3 examples/shields/rl/11_minigridrl.py --expname "$exp_name" --steps "$1" --log_dir "$experiment_log_dir"/ --evaluations "$3" --env "$4" --shielding "$5" --shield_comparision "$6" --prism_config "$7" --prob_next "$8" --prob_direct "$9" --prob_forward "${10}"  --shield_value "${11}" &
 
 set -x
-srun -w $gpu python3 examples/shields/rl/15_train_eval_tune.py \
+srun -p $gpu python3 examples/shields/rl/15_train_eval_tune.py \
      --expname "$exp_name" \
      --log_dir "$experiment_log_dir" \
      --grid_to_prism_binary_path $MINIGRID_BINARY \
