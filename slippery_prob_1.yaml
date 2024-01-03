@@ -2,32 +2,24 @@
 labels:
   - label: "AgentIsInGoal"
     text: "AgentIsInGoal"
-
+    
 constants:
-  - constant: "prop_slippery_turn"
+  - constant: "prop_intended"
     type: "double"
-    value: "9/9"
+    value: "20/20"
     overwrite: True
-  - constant: "prop_next_neighbour_turn"
+  - constant: "prop_displacement"
     type: "double"
-    value: "0/9"
-    overwrite: True
-  - constant: "prop_slippery_move_forward"
-    type: "double"
-    value: "5/5"
-    overwrite: True
-  - constant: "prop_direct_neighbour"
-    type: "double"
-    value: "0/5"
+    value: "0/20"
     overwrite: True  
-  - constant: "prop_next_neighbour"
+  - constant: "prop_turn_intended"
     type: "double"
-    value: "0/10"
+    value: "20/20"
     overwrite: True
-  - constant: "total_prop"
+  - constant: "prop_turn_displacement"
     type: "double"
-    value: "4"
-    overwrite: True
+    value: "0/20"
+    overwrite: True  
 ...
 
 # const double prop_zero = 0/9;

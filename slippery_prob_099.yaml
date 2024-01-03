@@ -28,6 +28,24 @@ constants:
     type: "double"
     value: "4"
     overwrite: True
+
+constants:
+  - constant: "prop_intended"
+    type: "double"
+    value: "99/100"
+    overwrite: True
+  - constant: "prop_displacement"
+    type: "double"
+    value: "1/100"
+    overwrite: True  
+  - constant: "prop_turn_intended"
+    type: "double"
+    value: "20/20"
+    overwrite: True
+  - constant: "prop_turn_displacement"
+    type: "double"
+    value: "0/20"
+    overwrite: True  
 ...
 
 # const double prop_zero = 0/9;
