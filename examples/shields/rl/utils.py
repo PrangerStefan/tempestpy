@@ -265,35 +265,31 @@ def get_action_index_mapping(actions):
         elif "pickup" in action_str:
             return Actions.pickup
         elif "done" in action_str:
-            return Actions.done    
+            return Actions.done
         elif "drop" in action_str:
             return Actions.drop
         elif "toggle" in action_str:
             return Actions.toggle
         elif "unlock" in action_str:
             return Actions.toggle
-    
+
     raise ValueError("No action mapping found")
-    
+
 
 def parse_arguments(argparse):
     parser = argparse.ArgumentParser()
     # parser.add_argument("--env", help="gym environment to load", default="MiniGrid-Empty-8x8-v0")
-    parser.add_argument("--env", 
-                        help="gym environment to load", 
-                        default="MiniGrid-LavaSlipperyS12-v2", 
+    parser.add_argument("--env",
+                        help="gym environment to load",
+                        default="MiniGrid-LavaSlipperyCliffS12-v2",
                         choices=[
                                 "MiniGrid-Adv-8x8-v0",
                                 "MiniGrid-AdvSimple-8x8-v0",
                                 "MiniGrid-LavaCrossingS9N1-v0",
                                 "MiniGrid-LavaCrossingS9N3-v0",
-                                "MiniGrid-LavaSlipperyS12-v0",
-                                "MiniGrid-LavaSlipperyS12-v1",
-                                "MiniGrid-LavaSlipperyS12-v2",
-                                "MiniGrid-LavaSlipperyS12-v3",
-                             
+                                "MiniGrid-LavaSlipperyCliffS12-v0"
                                 ])
-    
+
    # parser.add_argument("--seed", type=int, help="seed for environment", default=None)
     parser.add_argument("--grid_to_prism_binary_path", default="./main")
     parser.add_argument("--grid_path", default="grid")
