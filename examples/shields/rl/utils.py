@@ -235,7 +235,7 @@ def extract_doors(env):
 def extract_adversaries(env):
     adv = []
     
-    if not hasattr(env, "adversaries"):
+    if not hasattr(env, "adversaries") or not env.adversaries:
         return []
     
     for color, adversary in env.adversaries.items():
@@ -286,7 +286,8 @@ def parse_arguments(argparse):
                                 "MiniGrid-AdvSimple-8x8-v0",
                                 "MiniGrid-LavaCrossingS9N1-v0",
                                 "MiniGrid-LavaCrossingS9N3-v0",
-                                "MiniGrid-LavaSlipperyCliffS12-v0"
+                                "MiniGrid-LavaSlipperyCliffS12-v0",
+                                "MiniGrid-LavaFaultyS12-30-v0",
                                 ])
 
    # parser.add_argument("--seed", type=int, help="seed for environment", default=None)

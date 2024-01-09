@@ -12,9 +12,10 @@ from ray.rllib.evaluation.episode import Episode
 from ray.rllib.evaluation.episode_v2 import EpisodeV2
 
 from ray.rllib.algorithms.callbacks import DefaultCallbacks, make_multi_callbacks
+from ray.tune import Callback
 
 import matplotlib.pyplot as plt
-
+    
 
 class CustomCallback(DefaultCallbacks):
     def on_episode_start(self, *, worker: RolloutWorker, base_env: BaseEnv, policies: Dict[PolicyID, Policy], episode, env_index, **kwargs) -> None:
@@ -27,11 +28,10 @@ class CustomCallback(DefaultCallbacks):
         episode.hist_data["goals_reached"] = []
         episode.hist_data["ran_into_adversary"] = []
 
-
     def on_episode_step(self, *, worker: RolloutWorker, base_env: BaseEnv, policies, episode, env_index, **kwargs) -> None:
         episode.user_data["count"] = episode.user_data["count"] + 1
         env = base_env.get_sub_environments()[0]
-        
+        # print(env.printGrid())
 
 
     def on_episode_end(self, *, worker: RolloutWorker, base_env: BaseEnv, policies, episode, env_index, **kwargs) -> None:
@@ -40,7 +40,7 @@ class CustomCallback(DefaultCallbacks):
         agent_tile = env.grid.get(env.agent_pos[0], env.agent_pos[1])
         ran_into_adversary = False
 
-        if hasattr(env, "adversaries"):
+        if hasattr(env, "adversaries") and env.adversaries:
             adversaries = env.adversaries.values()
             for adversary in adversaries:
                 if adversary.cur_pos[0] == env.agent_pos[0] and adversary.cur_pos[1] == env.agent_pos[1]:
