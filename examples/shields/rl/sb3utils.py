@@ -10,7 +10,7 @@ class MiniGridSbShieldingWrapper(gym.core.Wrapper):
     def __init__(self,
                  env,
                  shield_handler : MiniGridShieldHandler,
-                 create_shield_at_reset = True,
+                 create_shield_at_reset = False,
                  ):
         super().__init__(env)
         self.shield_handler = shield_handler
