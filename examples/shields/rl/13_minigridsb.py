@@ -36,7 +36,7 @@ def main():
     env = ImgObsWrapper(env)
     env = MiniWrapper(env)
     if args.shielding == ShieldingConfig.Full or args.shielding == ShieldingConfig.Training:
-        shield_handler = MiniGridShieldHandler(GRID_TO_PRISM_BINARY, args.grid_file, args.prism_output_file, formula, shield_value=shield_value, shield_comparison=shield_comparison, cleanup=args.cleanup)
+        shield_handler = MiniGridShieldHandler(GRID_TO_PRISM_BINARY, args.grid_file, args.prism_output_file, formula, shield_value=shield_value, shield_comparison=shield_comparison, nocleanup=args.nocleanup)
         env = MiniGridSbShieldingWrapper(env, shield_handler=shield_handler, create_shield_at_reset=False)
         env = ActionMasker(env, mask_fn)
     else:
