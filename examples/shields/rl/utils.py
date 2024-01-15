@@ -134,7 +134,7 @@ class MiniGridShieldHandler(ShieldHandler):
         return self.__create_shield_dict()
 
 def expname(args):
-    return f"{datetime.datetime.now().strftime('%Y%m%dT%H%M%S')}_{args.env}_{args.shielding}_{args.shield_comparison}_{args.shield_value}_{next(tempfile._get_candidate_names())}"
+    return f"{datetime.datetime.now().strftime('%Y%m%dT%H%M%S')}_{args.env}_{args.shielding}_{args.shield_comparison}_{args.shield_value}_{args.expname_suffix}"
 
 def create_log_dir(args):
     log_dir = f"{args.log_dir}/{expname(args)}"
@@ -170,6 +170,7 @@ def common_parser():
     parser.add_argument("--shield_value", default=0.9, type=float)
     parser.add_argument("--shield_comparison", default='absolute', choices=['relative', 'absolute'])
     parser.add_argument("--nocleanup", action=argparse.BooleanOptionalAction)
+    parser.add_argument("--expname_suffix", default="")
     return parser
 
 class MiniWrapper(gym.Wrapper):
