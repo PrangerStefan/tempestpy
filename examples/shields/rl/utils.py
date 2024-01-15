@@ -133,9 +133,8 @@ class MiniGridShieldHandler(ShieldHandler):
 
         return self.__create_shield_dict()
 
-
 def create_log_dir(args):
-    return f"{args.log_dir}sh_{args.shielding}-value_{args.shield_value}-comp_{args.shield_comparison}-env_{args.env}-conf_{args.prism_config}"
+    return f"{args.log_dir}/sh_{args.shielding}-value_{args.shield_value}-comp_{args.shield_comparison}-env_{args.env}-conf_{args.prism_config}"
 
 def test_name(args):
     return f"{args.expname}"
