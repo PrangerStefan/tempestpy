@@ -52,7 +52,7 @@ class ShieldHandler(ABC):
         pass
 
 class MiniGridShieldHandler(ShieldHandler):
-    def __init__(self, grid_to_prism_binary, grid_file, prism_path, formula, prism_config=None, shield_value=0.9, shield_comparison='absolute', cleanup=True) -> None:
+    def __init__(self, grid_to_prism_binary, grid_file, prism_path, formula, prism_config=None, shield_value=0.9, shield_comparison='absolute', nocleanup=False) -> None:
         self.tmp_dir_name = f"shielding_files_{datetime.datetime.now().strftime('%Y%m%dT%H%M%S')}_{next(tempfile._get_candidate_names())}"
         os.mkdir(self.tmp_dir_name)
         self.grid_file = self.tmp_dir_name + "/" + grid_file
@@ -64,9 +64,9 @@ class MiniGridShieldHandler(ShieldHandler):
         shield_comparison = stormpy.logic.ShieldComparison.ABSOLUTE if shield_comparison == "absolute" else stormpy.logic.ShieldComparison.RELATIVE
         self.shield_expression = stormpy.logic.ShieldExpression(stormpy.logic.ShieldingType.PRE_SAFETY, shield_comparison, shield_value)
 
-        self.cleanup = cleanup
+        self.nocleanup = nocleanup
     def __del__(self):
-        if self.cleanup:
+        if not self.nocleanup:
             shutil.rmtree(self.tmp_dir_name)
 
     def __export_grid_to_text(self, env):
@@ -167,7 +167,7 @@ def common_parser():
     parser.add_argument("--prism_config",  default=None)
     parser.add_argument("--shield_value", default=0.9, type=float)
     parser.add_argument("--shield_comparison", default='absolute', choices=['relative', 'absolute'])
-    parser.add_argument("--cleanup", action=argparse.BooleanOptionalAction, default=True)
+    parser.add_argument("--nocleanup", action=argparse.BooleanOptionalAction)
     return parser
 
 class MiniWrapper(gym.Wrapper):
