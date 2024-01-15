@@ -134,7 +134,7 @@ class MiniGridShieldHandler(ShieldHandler):
         return self.__create_shield_dict()
 
 def expname(args):
-    return f"{datetime.datetime.now().strftime('%Y%m%dT%H%M%S')}_{args.env}_{args.shielding}_{args.shield_comparison}_{args.shield_value}"
+    return f"{datetime.datetime.now().strftime('%Y%m%dT%H%M%S')}_{args.env}_{args.shielding}_{args.shield_comparison}_{args.shield_value}_{next(tempfile._get_candidate_names())}"
 
 def create_log_dir(args):
     log_dir = f"{args.log_dir}/{expname(args)}"
