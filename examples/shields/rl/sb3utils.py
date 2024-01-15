@@ -3,7 +3,7 @@ import numpy as np
 import random
 
 from utils import MiniGridShieldHandler, common_parser
-from stable_baselines3.common.callbacks import BaseCallback, EvalCallback, CheckpointCallback
+from stable_baselines3.common.callbacks import BaseCallback, CheckpointCallback
 from stable_baselines3.common.logger import Image
 
 class MiniGridSbShieldingWrapper(gym.core.Wrapper):
@@ -11,11 +11,9 @@ class MiniGridSbShieldingWrapper(gym.core.Wrapper):
                  env,
                  shield_handler : MiniGridShieldHandler,
                  create_shield_at_reset = True,
-                 mask_actions=True,
                  ):
         super().__init__(env)
         self.shield_handler = shield_handler
-        self.mask_actions = mask_actions
         self.create_shield_at_reset = create_shield_at_reset
 
         shield = self.shield_handler.create_shield(env=self.env)
@@ -30,7 +28,7 @@ class MiniGridSbShieldingWrapper(gym.core.Wrapper):
     def reset(self, *, seed=None, options=None):
         obs, infos = self.env.reset(seed=seed, options=options)
 
-        if self.create_shield_at_reset and self.mask_actions:
+        if self.create_shield_at_reset:
             shield = self.shield_handler.create_shield(env=self.env)
             self.shield = shield
         return obs, infos
