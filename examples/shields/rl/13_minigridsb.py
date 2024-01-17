@@ -34,6 +34,7 @@ def main():
     shield_comparison = args.shield_comparison
     log_dir = create_log_dir(args)
     new_logger = Logger(log_dir, output_formats=[CSVOutputFormat(os.path.join(log_dir, f"progress_{expname(args)}.csv")), TensorBoardOutputFormat(log_dir)])
+    #new_logger = Logger(log_dir, output_formats=[CSVOutputFormat(os.path.join(log_dir, f"progress_{expname(args)}.csv")), TensorBoardOutputFormat(log_dir), HumanOutputFormat(sys.stdout)])
 
 
     if shield_needed(args.shielding):
@@ -68,19 +69,27 @@ def main():
     model.set_logger(new_logger)
     steps = args.steps
 
+
+    # Evaluation
     eval_freq=max(500, int(args.steps/30))
     n_eval_episodes=5
+    render_freq = eval_freq
     if shielded_evaluation(args.shielding):
+        from sb3_contrib.common.maskable.evaluation import evaluate_policy
         evalCallback = MaskableEvalCallback(eval_env, best_model_save_path=log_dir,
                                             log_path=log_dir, eval_freq=eval_freq,
                                             deterministic=True, render=False, n_eval_episodes=n_eval_episodes)
+        imageAndVideoCallback = ImageRecorderCallback(eval_env, render_freq, n_eval_episodes=1, evaluation_method=evaluate_policy, log_dir=log_dir, deterministic=True, verbose=0)
     else:
+        from stable_baselines3.common.evaluation import evaluate_policy
         evalCallback = EvalCallback(eval_env, best_model_save_path=log_dir,
                                     log_path=log_dir, eval_freq=eval_freq,
                                     deterministic=True, render=False, n_eval_episodes=n_eval_episodes)
 
+        imageAndVideoCallback = ImageRecorderCallback(eval_env, render_freq, n_eval_episodes=1, evaluation_method=evaluate_policy, log_dir=log_dir, deterministic=True, verbose=0)
 
-    model.learn(steps,callback=[ImageRecorderCallback(), InfoCallback(), evalCallback])
+
+    model.learn(steps,callback=[imageAndVideoCallback, InfoCallback(), evalCallback])
 
     #vec_env = model.get_env()
     #obs = vec_env.reset()
