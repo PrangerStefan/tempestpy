@@ -33,8 +33,8 @@ def main():
     shield_value = args.shield_value
     shield_comparison = args.shield_comparison
     log_dir = create_log_dir(args)
-    new_logger = Logger(log_dir, output_formats=[CSVOutputFormat(os.path.join(log_dir, f"progress_{expname(args)}.csv")), TensorBoardOutputFormat(log_dir)])
-    #new_logger = Logger(log_dir, output_formats=[CSVOutputFormat(os.path.join(log_dir, f"progress_{expname(args)}.csv")), TensorBoardOutputFormat(log_dir), HumanOutputFormat(sys.stdout)])
+    #new_logger = Logger(log_dir, output_formats=[CSVOutputFormat(os.path.join(log_dir, f"progress_{expname(args)}.csv")), TensorBoardOutputFormat(log_dir)])
+    new_logger = Logger(log_dir, output_formats=[CSVOutputFormat(os.path.join(log_dir, f"progress_{expname(args)}.csv")), TensorBoardOutputFormat(log_dir), HumanOutputFormat(sys.stdout)])
 
 
     if shield_needed(args.shielding):
@@ -89,7 +89,7 @@ def main():
         imageAndVideoCallback = ImageRecorderCallback(eval_env, render_freq, n_eval_episodes=1, evaluation_method=evaluate_policy, log_dir=log_dir, deterministic=True, verbose=0)
 
 
-    model.learn(steps,callback=[imageAndVideoCallback, InfoCallback(), evalCallback])
+    model.learn(steps,callback=[imageAndVideoCallback, InfoCallback()])
 
     #vec_env = model.get_env()
     #obs = vec_env.reset()

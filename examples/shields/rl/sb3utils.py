@@ -61,8 +61,8 @@ class ImageRecorderCallback(BaseCallback):
         self.logger.record("trajectory/image", Image(image, "HWC"), exclude=("stdout", "log", "json", "csv"))
 
     def _on_step(self) -> bool:
-        if self.n_calls % self._render_freq == 0:
-            self.record_video()
+        #if self.n_calls % self._render_freq == 0:
+        #    self.record_video()
         return True
 
     def _on_training_end(self) -> None:
