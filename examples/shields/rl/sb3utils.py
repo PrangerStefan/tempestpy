@@ -114,5 +114,5 @@ class InfoCallback(BaseCallback):
         if "collision" in infos:
             if infos["collision"]:
                 self.sum_collision += 1
-            self.logger.record("info/sum_collision", sum_collisions)
+            self.logger.record("info/sum_collision", self.sum_collisions)
         return True
