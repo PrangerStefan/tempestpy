@@ -256,7 +256,7 @@ def perform_symbolic_bisimulation(model, properties):
         return core._perform_symbolic_bisimulation(model, formulae, bisimulation_type)
 
 
-def model_checking(model, property, only_initial_states=False, extract_scheduler=False, force_fully_observable=False, environment=Environment()):
+def model_checking(model, property, only_initial_states=False, extract_scheduler=False, force_fully_observable=False, environment=Environment(), shield_expression=None):
     """
     Perform model checking on model for property.
     :param model: Model.
@@ -268,7 +268,7 @@ def model_checking(model, property, only_initial_states=False, extract_scheduler
     """
     if model.is_sparse_model:
         return check_model_sparse(model, property, only_initial_states=only_initial_states,
-                                  extract_scheduler=extract_scheduler, force_fully_observable=force_fully_observable, environment=environment)
+                                  extract_scheduler=extract_scheduler, force_fully_observable=force_fully_observable, environment=environment, shield_expression=shield_expression)
     else:
         assert (model.is_symbolic_model)
         if extract_scheduler:
@@ -277,7 +277,7 @@ def model_checking(model, property, only_initial_states=False, extract_scheduler
                               environment=environment)
 
 
-def check_model_sparse(model, property, only_initial_states=False, extract_scheduler=False, force_fully_observable=False, environment=Environment()):
+def check_model_sparse(model, property, only_initial_states=False, extract_scheduler=False, force_fully_observable=False, environment=Environment(), shield_expression=None):
     """
     Perform model checking on model for property.
     :param model: Model.
@@ -322,6 +322,10 @@ def check_model_sparse(model, property, only_initial_states=False, extract_sched
         else:
             task = core.CheckTask(formula, only_initial_states)
             task.set_produce_schedulers(extract_scheduler)
+
+            if shield_expression is not None:
+                task.set_shielding_expression(shield_expression)            
+
             return core._model_checking_sparse_engine(model, task, environment=environment)
 
 

@@ -34,6 +34,9 @@ stormpy_module(info)
 stormpy_module(logic)
 stormpy_module(storage)
 stormpy_module(utility)
+stormpy_module(shields)
+
+
 
 # Optional modules
 if(HAVE_STORM_DFT)

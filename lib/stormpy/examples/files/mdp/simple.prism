@@ -1,0 +1,34 @@
+mdp
+
+formula AgentCannotMoveNorth = (xAgent=2&yAgent=1) | (xAgent=3&yAgent=1) | (xAgent=4&yAgent=1) | (xAgent=5&yAgent=1) | (xAgent=6&yAgent=1) | (xAgent=1&yAgent=1);
+formula AgentCannotMoveEast  = (xAgent=6&yAgent=1) | (xAgent=6&yAgent=2) | (xAgent=6&yAgent=3) | (xAgent=6&yAgent=4) | (xAgent=6&yAgent=5);
+formula AgentCannotMoveSouth = (xAgent=1&yAgent=5) | (xAgent=2&yAgent=5) | (xAgent=3&yAgent=5) | (xAgent=4&yAgent=5) | (xAgent=5&yAgent=5) | (xAgent=6&yAgent=5);
+formula AgentCannotMoveWest  = (xAgent=1&yAgent=2) | (xAgent=1&yAgent=3) | (xAgent=1&yAgent=4) | (xAgent=1&yAgent=5) | (xAgent=1&yAgent=1);
+formula AgentIsOnSlippery = false;
+formula AgentIsInLava = (xAgent=2&yAgent=2) | (xAgent=3&yAgent=2) | (xAgent=2&yAgent=3) | (xAgent=3&yAgent=3) | (xAgent=2&yAgent=4) | (xAgent=3&yAgent=4);
+formula AgentIsInLavaAndNotDone = AgentIsInLava & !AgentDone;
+label "AgentIsInLavaAndNotDone" = AgentIsInLava & !AgentDone;
+
+formula AgentIsInGoal = (xAgent=6&yAgent=5);
+formula AgentIsInGoalAndNotDone = AgentIsInGoal & !AgentDone;
+label "AgentIsInGoalAndNotDone" = AgentIsInGoal & !AgentDone;
+module Agent
+	xAgent : [1..6] init 1;
+	yAgent : [1..7] init 1;
+
+	AgentDone : bool init false;
+	viewAgent : [0..3] init 0;
+
+	[Agent_turn_right]   !AgentIsInGoal & !AgentIsInLava & !AgentIsOnSlippery -> (viewAgent'=mod(viewAgent + 1, 4)) ;
+	[Agent_turn_left]    !AgentIsInGoal & !AgentIsInLava & !AgentIsOnSlippery & viewAgent>0 -> (viewAgent'=viewAgent - 1) ;
+	[Agent_turn_left]    !AgentIsInGoal & !AgentIsInLava & !AgentIsOnSlippery & viewAgent=0 -> (viewAgent'=3) ;
+
+
+	[Agent_move_north]  viewAgent=3 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveNorth -> (yAgent'=yAgent-1);
+	[Agent_move_east]   viewAgent=0 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveEast  -> (xAgent'=xAgent+1);
+	[Agent_move_south]  viewAgent=1 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveSouth -> (yAgent'=yAgent+1);
+	[Agent_move_west]   viewAgent=2 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveWest  -> (xAgent'=xAgent-1);
+	[Agent_done] AgentIsInGoal | AgentIsInLava -> (AgentDone'=true);
+
+endmodule
+

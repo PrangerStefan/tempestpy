@@ -49,3 +49,18 @@ gspn_pnpro_simple = _path("gspn", "gspn_simple.pnpro")
 """GSPN example (PNPRO format)"""
 gspn_pnml_simple = _path("gspn", "gspn_simple.pnml")
 """GSPN example (PNML format)"""
+
+"""Shield Example 1"""
+prism_mdp_lava_simple = _path("mdp", "simple.prism")
+prism_mdp_cliff_walking = _path("mdp", "CliffZigZag.prism")
+
+"""Optimal Shield Example 1"""
+prism_smg_lights = _path("smg", "lights.prism")
+"""Optimal Shield Example 2"""
+prism_smg_robot = _path("smg", "robotics_planning.prism")
+
+"""Optimal Controller Example"""
+prism_smg_controller = _path("smg", "robot_controller.prism")
+
+"""Safety Shield Synthesis"""
+prism_smg_shield_synth = _path("smg", "safety_shield_robot.prism")

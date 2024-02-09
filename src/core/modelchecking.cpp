@@ -65,17 +65,20 @@ void define_modelchecking(py::module& m) {
     //m.def("create_check_task", &storm::api::createTask, "Create task for verification", py::arg("formula"), py::arg("only_initial_states") = false);
         .def(py::init<storm::logic::Formula const&, bool>(), py::arg("formula"), py::arg("only_initial_states") = false)
         .def("set_produce_schedulers", &CheckTask<double>::setProduceSchedulers, "Set whether schedulers should be produced (if possible)", py::arg("produce_schedulers") = true)
+        .def("set_shielding_expression", &CheckTask<double>::setShieldingExpression, py::arg("expr"))
     ;
     // CheckTask
     py::class_<CheckTask<storm::RationalNumber>, std::shared_ptr<CheckTask<storm::RationalNumber>>>(m, "ExactCheckTask", "Task for model checking with exact numbers")
             //m.def("create_check_task", &storm::api::createTask, "Create task for verification", py::arg("formula"), py::arg("only_initial_states") = false);
             .def(py::init<storm::logic::Formula const&, bool>(), py::arg("formula"), py::arg("only_initial_states") = false)
             .def("set_produce_schedulers", &CheckTask<storm::RationalNumber>::setProduceSchedulers, "Set whether schedulers should be produced (if possible)", py::arg("produce_schedulers") = true)
+            .def("set_shielding_expression", &CheckTask<storm::RationalNumber>::setShieldingExpression, py::arg("expr"))
             ;
     py::class_<CheckTask<storm::RationalFunction>, std::shared_ptr<CheckTask<storm::RationalFunction>>>(m, "ParametricCheckTask", "Task for parametric model checking")
     //m.def("create_check_task", &storm::api::createTask, "Create task for verification", py::arg("formula"), py::arg("only_initial_states") = false);
         .def(py::init<storm::logic::Formula const&, bool>(), py::arg("formula"), py::arg("only_initial_states") = false)
         .def("set_produce_schedulers", &CheckTask<storm::RationalFunction>::setProduceSchedulers, "Set whether schedulers should be produced (if possible)", py::arg("produce_schedulers") = true)
+        .def("set_shielding_expression", &CheckTask<storm::RationalFunction>::setShieldingExpression, py::arg("expr"))
     ;
 
     // Model checking

@@ -1,0 +1,1717 @@
+mdp
+
+formula AgentCannotMoveNorth = (xAgent=2&yAgent=1) | (xAgent=3&yAgent=1) | (xAgent=4&yAgent=1) | (xAgent=8&yAgent=1) | (xAgent=9&yAgent=1) | (xAgent=10&yAgent=1) | (xAgent=11&yAgent=1) | (xAgent=12&yAgent=1) | (xAgent=16&yAgent=1) | (xAgent=17&yAgent=1) | (xAgent=18&yAgent=1) | (xAgent=19&yAgent=1) | (xAgent=20&yAgent=1) | (xAgent=1&yAgent=6) | (xAgent=2&yAgent=6) | (xAgent=3&yAgent=6) | (xAgent=4&yAgent=6) | (xAgent=5&yAgent=6) | (xAgent=6&yAgent=6) | (xAgent=7&yAgent=6) | (xAgent=8&yAgent=6) | (xAgent=9&yAgent=6) | (xAgent=10&yAgent=6) | (xAgent=11&yAgent=6) | (xAgent=12&yAgent=6) | (xAgent=13&yAgent=6) | (xAgent=14&yAgent=6) | (xAgent=15&yAgent=6) | (xAgent=16&yAgent=6) | (xAgent=17&yAgent=6) | (xAgent=18&yAgent=6) | (xAgent=19&yAgent=6) | (xAgent=20&yAgent=6) | (xAgent=21&yAgent=6) | (xAgent=22&yAgent=6) | (xAgent=23&yAgent=6) | (xAgent=1&yAgent=1) | (xAgent=6&yAgent=1) | (xAgent=14&yAgent=1) | (xAgent=22&yAgent=1);
+formula AgentCannotMoveEast  = (xAgent=23&yAgent=3) | (xAgent=23&yAgent=6) | (xAgent=23&yAgent=7) | (xAgent=23&yAgent=8) | (xAgent=23&yAgent=9) | (xAgent=23&yAgent=10) | (xAgent=23&yAgent=11) | (xAgent=23&yAgent=12) | (xAgent=23&yAgent=13) | (xAgent=23&yAgent=14) | (xAgent=23&yAgent=15) | (xAgent=23&yAgent=16) | (xAgent=23&yAgent=17) | (xAgent=23&yAgent=18) | (xAgent=23&yAgent=19) | (xAgent=23&yAgent=20) | (xAgent=23&yAgent=21) | (xAgent=23&yAgent=22) | (xAgent=23&yAgent=23) | (xAgent=23&yAgent=4);
+formula AgentCannotMoveSouth = (xAgent=4&yAgent=4) | (xAgent=5&yAgent=4) | (xAgent=6&yAgent=4) | (xAgent=7&yAgent=4) | (xAgent=8&yAgent=4) | (xAgent=12&yAgent=4) | (xAgent=13&yAgent=4) | (xAgent=14&yAgent=4) | (xAgent=15&yAgent=4) | (xAgent=16&yAgent=4) | (xAgent=20&yAgent=4) | (xAgent=21&yAgent=4) | (xAgent=22&yAgent=4) | (xAgent=1&yAgent=23) | (xAgent=2&yAgent=23) | (xAgent=3&yAgent=23) | (xAgent=4&yAgent=23) | (xAgent=5&yAgent=23) | (xAgent=6&yAgent=23) | (xAgent=7&yAgent=23) | (xAgent=8&yAgent=23) | (xAgent=9&yAgent=23) | (xAgent=10&yAgent=23) | (xAgent=11&yAgent=23) | (xAgent=12&yAgent=23) | (xAgent=13&yAgent=23) | (xAgent=14&yAgent=23) | (xAgent=15&yAgent=23) | (xAgent=16&yAgent=23) | (xAgent=17&yAgent=23) | (xAgent=18&yAgent=23) | (xAgent=19&yAgent=23) | (xAgent=20&yAgent=23) | (xAgent=21&yAgent=23) | (xAgent=22&yAgent=23) | (xAgent=23&yAgent=23) | (xAgent=23&yAgent=4) | (xAgent=2&yAgent=4) | (xAgent=10&yAgent=4) | (xAgent=18&yAgent=4);
+formula AgentCannotMoveWest  = (xAgent=1&yAgent=2) | (xAgent=1&yAgent=6) | (xAgent=1&yAgent=7) | (xAgent=1&yAgent=8) | (xAgent=1&yAgent=9) | (xAgent=1&yAgent=10) | (xAgent=1&yAgent=11) | (xAgent=1&yAgent=12) | (xAgent=1&yAgent=13) | (xAgent=1&yAgent=14) | (xAgent=1&yAgent=15) | (xAgent=1&yAgent=16) | (xAgent=1&yAgent=17) | (xAgent=1&yAgent=18) | (xAgent=1&yAgent=19) | (xAgent=1&yAgent=20) | (xAgent=1&yAgent=21) | (xAgent=1&yAgent=22) | (xAgent=1&yAgent=23) | (xAgent=1&yAgent=1);
+formula AgentIsOnSlippery = (xAgent=1&yAgent=3) | (xAgent=2&yAgent=3) | (xAgent=3&yAgent=3) | (xAgent=9&yAgent=3) | (xAgent=10&yAgent=3) | (xAgent=11&yAgent=3) | (xAgent=17&yAgent=3) | (xAgent=18&yAgent=3) | (xAgent=19&yAgent=3) | (xAgent=7&yAgent=1) | (xAgent=15&yAgent=1) | (xAgent=23&yAgent=1) | (xAgent=3&yAgent=4) | (xAgent=11&yAgent=4) | (xAgent=19&yAgent=4) | (xAgent=5&yAgent=2) | (xAgent=6&yAgent=2) | (xAgent=7&yAgent=2) | (xAgent=13&yAgent=2) | (xAgent=14&yAgent=2) | (xAgent=15&yAgent=2) | (xAgent=21&yAgent=2) | (xAgent=22&yAgent=2) | (xAgent=23&yAgent=2) | (xAgent=5&yAgent=1) | (xAgent=13&yAgent=1) | (xAgent=21&yAgent=1) | (xAgent=1&yAgent=4) | (xAgent=9&yAgent=4) | (xAgent=17&yAgent=4);
+formula AgentIsInLava = (xAgent=6&yAgent=1) | (xAgent=14&yAgent=1) | (xAgent=22&yAgent=1) | (xAgent=2&yAgent=4) | (xAgent=10&yAgent=4) | (xAgent=18&yAgent=4);
+formula AgentIsInLavaAndNotDone = AgentIsInLava & !AgentDone;
+label "AgentIsInLavaAndNotDone" = AgentIsInLava & !AgentDone;
+
+formula AgentIsInGoal = (xAgent=23&yAgent=4);
+formula AgentIsInGoalAndNotDone = AgentIsInGoal & !AgentDone;
+label "AgentIsInGoalAndNotDone" = AgentIsInGoal & !AgentDone;
+module Agent
+	xAgent : [1..24] init 1;
+	yAgent : [1..24] init 1;
+
+	AgentDone : bool init false;
+	viewAgent : [0..3] init 0;
+
+	[Agent_turn_right]   !AgentIsInGoal & !AgentIsInLava & !AgentIsOnSlippery -> (viewAgent'=mod(viewAgent + 1, 4)) ;
+	[Agent_turn_left]    !AgentIsInGoal & !AgentIsInLava & !AgentIsOnSlippery & viewAgent>0 -> (viewAgent'=viewAgent - 1) ;
+	[Agent_turn_left]    !AgentIsInGoal & !AgentIsInLava & !AgentIsOnSlippery & viewAgent=0 -> (viewAgent'=3) ;
+
+
+	[Agent_move_north]  viewAgent=3 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveNorth -> (yAgent'=yAgent-1);
+	[Agent_move_east]   viewAgent=0 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveEast  -> (xAgent'=xAgent+1);
+	[Agent_move_south]  viewAgent=1 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveSouth -> (yAgent'=yAgent+1);
+	[Agent_move_west]   viewAgent=2 &  !AgentIsOnSlippery & !AgentIsInLava &!AgentIsInGoal &  !AgentCannotMoveWest  -> (xAgent'=xAgent-1);
+	[Agent_done] AgentIsInGoal | AgentIsInLava -> (AgentDone'=true);
+
+	[Agentmove_on_slip_north]  xAgent=1 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 6/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=1 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=1 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=1 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=2 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=2 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=2 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=2 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=3 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=3 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=3 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=3 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=9 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=9 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=9 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=9 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=10 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=10 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=10 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=10 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=11 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=11 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=11 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=11 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=17 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=17 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=17 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=17 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=18 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=18 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=18 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=18 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_north]  xAgent=19 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 3/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_north]  xAgent=19 & yAgent=3 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_north]  xAgent=19 & yAgent=3 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_north]  xAgent=19 & yAgent=3 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_east]  xAgent=7 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 1/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 6/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_east]  xAgent=7 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_east]  xAgent=7 & yAgent=1 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_east]  xAgent=7 & yAgent=1 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_east]  xAgent=15 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 1/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 6/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_east]  xAgent=15 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_east]  xAgent=15 & yAgent=1 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_east]  xAgent=15 & yAgent=1 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_east]  xAgent=23 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 1/9 : (yAgent'=yAgent+1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 6/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_east]  xAgent=23 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_east]  xAgent=23 & yAgent=1 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_east]  xAgent=23 & yAgent=1 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_east]  xAgent=3 & yAgent=4 -> 1/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 6/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_east]  xAgent=3 & yAgent=4 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_east]  xAgent=3 & yAgent=4 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_east]  xAgent=3 & yAgent=4 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_east]  xAgent=11 & yAgent=4 -> 1/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 6/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_east]  xAgent=11 & yAgent=4 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_east]  xAgent=11 & yAgent=4 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_east]  xAgent=11 & yAgent=4 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_east]  xAgent=19 & yAgent=4 -> 1/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 6/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_east]  xAgent=19 & yAgent=4 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_east]  xAgent=19 & yAgent=4 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_east]  xAgent=19 & yAgent=4 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=5 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=5 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=5 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=5 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=6 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=6 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=6 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=6 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=7 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=7 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=7 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=7 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=13 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=13 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=13 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=13 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=14 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=14 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=14 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=14 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=15 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=15 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=15 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=15 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=21 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=21 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=21 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=21 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=22 & yAgent=2 -> 3/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 1/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=22 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=22 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=22 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 6/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_south]  xAgent=23 & yAgent=2 -> 6/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 1/9 : (xAgent'=xAgent-1)
+ + 2/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_south]  xAgent=23 & yAgent=2 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_south]  xAgent=23 & yAgent=2 & viewAgent>0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_south]  xAgent=23 & yAgent=2 & viewAgent=0 -> 1/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_west]  xAgent=5 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 6/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 1/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_west]  xAgent=5 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_west]  xAgent=5 & yAgent=1 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_west]  xAgent=5 & yAgent=1 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_west]  xAgent=13 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 6/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 1/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_west]  xAgent=13 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_west]  xAgent=13 & yAgent=1 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_west]  xAgent=13 & yAgent=1 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_west]  xAgent=21 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 6/9 : (xAgent'=xAgent+1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 1/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_west]  xAgent=21 & yAgent=1 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_west]  xAgent=21 & yAgent=1 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_west]  xAgent=21 & yAgent=1 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_west]  xAgent=1 & yAgent=4 -> 1/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 6/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_west]  xAgent=1 & yAgent=4 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_west]  xAgent=1 & yAgent=4 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_west]  xAgent=1 & yAgent=4 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_west]  xAgent=9 & yAgent=4 -> 1/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 6/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_west]  xAgent=9 & yAgent=4 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_west]  xAgent=9 & yAgent=4 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_west]  xAgent=9 & yAgent=4 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+	[Agentmove_on_slip_west]  xAgent=17 & yAgent=4 -> 1/9 : (yAgent'=yAgent-1)
+ + 2/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1)
+ + 6/9 : (xAgent'=xAgent+1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1)
+ + 0/9 : (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1)
+ + 0/9 : (xAgent'=xAgent-1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1);
+	[Agentturn_at_slip_west]  xAgent=17 & yAgent=4 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=mod(viewAgent + 1, 4))
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=mod(viewAgent + 1, 4));
+	[Agentturn_at_slip_west]  xAgent=17 & yAgent=4 & viewAgent>0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=viewAgent - 1)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=viewAgent - 1)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=viewAgent - 1);
+	[Agentturn_at_slip_west]  xAgent=17 & yAgent=4 & viewAgent=0 -> 0/9 : (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 1/9 : (xAgent'=xAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent+1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent+1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (viewAgent'=3)
+ + 0/9 : (xAgent'=xAgent-1) & (yAgent'=yAgent-1) & (viewAgent'=3)
+ + 7/9 : (xAgent'=xAgent) & (yAgent'=yAgent) & (viewAgent'=3);
+endmodule
+
+rewards "NoBFS"
+	AgentIsInGoalAndNotDone:  100;
+	AgentIsInLavaAndNotDone: -100;
+endrewards
+rewards "WithBFS"
+	AgentIsInGoalAndNotDone:  100;
+	AgentIsInLavaAndNotDone: -100;
+	xAgent=0&yAgent=0 : 0;
+	xAgent=0&yAgent=1 : 0;
+	xAgent=0&yAgent=2 : 0;
+	xAgent=0&yAgent=3 : 0;
+	xAgent=0&yAgent=4 : 0;
+	xAgent=0&yAgent=5 : 0;
+	xAgent=0&yAgent=6 : 0;
+	xAgent=0&yAgent=7 : 0;
+	xAgent=0&yAgent=8 : 0;
+	xAgent=0&yAgent=9 : 0;
+	xAgent=0&yAgent=10 : 0;
+	xAgent=0&yAgent=11 : 0;
+	xAgent=0&yAgent=12 : 0;
+	xAgent=0&yAgent=13 : 0;
+	xAgent=0&yAgent=14 : 0;
+	xAgent=0&yAgent=15 : 0;
+	xAgent=0&yAgent=16 : 0;
+	xAgent=0&yAgent=17 : 0;
+	xAgent=0&yAgent=18 : 0;
+	xAgent=0&yAgent=19 : 0;
+	xAgent=0&yAgent=20 : 0;
+	xAgent=0&yAgent=21 : 0;
+	xAgent=0&yAgent=22 : 0;
+	xAgent=0&yAgent=23 : 0;
+	xAgent=0&yAgent=24 : 0;
+	xAgent=1&yAgent=0 : 0;
+	xAgent=1&yAgent=1 : -1;
+	xAgent=1&yAgent=2 : -0.96;
+	xAgent=1&yAgent=3 : -0.92;
+	xAgent=1&yAgent=4 : -0.96;
+	xAgent=1&yAgent=5 : 0;
+	xAgent=1&yAgent=6 : 0;
+	xAgent=1&yAgent=7 : 0;
+	xAgent=1&yAgent=8 : 0;
+	xAgent=1&yAgent=9 : 0;
+	xAgent=1&yAgent=10 : 0;
+	xAgent=1&yAgent=11 : 0;
+	xAgent=1&yAgent=12 : 0;
+	xAgent=1&yAgent=13 : 0;
+	xAgent=1&yAgent=14 : 0;
+	xAgent=1&yAgent=15 : 0;
+	xAgent=1&yAgent=16 : 0;
+	xAgent=1&yAgent=17 : 0;
+	xAgent=1&yAgent=18 : 0;
+	xAgent=1&yAgent=19 : 0;
+	xAgent=1&yAgent=20 : 0;
+	xAgent=1&yAgent=21 : 0;
+	xAgent=1&yAgent=22 : 0;
+	xAgent=1&yAgent=23 : 0;
+	xAgent=1&yAgent=24 : 0;
+	xAgent=2&yAgent=0 : 0;
+	xAgent=2&yAgent=1 : -0.96;
+	xAgent=2&yAgent=2 : -0.92;
+	xAgent=2&yAgent=3 : -0.88;
+	xAgent=2&yAgent=4 : 0;
+	xAgent=2&yAgent=5 : 0;
+	xAgent=2&yAgent=6 : 0;
+	xAgent=2&yAgent=7 : 0;
+	xAgent=2&yAgent=8 : 0;
+	xAgent=2&yAgent=9 : 0;
+	xAgent=2&yAgent=10 : 0;
+	xAgent=2&yAgent=11 : 0;
+	xAgent=2&yAgent=12 : 0;
+	xAgent=2&yAgent=13 : 0;
+	xAgent=2&yAgent=14 : 0;
+	xAgent=2&yAgent=15 : 0;
+	xAgent=2&yAgent=16 : 0;
+	xAgent=2&yAgent=17 : 0;
+	xAgent=2&yAgent=18 : 0;
+	xAgent=2&yAgent=19 : 0;
+	xAgent=2&yAgent=20 : 0;
+	xAgent=2&yAgent=21 : 0;
+	xAgent=2&yAgent=22 : 0;
+	xAgent=2&yAgent=23 : 0;
+	xAgent=2&yAgent=24 : 0;
+	xAgent=3&yAgent=0 : 0;
+	xAgent=3&yAgent=1 : -0.92;
+	xAgent=3&yAgent=2 : -0.88;
+	xAgent=3&yAgent=3 : -0.84;
+	xAgent=3&yAgent=4 : -0.88;
+	xAgent=3&yAgent=5 : 0;
+	xAgent=3&yAgent=6 : 0;
+	xAgent=3&yAgent=7 : 0;
+	xAgent=3&yAgent=8 : 0;
+	xAgent=3&yAgent=9 : 0;
+	xAgent=3&yAgent=10 : 0;
+	xAgent=3&yAgent=11 : 0;
+	xAgent=3&yAgent=12 : 0;
+	xAgent=3&yAgent=13 : 0;
+	xAgent=3&yAgent=14 : 0;
+	xAgent=3&yAgent=15 : 0;
+	xAgent=3&yAgent=16 : 0;
+	xAgent=3&yAgent=17 : 0;
+	xAgent=3&yAgent=18 : 0;
+	xAgent=3&yAgent=19 : 0;
+	xAgent=3&yAgent=20 : 0;
+	xAgent=3&yAgent=21 : 0;
+	xAgent=3&yAgent=22 : 0;
+	xAgent=3&yAgent=23 : 0;
+	xAgent=3&yAgent=24 : 0;
+	xAgent=4&yAgent=0 : 0;
+	xAgent=4&yAgent=1 : -0.88;
+	xAgent=4&yAgent=2 : -0.84;
+	xAgent=4&yAgent=3 : -0.8;
+	xAgent=4&yAgent=4 : -0.84;
+	xAgent=4&yAgent=5 : 0;
+	xAgent=4&yAgent=6 : 0;
+	xAgent=4&yAgent=7 : 0;
+	xAgent=4&yAgent=8 : 0;
+	xAgent=4&yAgent=9 : 0;
+	xAgent=4&yAgent=10 : 0;
+	xAgent=4&yAgent=11 : 0;
+	xAgent=4&yAgent=12 : 0;
+	xAgent=4&yAgent=13 : 0;
+	xAgent=4&yAgent=14 : 0;
+	xAgent=4&yAgent=15 : 0;
+	xAgent=4&yAgent=16 : 0;
+	xAgent=4&yAgent=17 : 0;
+	xAgent=4&yAgent=18 : 0;
+	xAgent=4&yAgent=19 : 0;
+	xAgent=4&yAgent=20 : 0;
+	xAgent=4&yAgent=21 : 0;
+	xAgent=4&yAgent=22 : 0;
+	xAgent=4&yAgent=23 : 0;
+	xAgent=4&yAgent=24 : 0;
+	xAgent=5&yAgent=0 : 0;
+	xAgent=5&yAgent=1 : -0.84;
+	xAgent=5&yAgent=2 : -0.8;
+	xAgent=5&yAgent=3 : -0.76;
+	xAgent=5&yAgent=4 : -0.8;
+	xAgent=5&yAgent=5 : 0;
+	xAgent=5&yAgent=6 : 0;
+	xAgent=5&yAgent=7 : 0;
+	xAgent=5&yAgent=8 : 0;
+	xAgent=5&yAgent=9 : 0;
+	xAgent=5&yAgent=10 : 0;
+	xAgent=5&yAgent=11 : 0;
+	xAgent=5&yAgent=12 : 0;
+	xAgent=5&yAgent=13 : 0;
+	xAgent=5&yAgent=14 : 0;
+	xAgent=5&yAgent=15 : 0;
+	xAgent=5&yAgent=16 : 0;
+	xAgent=5&yAgent=17 : 0;
+	xAgent=5&yAgent=18 : 0;
+	xAgent=5&yAgent=19 : 0;
+	xAgent=5&yAgent=20 : 0;
+	xAgent=5&yAgent=21 : 0;
+	xAgent=5&yAgent=22 : 0;
+	xAgent=5&yAgent=23 : 0;
+	xAgent=5&yAgent=24 : 0;
+	xAgent=6&yAgent=0 : 0;
+	xAgent=6&yAgent=1 : 0;
+	xAgent=6&yAgent=2 : -0.76;
+	xAgent=6&yAgent=3 : -0.72;
+	xAgent=6&yAgent=4 : -0.76;
+	xAgent=6&yAgent=5 : 0;
+	xAgent=6&yAgent=6 : 0;
+	xAgent=6&yAgent=7 : 0;
+	xAgent=6&yAgent=8 : 0;
+	xAgent=6&yAgent=9 : 0;
+	xAgent=6&yAgent=10 : 0;
+	xAgent=6&yAgent=11 : 0;
+	xAgent=6&yAgent=12 : 0;
+	xAgent=6&yAgent=13 : 0;
+	xAgent=6&yAgent=14 : 0;
+	xAgent=6&yAgent=15 : 0;
+	xAgent=6&yAgent=16 : 0;
+	xAgent=6&yAgent=17 : 0;
+	xAgent=6&yAgent=18 : 0;
+	xAgent=6&yAgent=19 : 0;
+	xAgent=6&yAgent=20 : 0;
+	xAgent=6&yAgent=21 : 0;
+	xAgent=6&yAgent=22 : 0;
+	xAgent=6&yAgent=23 : 0;
+	xAgent=6&yAgent=24 : 0;
+	xAgent=7&yAgent=0 : 0;
+	xAgent=7&yAgent=1 : -0.76;
+	xAgent=7&yAgent=2 : -0.72;
+	xAgent=7&yAgent=3 : -0.68;
+	xAgent=7&yAgent=4 : -0.72;
+	xAgent=7&yAgent=5 : 0;
+	xAgent=7&yAgent=6 : 0;
+	xAgent=7&yAgent=7 : 0;
+	xAgent=7&yAgent=8 : 0;
+	xAgent=7&yAgent=9 : 0;
+	xAgent=7&yAgent=10 : 0;
+	xAgent=7&yAgent=11 : 0;
+	xAgent=7&yAgent=12 : 0;
+	xAgent=7&yAgent=13 : 0;
+	xAgent=7&yAgent=14 : 0;
+	xAgent=7&yAgent=15 : 0;
+	xAgent=7&yAgent=16 : 0;
+	xAgent=7&yAgent=17 : 0;
+	xAgent=7&yAgent=18 : 0;
+	xAgent=7&yAgent=19 : 0;
+	xAgent=7&yAgent=20 : 0;
+	xAgent=7&yAgent=21 : 0;
+	xAgent=7&yAgent=22 : 0;
+	xAgent=7&yAgent=23 : 0;
+	xAgent=7&yAgent=24 : 0;
+	xAgent=8&yAgent=0 : 0;
+	xAgent=8&yAgent=1 : -0.72;
+	xAgent=8&yAgent=2 : -0.68;
+	xAgent=8&yAgent=3 : -0.64;
+	xAgent=8&yAgent=4 : -0.68;
+	xAgent=8&yAgent=5 : 0;
+	xAgent=8&yAgent=6 : 0;
+	xAgent=8&yAgent=7 : 0;
+	xAgent=8&yAgent=8 : 0;
+	xAgent=8&yAgent=9 : 0;
+	xAgent=8&yAgent=10 : 0;
+	xAgent=8&yAgent=11 : 0;
+	xAgent=8&yAgent=12 : 0;
+	xAgent=8&yAgent=13 : 0;
+	xAgent=8&yAgent=14 : 0;
+	xAgent=8&yAgent=15 : 0;
+	xAgent=8&yAgent=16 : 0;
+	xAgent=8&yAgent=17 : 0;
+	xAgent=8&yAgent=18 : 0;
+	xAgent=8&yAgent=19 : 0;
+	xAgent=8&yAgent=20 : 0;
+	xAgent=8&yAgent=21 : 0;
+	xAgent=8&yAgent=22 : 0;
+	xAgent=8&yAgent=23 : 0;
+	xAgent=8&yAgent=24 : 0;
+	xAgent=9&yAgent=0 : 0;
+	xAgent=9&yAgent=1 : -0.68;
+	xAgent=9&yAgent=2 : -0.64;
+	xAgent=9&yAgent=3 : -0.6;
+	xAgent=9&yAgent=4 : -0.64;
+	xAgent=9&yAgent=5 : 0;
+	xAgent=9&yAgent=6 : 0;
+	xAgent=9&yAgent=7 : 0;
+	xAgent=9&yAgent=8 : 0;
+	xAgent=9&yAgent=9 : 0;
+	xAgent=9&yAgent=10 : 0;
+	xAgent=9&yAgent=11 : 0;
+	xAgent=9&yAgent=12 : 0;
+	xAgent=9&yAgent=13 : 0;
+	xAgent=9&yAgent=14 : 0;
+	xAgent=9&yAgent=15 : 0;
+	xAgent=9&yAgent=16 : 0;
+	xAgent=9&yAgent=17 : 0;
+	xAgent=9&yAgent=18 : 0;
+	xAgent=9&yAgent=19 : 0;
+	xAgent=9&yAgent=20 : 0;
+	xAgent=9&yAgent=21 : 0;
+	xAgent=9&yAgent=22 : 0;
+	xAgent=9&yAgent=23 : 0;
+	xAgent=9&yAgent=24 : 0;
+	xAgent=10&yAgent=0 : 0;
+	xAgent=10&yAgent=1 : -0.64;
+	xAgent=10&yAgent=2 : -0.6;
+	xAgent=10&yAgent=3 : -0.56;
+	xAgent=10&yAgent=4 : 0;
+	xAgent=10&yAgent=5 : 0;
+	xAgent=10&yAgent=6 : 0;
+	xAgent=10&yAgent=7 : 0;
+	xAgent=10&yAgent=8 : 0;
+	xAgent=10&yAgent=9 : 0;
+	xAgent=10&yAgent=10 : 0;
+	xAgent=10&yAgent=11 : 0;
+	xAgent=10&yAgent=12 : 0;
+	xAgent=10&yAgent=13 : 0;
+	xAgent=10&yAgent=14 : 0;
+	xAgent=10&yAgent=15 : 0;
+	xAgent=10&yAgent=16 : 0;
+	xAgent=10&yAgent=17 : 0;
+	xAgent=10&yAgent=18 : 0;
+	xAgent=10&yAgent=19 : 0;
+	xAgent=10&yAgent=20 : 0;
+	xAgent=10&yAgent=21 : 0;
+	xAgent=10&yAgent=22 : 0;
+	xAgent=10&yAgent=23 : 0;
+	xAgent=10&yAgent=24 : 0;
+	xAgent=11&yAgent=0 : 0;
+	xAgent=11&yAgent=1 : -0.6;
+	xAgent=11&yAgent=2 : -0.56;
+	xAgent=11&yAgent=3 : -0.52;
+	xAgent=11&yAgent=4 : -0.56;
+	xAgent=11&yAgent=5 : 0;
+	xAgent=11&yAgent=6 : 0;
+	xAgent=11&yAgent=7 : 0;
+	xAgent=11&yAgent=8 : 0;
+	xAgent=11&yAgent=9 : 0;
+	xAgent=11&yAgent=10 : 0;
+	xAgent=11&yAgent=11 : 0;
+	xAgent=11&yAgent=12 : 0;
+	xAgent=11&yAgent=13 : 0;
+	xAgent=11&yAgent=14 : 0;
+	xAgent=11&yAgent=15 : 0;
+	xAgent=11&yAgent=16 : 0;
+	xAgent=11&yAgent=17 : 0;
+	xAgent=11&yAgent=18 : 0;
+	xAgent=11&yAgent=19 : 0;
+	xAgent=11&yAgent=20 : 0;
+	xAgent=11&yAgent=21 : 0;
+	xAgent=11&yAgent=22 : 0;
+	xAgent=11&yAgent=23 : 0;
+	xAgent=11&yAgent=24 : 0;
+	xAgent=12&yAgent=0 : 0;
+	xAgent=12&yAgent=1 : -0.56;
+	xAgent=12&yAgent=2 : -0.52;
+	xAgent=12&yAgent=3 : -0.48;
+	xAgent=12&yAgent=4 : -0.52;
+	xAgent=12&yAgent=5 : 0;
+	xAgent=12&yAgent=6 : 0;
+	xAgent=12&yAgent=7 : 0;
+	xAgent=12&yAgent=8 : 0;
+	xAgent=12&yAgent=9 : 0;
+	xAgent=12&yAgent=10 : 0;
+	xAgent=12&yAgent=11 : 0;
+	xAgent=12&yAgent=12 : 0;
+	xAgent=12&yAgent=13 : 0;
+	xAgent=12&yAgent=14 : 0;
+	xAgent=12&yAgent=15 : 0;
+	xAgent=12&yAgent=16 : 0;
+	xAgent=12&yAgent=17 : 0;
+	xAgent=12&yAgent=18 : 0;
+	xAgent=12&yAgent=19 : 0;
+	xAgent=12&yAgent=20 : 0;
+	xAgent=12&yAgent=21 : 0;
+	xAgent=12&yAgent=22 : 0;
+	xAgent=12&yAgent=23 : 0;
+	xAgent=12&yAgent=24 : 0;
+	xAgent=13&yAgent=0 : 0;
+	xAgent=13&yAgent=1 : -0.52;
+	xAgent=13&yAgent=2 : -0.48;
+	xAgent=13&yAgent=3 : -0.44;
+	xAgent=13&yAgent=4 : -0.48;
+	xAgent=13&yAgent=5 : 0;
+	xAgent=13&yAgent=6 : 0;
+	xAgent=13&yAgent=7 : 0;
+	xAgent=13&yAgent=8 : 0;
+	xAgent=13&yAgent=9 : 0;
+	xAgent=13&yAgent=10 : 0;
+	xAgent=13&yAgent=11 : 0;
+	xAgent=13&yAgent=12 : 0;
+	xAgent=13&yAgent=13 : 0;
+	xAgent=13&yAgent=14 : 0;
+	xAgent=13&yAgent=15 : 0;
+	xAgent=13&yAgent=16 : 0;
+	xAgent=13&yAgent=17 : 0;
+	xAgent=13&yAgent=18 : 0;
+	xAgent=13&yAgent=19 : 0;
+	xAgent=13&yAgent=20 : 0;
+	xAgent=13&yAgent=21 : 0;
+	xAgent=13&yAgent=22 : 0;
+	xAgent=13&yAgent=23 : 0;
+	xAgent=13&yAgent=24 : 0;
+	xAgent=14&yAgent=0 : 0;
+	xAgent=14&yAgent=1 : 0;
+	xAgent=14&yAgent=2 : -0.44;
+	xAgent=14&yAgent=3 : -0.4;
+	xAgent=14&yAgent=4 : -0.44;
+	xAgent=14&yAgent=5 : 0;
+	xAgent=14&yAgent=6 : 0;
+	xAgent=14&yAgent=7 : 0;
+	xAgent=14&yAgent=8 : 0;
+	xAgent=14&yAgent=9 : 0;
+	xAgent=14&yAgent=10 : 0;
+	xAgent=14&yAgent=11 : 0;
+	xAgent=14&yAgent=12 : 0;
+	xAgent=14&yAgent=13 : 0;
+	xAgent=14&yAgent=14 : 0;
+	xAgent=14&yAgent=15 : 0;
+	xAgent=14&yAgent=16 : 0;
+	xAgent=14&yAgent=17 : 0;
+	xAgent=14&yAgent=18 : 0;
+	xAgent=14&yAgent=19 : 0;
+	xAgent=14&yAgent=20 : 0;
+	xAgent=14&yAgent=21 : 0;
+	xAgent=14&yAgent=22 : 0;
+	xAgent=14&yAgent=23 : 0;
+	xAgent=14&yAgent=24 : 0;
+	xAgent=15&yAgent=0 : 0;
+	xAgent=15&yAgent=1 : -0.44;
+	xAgent=15&yAgent=2 : -0.4;
+	xAgent=15&yAgent=3 : -0.36;
+	xAgent=15&yAgent=4 : -0.4;
+	xAgent=15&yAgent=5 : 0;
+	xAgent=15&yAgent=6 : 0;
+	xAgent=15&yAgent=7 : 0;
+	xAgent=15&yAgent=8 : 0;
+	xAgent=15&yAgent=9 : 0;
+	xAgent=15&yAgent=10 : 0;
+	xAgent=15&yAgent=11 : 0;
+	xAgent=15&yAgent=12 : 0;
+	xAgent=15&yAgent=13 : 0;
+	xAgent=15&yAgent=14 : 0;
+	xAgent=15&yAgent=15 : 0;
+	xAgent=15&yAgent=16 : 0;
+	xAgent=15&yAgent=17 : 0;
+	xAgent=15&yAgent=18 : 0;
+	xAgent=15&yAgent=19 : 0;
+	xAgent=15&yAgent=20 : 0;
+	xAgent=15&yAgent=21 : 0;
+	xAgent=15&yAgent=22 : 0;
+	xAgent=15&yAgent=23 : 0;
+	xAgent=15&yAgent=24 : 0;
+	xAgent=16&yAgent=0 : 0;
+	xAgent=16&yAgent=1 : -0.4;
+	xAgent=16&yAgent=2 : -0.36;
+	xAgent=16&yAgent=3 : -0.32;
+	xAgent=16&yAgent=4 : -0.36;
+	xAgent=16&yAgent=5 : 0;
+	xAgent=16&yAgent=6 : 0;
+	xAgent=16&yAgent=7 : 0;
+	xAgent=16&yAgent=8 : 0;
+	xAgent=16&yAgent=9 : 0;
+	xAgent=16&yAgent=10 : 0;
+	xAgent=16&yAgent=11 : 0;
+	xAgent=16&yAgent=12 : 0;
+	xAgent=16&yAgent=13 : 0;
+	xAgent=16&yAgent=14 : 0;
+	xAgent=16&yAgent=15 : 0;
+	xAgent=16&yAgent=16 : 0;
+	xAgent=16&yAgent=17 : 0;
+	xAgent=16&yAgent=18 : 0;
+	xAgent=16&yAgent=19 : 0;
+	xAgent=16&yAgent=20 : 0;
+	xAgent=16&yAgent=21 : 0;
+	xAgent=16&yAgent=22 : 0;
+	xAgent=16&yAgent=23 : 0;
+	xAgent=16&yAgent=24 : 0;
+	xAgent=17&yAgent=0 : 0;
+	xAgent=17&yAgent=1 : -0.36;
+	xAgent=17&yAgent=2 : -0.32;
+	xAgent=17&yAgent=3 : -0.28;
+	xAgent=17&yAgent=4 : -0.32;
+	xAgent=17&yAgent=5 : 0;
+	xAgent=17&yAgent=6 : 0;
+	xAgent=17&yAgent=7 : 0;
+	xAgent=17&yAgent=8 : 0;
+	xAgent=17&yAgent=9 : 0;
+	xAgent=17&yAgent=10 : 0;
+	xAgent=17&yAgent=11 : 0;
+	xAgent=17&yAgent=12 : 0;
+	xAgent=17&yAgent=13 : 0;
+	xAgent=17&yAgent=14 : 0;
+	xAgent=17&yAgent=15 : 0;
+	xAgent=17&yAgent=16 : 0;
+	xAgent=17&yAgent=17 : 0;
+	xAgent=17&yAgent=18 : 0;
+	xAgent=17&yAgent=19 : 0;
+	xAgent=17&yAgent=20 : 0;
+	xAgent=17&yAgent=21 : 0;
+	xAgent=17&yAgent=22 : 0;
+	xAgent=17&yAgent=23 : 0;
+	xAgent=17&yAgent=24 : 0;
+	xAgent=18&yAgent=0 : 0;
+	xAgent=18&yAgent=1 : -0.32;
+	xAgent=18&yAgent=2 : -0.28;
+	xAgent=18&yAgent=3 : -0.24;
+	xAgent=18&yAgent=4 : 0;
+	xAgent=18&yAgent=5 : 0;
+	xAgent=18&yAgent=6 : 0;
+	xAgent=18&yAgent=7 : 0;
+	xAgent=18&yAgent=8 : 0;
+	xAgent=18&yAgent=9 : 0;
+	xAgent=18&yAgent=10 : 0;
+	xAgent=18&yAgent=11 : 0;
+	xAgent=18&yAgent=12 : 0;
+	xAgent=18&yAgent=13 : 0;
+	xAgent=18&yAgent=14 : 0;
+	xAgent=18&yAgent=15 : 0;
+	xAgent=18&yAgent=16 : 0;
+	xAgent=18&yAgent=17 : 0;
+	xAgent=18&yAgent=18 : 0;
+	xAgent=18&yAgent=19 : 0;
+	xAgent=18&yAgent=20 : 0;
+	xAgent=18&yAgent=21 : 0;
+	xAgent=18&yAgent=22 : 0;
+	xAgent=18&yAgent=23 : 0;
+	xAgent=18&yAgent=24 : 0;
+	xAgent=19&yAgent=0 : 0;
+	xAgent=19&yAgent=1 : -0.28;
+	xAgent=19&yAgent=2 : -0.24;
+	xAgent=19&yAgent=3 : -0.2;
+	xAgent=19&yAgent=4 : -0.16;
+	xAgent=19&yAgent=5 : 0;
+	xAgent=19&yAgent=6 : 0;
+	xAgent=19&yAgent=7 : 0;
+	xAgent=19&yAgent=8 : 0;
+	xAgent=19&yAgent=9 : 0;
+	xAgent=19&yAgent=10 : 0;
+	xAgent=19&yAgent=11 : 0;
+	xAgent=19&yAgent=12 : 0;
+	xAgent=19&yAgent=13 : 0;
+	xAgent=19&yAgent=14 : 0;
+	xAgent=19&yAgent=15 : 0;
+	xAgent=19&yAgent=16 : 0;
+	xAgent=19&yAgent=17 : 0;
+	xAgent=19&yAgent=18 : 0;
+	xAgent=19&yAgent=19 : 0;
+	xAgent=19&yAgent=20 : 0;
+	xAgent=19&yAgent=21 : 0;
+	xAgent=19&yAgent=22 : 0;
+	xAgent=19&yAgent=23 : 0;
+	xAgent=19&yAgent=24 : 0;
+	xAgent=20&yAgent=0 : 0;
+	xAgent=20&yAgent=1 : -0.24;
+	xAgent=20&yAgent=2 : -0.2;
+	xAgent=20&yAgent=3 : -0.16;
+	xAgent=20&yAgent=4 : -0.12;
+	xAgent=20&yAgent=5 : 0;
+	xAgent=20&yAgent=6 : 0;
+	xAgent=20&yAgent=7 : 0;
+	xAgent=20&yAgent=8 : 0;
+	xAgent=20&yAgent=9 : 0;
+	xAgent=20&yAgent=10 : 0;
+	xAgent=20&yAgent=11 : 0;
+	xAgent=20&yAgent=12 : 0;
+	xAgent=20&yAgent=13 : 0;
+	xAgent=20&yAgent=14 : 0;
+	xAgent=20&yAgent=15 : 0;
+	xAgent=20&yAgent=16 : 0;
+	xAgent=20&yAgent=17 : 0;
+	xAgent=20&yAgent=18 : 0;
+	xAgent=20&yAgent=19 : 0;
+	xAgent=20&yAgent=20 : 0;
+	xAgent=20&yAgent=21 : 0;
+	xAgent=20&yAgent=22 : 0;
+	xAgent=20&yAgent=23 : 0;
+	xAgent=20&yAgent=24 : 0;
+	xAgent=21&yAgent=0 : 0;
+	xAgent=21&yAgent=1 : -0.2;
+	xAgent=21&yAgent=2 : -0.16;
+	xAgent=21&yAgent=3 : -0.12;
+	xAgent=21&yAgent=4 : -0.08;
+	xAgent=21&yAgent=5 : 0;
+	xAgent=21&yAgent=6 : 0;
+	xAgent=21&yAgent=7 : 0;
+	xAgent=21&yAgent=8 : 0;
+	xAgent=21&yAgent=9 : 0;
+	xAgent=21&yAgent=10 : 0;
+	xAgent=21&yAgent=11 : 0;
+	xAgent=21&yAgent=12 : 0;
+	xAgent=21&yAgent=13 : 0;
+	xAgent=21&yAgent=14 : 0;
+	xAgent=21&yAgent=15 : 0;
+	xAgent=21&yAgent=16 : 0;
+	xAgent=21&yAgent=17 : 0;
+	xAgent=21&yAgent=18 : 0;
+	xAgent=21&yAgent=19 : 0;
+	xAgent=21&yAgent=20 : 0;
+	xAgent=21&yAgent=21 : 0;
+	xAgent=21&yAgent=22 : 0;
+	xAgent=21&yAgent=23 : 0;
+	xAgent=21&yAgent=24 : 0;
+	xAgent=22&yAgent=0 : 0;
+	xAgent=22&yAgent=1 : 0;
+	xAgent=22&yAgent=2 : -0.12;
+	xAgent=22&yAgent=3 : -0.08;
+	xAgent=22&yAgent=4 : -0.04;
+	xAgent=22&yAgent=5 : 0;
+	xAgent=22&yAgent=6 : 0;
+	xAgent=22&yAgent=7 : 0;
+	xAgent=22&yAgent=8 : 0;
+	xAgent=22&yAgent=9 : 0;
+	xAgent=22&yAgent=10 : 0;
+	xAgent=22&yAgent=11 : 0;
+	xAgent=22&yAgent=12 : 0;
+	xAgent=22&yAgent=13 : 0;
+	xAgent=22&yAgent=14 : 0;
+	xAgent=22&yAgent=15 : 0;
+	xAgent=22&yAgent=16 : 0;
+	xAgent=22&yAgent=17 : 0;
+	xAgent=22&yAgent=18 : 0;
+	xAgent=22&yAgent=19 : 0;
+	xAgent=22&yAgent=20 : 0;
+	xAgent=22&yAgent=21 : 0;
+	xAgent=22&yAgent=22 : 0;
+	xAgent=22&yAgent=23 : 0;
+	xAgent=22&yAgent=24 : 0;
+	xAgent=23&yAgent=0 : 0;
+	xAgent=23&yAgent=1 : -0.12;
+	xAgent=23&yAgent=2 : -0.08;
+	xAgent=23&yAgent=3 : -0.04;
+	xAgent=23&yAgent=4 : 0;
+	xAgent=23&yAgent=5 : 0;
+	xAgent=23&yAgent=6 : 0;
+	xAgent=23&yAgent=7 : 0;
+	xAgent=23&yAgent=8 : 0;
+	xAgent=23&yAgent=9 : 0;
+	xAgent=23&yAgent=10 : 0;
+	xAgent=23&yAgent=11 : 0;
+	xAgent=23&yAgent=12 : 0;
+	xAgent=23&yAgent=13 : 0;
+	xAgent=23&yAgent=14 : 0;
+	xAgent=23&yAgent=15 : 0;
+	xAgent=23&yAgent=16 : 0;
+	xAgent=23&yAgent=17 : 0;
+	xAgent=23&yAgent=18 : 0;
+	xAgent=23&yAgent=19 : 0;
+	xAgent=23&yAgent=20 : 0;
+	xAgent=23&yAgent=21 : 0;
+	xAgent=23&yAgent=22 : 0;
+	xAgent=23&yAgent=23 : 0;
+	xAgent=23&yAgent=24 : 0;
+	xAgent=24&yAgent=0 : 0;
+	xAgent=24&yAgent=1 : 0;
+	xAgent=24&yAgent=2 : 0;
+	xAgent=24&yAgent=3 : 0;
+	xAgent=24&yAgent=4 : 0;
+	xAgent=24&yAgent=5 : 0;
+	xAgent=24&yAgent=6 : 0;
+	xAgent=24&yAgent=7 : 0;
+	xAgent=24&yAgent=8 : 0;
+	xAgent=24&yAgent=9 : 0;
+	xAgent=24&yAgent=10 : 0;
+	xAgent=24&yAgent=11 : 0;
+	xAgent=24&yAgent=12 : 0;
+	xAgent=24&yAgent=13 : 0;
+	xAgent=24&yAgent=14 : 0;
+	xAgent=24&yAgent=15 : 0;
+	xAgent=24&yAgent=16 : 0;
+	xAgent=24&yAgent=17 : 0;
+	xAgent=24&yAgent=18 : 0;
+	xAgent=24&yAgent=19 : 0;
+	xAgent=24&yAgent=20 : 0;
+	xAgent=24&yAgent=21 : 0;
+	xAgent=24&yAgent=22 : 0;
+	xAgent=24&yAgent=23 : 0;
+	xAgent=24&yAgent=24 : 0;
+endrewards

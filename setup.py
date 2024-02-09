@@ -269,11 +269,13 @@ setup(
                  CMakeExtension('dft', subdir='dft'),
                  CMakeExtension('gspn', subdir='gspn'),
                  CMakeExtension('pars', subdir='pars'),
-                 CMakeExtension('pomdp', subdir='pomdp')],
+                 CMakeExtension('pomdp', subdir='pomdp'),
+                 CMakeExtension('shields', subdir='shields')
+                 ],
 
     cmdclass={'build_ext': CMakeBuild},
     zip_safe=False,
-    install_requires=['pycarl>=2.0.4'],
+    install_requires=['pycarl>=2.0.4', 'dtcontrol'],
     setup_requires=['pytest-runner'],
     tests_require=['pytest', 'nbval'],
     extras_require={

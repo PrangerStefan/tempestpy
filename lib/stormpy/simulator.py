@@ -204,6 +204,9 @@ class SparseSimulator(Simulator):
                 raise RuntimeError("Program level observations require model with state valuations")
         self._state_valuations = self._model.state_valuations
 
+    def get_current_state(self):
+        return self._engine.get_current_state()
+
 
 
 def create_simulator(model, seed = None):
